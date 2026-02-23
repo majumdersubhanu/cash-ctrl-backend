@@ -13,3 +13,8 @@ class ContactNotFoundError(CashCtrlException):
 
 class LoanNotFoundError(CashCtrlException):
     """Raised when a loan registry is not found."""
+    pass
+
+class UnauthorizedContactError(CashCtrlException):
+    """Raised when a user tries to access a contact not belonging to them."""
+    pass
