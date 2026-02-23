@@ -28,3 +28,18 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="CashCtrl API",
     version="1.0.0",
+    lifespan=lifespan,
+)
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(LoggingMiddleware)
+
+
+@app.get("/")
+def root():
+    return {"message": "CashCtrl API running"}
+
+
+@app.get("/health")
+async def health_check():
