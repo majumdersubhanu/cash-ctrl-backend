@@ -43,3 +43,7 @@
 /api/v1/transactions/
 /api/v1/transactions/bulk-delete
 /api/v1/transactions/filter
+/api/v1/transactions/transfer
+/api/v1/users/me
+/api/v1/users/{id}
+/health
