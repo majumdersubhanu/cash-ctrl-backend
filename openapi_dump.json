@@ -253,3 +253,18 @@
               "schema": {
                 "$ref": "#/components/schemas/Body_reset_reset_password_api_v1_auth_reset_password_post"
               }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
