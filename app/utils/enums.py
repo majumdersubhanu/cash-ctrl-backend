@@ -13,3 +13,18 @@ class CategoryType(str, Enum):
     EXPENSE = "EXPENSE"
 
 
+class TransactionType(str, Enum):
+    INCOME = "INCOME"
+    EXPENSE = "EXPENSE"
+    TRANSFER = "TRANSFER"
+
+
+class LoanStatus(str, Enum):
+    PENDING = "PENDING"
+    ACTIVE = "ACTIVE"
+    COMPLETED = "COMPLETED"
+    OVERDUE = "OVERDUE"
+    CANCELLED = "CANCELLED"
+    DEFAULTED = "DEFAULTED"
+
+
