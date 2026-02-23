@@ -88,3 +88,18 @@ async def _check_overdue_loans():
                 await notification_service.create_notification(
                     db=db,
                     user_id=borrower.id,
+                    title="Loan Overdue",
+                    message=f"Your loan for {loan.amount} is now overdue. Trust score penalized.",
+                    notification_type=NotificationType.ALERT,
+                    link=f"/p2p/loans/{loan.id}"
+                )
+                
+        await db.commit()
+        logger.info("Flagged overdue loans", extra={"count": len(loans)})
+
+@celery_app.task(name="check_overdue_loans")
+def check_overdue_loans_task():
+    logger.info("Executing scheduled task: check_overdue_loans_task")
+    asyncio.run(_check_overdue_loans())
+
+
