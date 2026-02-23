@@ -73,3 +73,5 @@ app.include_router(
     prefix="/api/v1/users",
     tags=["users"],
 )
+
+app.include_router(api_router, prefix="/api/v1")
