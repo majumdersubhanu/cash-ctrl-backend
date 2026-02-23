@@ -73,3 +73,6 @@ ALL ROUTES:
 /api/v1/data/import-csv | app.api.v1.data | import_transactions_csv
 /api/v1/gamification/streaks | app.api.v1.gamification | get_streaks
 /api/v1/gamification/achievements | app.api.v1.gamification | get_achievements
+/api/v1/notifications/ | app.api.v1.notifications | list_notifications
+/api/v1/notifications/{notification_id} | app.api.v1.notifications | update_notification
+/api/v1/notifications/mark-all-read | app.api.v1.notifications | mark_all_read
