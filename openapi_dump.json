@@ -943,3 +943,18 @@
         "summary": "List Categories",
         "operationId": "list_categories_api_v1_categories__get",
         "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Categories Api V1 Categories  Get"
+                }
+              }
+            }
+          }
+        },
