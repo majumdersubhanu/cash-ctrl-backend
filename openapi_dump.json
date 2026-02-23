@@ -568,3 +568,18 @@
           }
         }
       },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Users:Patch User",
+        "operationId": "users_patch_user_api_v1_users__id__patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
