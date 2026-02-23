@@ -1,0 +1,15 @@
+DUPLICATE ROUTES:
+/api/v1/users/me: 2 times
+/api/v1/users/{id}: 3 times
+/api/v1/accounts/: 2 times
+/api/v1/accounts/{account_id}: 3 times
+/api/v1/categories/: 2 times
+/api/v1/p2p/contacts: 2 times
+/api/v1/p2p/loans: 2 times
+/api/v1/budgets/: 2 times
+/api/v1/goals/: 2 times
+/api/v1/recurring-transactions/: 2 times
+
+ALL ROUTES:
+/openapi.json | fastapi.applications | openapi
+/docs | fastapi.applications | swagger_ui_html
