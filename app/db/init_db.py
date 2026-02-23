@@ -13,3 +13,10 @@ from app.models.debt import Debt
 from app.models.tag import Tag
 from app.models.user_preference import UserPreference
 from app.models.contact import Contact
+from app.models.loan import Loan, LoanAgreement, LoanInstallment
+from app.models.connection_request import ConnectionRequest
+from app.models.notification import Notification
+
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
