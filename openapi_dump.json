@@ -508,3 +508,18 @@
         },
         "security": [
           {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Users:User",
+        "operationId": "users_user_api_v1_users__id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
