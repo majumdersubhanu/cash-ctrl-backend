@@ -103,3 +103,14 @@ def check_overdue_loans_task():
     asyncio.run(_check_overdue_loans())
 
 
+# Configure the Periodic Task Schedules
+celery_app.conf.beat_schedule = {
+    "eval-recurring-transactions-midnight": {
+        "task": "process_recurring_transactions",
+        "schedule": crontab(hour=0, minute=0),
+    },
+    "flag-overdue-loans-midnight": {
+        "task": "check_overdue_loans",
+        "schedule": crontab(hour=0, minute=5),
+    },
+}
