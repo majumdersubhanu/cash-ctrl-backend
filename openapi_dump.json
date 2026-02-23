@@ -43,3 +43,18 @@
           "auth"
         ],
         "summary": "Auth:Jwt.Login",
+        "operationId": "auth_jwt_login_api_v1_auth_jwt_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_auth_jwt_login_api_v1_auth_jwt_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
