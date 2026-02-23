@@ -733,3 +733,18 @@
         },
         "security": [
           {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "accounts",
+          "accounts"
+        ],
+        "summary": "Create Account",
+        "operationId": "create_account_api_v1_accounts__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
