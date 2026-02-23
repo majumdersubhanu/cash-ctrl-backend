@@ -1,0 +1,15 @@
+/
+/api/v1/accounts/
+/api/v1/accounts/{account_id}
+/api/v1/analytics/anomalies
+/api/v1/analytics/cashflow-trends
+/api/v1/analytics/category-spending
+/api/v1/analytics/monthly-expense
+/api/v1/analytics/safe-to-spend
+/api/v1/audit/
+/api/v1/auth/forgot-password
+/api/v1/auth/jwt/login
+/api/v1/auth/jwt/logout
+/api/v1/auth/register
+/api/v1/auth/request-verify-token
+/api/v1/auth/reset-password
