@@ -1,0 +1,15 @@
+[project]
+name = "cash-ctrl"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "aiosqlite==0.22.1",
+    "alembic==1.18.4",
+    "asyncpg>=0.31.0",
+    "black>=26.3.0",
+    "celery>=5.6.2",
+    "fastapi>=0.135.1",
+    "fastapi-users[sqlalchemy]>=15.0.4",
+    "httpx>=0.28.1",
+    "isort>=8.0.1",
