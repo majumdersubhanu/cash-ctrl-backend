@@ -613,3 +613,18 @@ dependencies = [
     { name = "python-multipart" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4b/52/fadeae2c8435fb457a9cd91e402639fa5c9a25b16e6d204e043bf00cd875/fastapi_users-15.0.4.tar.gz", hash = "sha256:62657a4323de929cd98697b0fbdea77773ef271a6b57ef359080b9f773ebe144", size = 121394, upload-time = "2026-02-05T09:36:41.194Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/71/48/5fb2a18227ccbd5138515f21fc4fa8abcd9982238de43511d7f941e708db/fastapi_users-15.0.4-py3-none-any.whl", hash = "sha256:30940894825e1dd7b86f6013e4bc75eccc25ae8ce5261d1b180f6411bb28aff4", size = 39037, upload-time = "2026-02-05T09:36:42.195Z" },
+]
+
+[package.optional-dependencies]
+sqlalchemy = [
+    { name = "fastapi-users-db-sqlalchemy" },
+]
+
+[[package]]
+name = "fastapi-users-db-sqlalchemy"
+version = "7.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "fastapi-users" },
