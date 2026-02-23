@@ -283,3 +283,18 @@ dependencies = [
     { name = "pyotp" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "python-dateutil" },
+    { name = "python-dotenv" },
+    { name = "python-jose", extra = ["cryptography"] },
+    { name = "python-multipart" },
+    { name = "qrcode" },
+    { name = "redis" },
+    { name = "ruff" },
+    { name = "slowapi" },
+    { name = "sqlalchemy" },
+    { name = "user-agents" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
