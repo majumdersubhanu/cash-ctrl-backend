@@ -1,0 +1,15 @@
+ACTUAL DUPLICATE (PATH, METHOD) COMBINATIONS:
+No identical (path, method) combinations found.
+
+LIST OF ALL ENDPOINTS:
+['GET', 'HEAD'] /openapi.json | fastapi.applications | openapi
+['GET', 'HEAD'] /docs | fastapi.applications | swagger_ui_html
+['GET', 'HEAD'] /docs/oauth2-redirect | fastapi.applications | swagger_ui_redirect
+['GET', 'HEAD'] /redoc | fastapi.applications | redoc_html
+['GET'] / | app.main | root
+['GET'] /health | app.main | health_check
+['POST'] /api/v1/auth/jwt/login | fastapi_users.router.auth | auth:jwt.login
+['POST'] /api/v1/auth/jwt/logout | fastapi_users.router.auth | auth:jwt.logout
+['POST'] /api/v1/auth/register | fastapi_users.router.register | register:register
+['POST'] /api/v1/auth/forgot-password | fastapi_users.router.reset | reset:forgot_password
+['POST'] /api/v1/auth/reset-password | fastapi_users.router.reset | reset:reset_password
