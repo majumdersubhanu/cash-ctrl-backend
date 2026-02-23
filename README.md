@@ -88,3 +88,18 @@ uv run celery -A app.worker.celery_app worker --loglevel=info
 # Celery Beat (New Terminal)
 uv run celery -A app.worker.celery_app beat --loglevel=info
 ```
+
+---
+
+## 🧪 Testing
+```powershell
+uv run pytest
+```
+
+---
+
+## 🗺️ Roadmap & Design
+1.  **Service Pattern**: Business logic is centralized in `app/services/` (e.g., `P2PService`, `NotificationService`).
+2.  **Notification Engine**: Decoupled events ensure users stay informed without blocking API response times.
+3.  **Auditability**: Every transaction and loan event is tracked with timezone-aware precision.
+
