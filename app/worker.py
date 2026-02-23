@@ -43,3 +43,18 @@ async def _process_recurring_transactions():
         reqs = (await db.execute(stmt)).scalars().all()
         for req in reqs:
             tx = Transaction(
+                user_id=req.user_id,
+                account_id=req.account_id,
+                category_id=req.category_id,
+                amount=req.amount,
+                type=req.type,
+                transaction_date=today,
+                note="Auto-generated from Recurring schedule"
+            )
+            db.add(tx)
+            
+            if req.frequency == "Daily":
+                req.next_run_date = today + relativedelta(days=1)
+            elif req.frequency == "Weekly":
+                req.next_run_date = today + relativedelta(weeks=1)
+            elif req.frequency == "Monthly":
