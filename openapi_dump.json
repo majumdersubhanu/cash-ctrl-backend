@@ -718,3 +718,18 @@
         "responses": {
           "200": {
             "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AccountResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Accounts Api V1 Accounts  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
