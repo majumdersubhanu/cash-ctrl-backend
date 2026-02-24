@@ -4153,3 +4153,18 @@
             "title": "Keyword"
           },
           "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags"
+          },
+          "sort_by": {
+            "anyOf": [
