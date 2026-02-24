@@ -1888,3 +1888,18 @@
         },
         "security": [
           {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/analytics/cashflow-trends": {
+      "get": {
+        "tags": [
+          "analytics",
+          "analytics"
+        ],
+        "summary": "Cashflow Trends",
+        "operationId": "cashflow_trends_api_v1_analytics_cashflow_trends_get",
+        "security": [
+          {
