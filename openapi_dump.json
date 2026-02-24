@@ -1003,3 +1003,18 @@
             }
           }
         },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transactions/": {
+      "post": {
+        "tags": [
+          "transactions",
+          "transactions"
+        ],
+        "summary": "Create Transaction",
+        "operationId": "create_transaction_api_v1_transactions__post",
