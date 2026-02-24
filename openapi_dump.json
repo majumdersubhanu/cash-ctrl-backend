@@ -1948,3 +1948,18 @@
         ],
         "summary": "Safe To Spend",
         "operationId": "safe_to_spend_api_v1_analytics_safe_to_spend_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
