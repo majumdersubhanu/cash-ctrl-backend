@@ -4288,3 +4288,18 @@
           "EXPENSE",
           "TRANSFER"
         ],
+        "title": "TransactionType"
+      },
+      "TransferCreate": {
+        "properties": {
+          "from_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "From Account Id"
+          },
+          "to_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "To Account Id"
+          },
+          "amount": {
