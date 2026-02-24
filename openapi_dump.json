@@ -3538,3 +3538,18 @@
           },
           "id": {
             "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "frequency",
+          "due_date",
+          "id"
+        ],
+        "title": "LoanAgreementResponse"
+      },
+      "LoanCreate": {
+        "properties": {
+          "contact_id": {
