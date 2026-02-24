@@ -3553,3 +3553,18 @@
       "LoanCreate": {
         "properties": {
           "contact_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Contact Id"
+          },
+          "is_lending": {
+            "type": "boolean",
+            "title": "Is Lending"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
