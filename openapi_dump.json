@@ -2203,3 +2203,18 @@
     },
     "/api/v1/recurring-transactions/": {
       "get": {
+        "tags": [
+          "recurring",
+          "recurring"
+        ],
+        "summary": "List Recurring Jobs",
+        "operationId": "list_recurring_jobs_api_v1_recurring_transactions__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RecurringTransactionResponse"
+                  },
