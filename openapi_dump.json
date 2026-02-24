@@ -1588,3 +1588,18 @@
             "name": "loan_id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Loan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanResponse"
+                }
