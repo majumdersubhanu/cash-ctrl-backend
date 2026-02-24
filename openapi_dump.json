@@ -2338,3 +2338,18 @@
         "summary": "Export Json",
         "description": "Export all transactions of the user as a JSON file.",
         "operationId": "export_json_api_v1_data_export_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
