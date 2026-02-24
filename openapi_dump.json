@@ -3478,3 +3478,18 @@
               {
                 "type": "number"
               },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percent Complete",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "target_amount",
+          "current_amount"
+        ],
