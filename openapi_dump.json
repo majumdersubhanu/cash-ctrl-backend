@@ -1378,3 +1378,18 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/p2p/loans": {
+      "get": {
+        "tags": [
+          "p2p",
+          "p2p-lending"
+        ],
+        "summary": "List Loans",
