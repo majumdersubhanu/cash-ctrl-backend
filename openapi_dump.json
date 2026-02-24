@@ -2308,3 +2308,18 @@
         "tags": [
           "data",
           "data"
+        ],
+        "summary": "Export Csv",
+        "description": "Export all transactions of the user as a CSV file.",
+        "operationId": "export_csv_api_v1_data_export_csv_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
