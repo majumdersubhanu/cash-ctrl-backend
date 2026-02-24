@@ -1063,3 +1063,18 @@
           "transactions",
           "transactions"
         ],
+        "summary": "Filter Transactions",
+        "operationId": "filter_transactions_api_v1_transactions_filter_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionFilter"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
