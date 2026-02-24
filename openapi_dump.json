@@ -2143,3 +2143,18 @@
       }
     },
     "/api/v1/goals/{goal_id}/contribute": {
+      "post": {
+        "tags": [
+          "goals",
+          "goals"
+        ],
+        "summary": "Contribute To Goal",
+        "operationId": "contribute_to_goal_api_v1_goals__goal_id__contribute_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "goal_id",
