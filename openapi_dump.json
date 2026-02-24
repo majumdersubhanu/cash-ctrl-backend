@@ -1078,3 +1078,18 @@
         "responses": {
           "200": {
             "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Filter Transactions Api V1 Transactions Filter Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
