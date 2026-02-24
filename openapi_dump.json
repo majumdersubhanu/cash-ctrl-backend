@@ -1663,3 +1663,18 @@
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/social/vouch-score": {
+      "get": {
+        "tags": [
+          "social",
+          "social"
+        ],
+        "summary": "Get My Vouch Score",
+        "description": "Returns the active authenticated user's Vouch Score.",
+        "operationId": "get_my_vouch_score_api_v1_social_vouch_score_get",
+        "responses": {
