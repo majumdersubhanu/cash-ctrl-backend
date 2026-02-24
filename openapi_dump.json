@@ -4138,3 +4138,18 @@
               {
                 "type": "null"
               }
+            ],
+            "title": "Max Amount"
+          },
+          "keyword": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keyword"
+          },
+          "tags": {
