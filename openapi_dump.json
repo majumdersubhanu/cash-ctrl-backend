@@ -1618,3 +1618,18 @@
           }
         }
       }
+    },
+    "/api/v1/p2p/loans/{loan_id}/dispute": {
+      "post": {
+        "tags": [
+          "p2p",
+          "p2p-lending"
+        ],
+        "summary": "Dispute Loan",
+        "operationId": "dispute_loan_api_v1_p2p_loans__loan_id__dispute_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
