@@ -2353,3 +2353,18 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/api/v1/data/import-csv": {
+      "post": {
+        "tags": [
+          "data",
+          "data"
+        ],
+        "summary": "Import Transactions Csv",
+        "description": "Very basic CSV import assuming standard \"Type,Amount,Description\" mapping.",
+        "operationId": "import_transactions_csv_api_v1_data_import_csv_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
