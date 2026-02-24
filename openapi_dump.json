@@ -2923,3 +2923,18 @@
             ],
             "title": "Amount"
           },
+          "period": {
+            "type": "string",
+            "title": "Period"
+          },
+          "start_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Date"
