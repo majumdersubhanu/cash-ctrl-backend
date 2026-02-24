@@ -4168,3 +4168,18 @@
           },
           "sort_by": {
             "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sort By",
+            "default": "date"
+          },
+          "sort_order": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
