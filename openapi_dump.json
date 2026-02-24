@@ -1873,3 +1873,18 @@
         "tags": [
           "analytics",
           "analytics"
+        ],
+        "summary": "Category Spending",
+        "operationId": "category_spending_api_v1_analytics_category_spending_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
