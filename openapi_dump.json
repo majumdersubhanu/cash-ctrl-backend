@@ -1543,3 +1543,18 @@
               "schema": {
                 "$ref": "#/components/schemas/RepayLoanRequest"
               }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanResponse"
+                }
+              }
+            }
+          },
+          "422": {
