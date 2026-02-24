@@ -3898,3 +3898,18 @@
             "title": "Next Run Date"
           }
         },
+        "type": "object",
+        "required": [
+          "account_id",
+          "amount",
+          "type",
+          "frequency",
+          "next_run_date"
+        ],
+        "title": "RecurringTransactionCreate"
+      },
+      "RecurringTransactionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
