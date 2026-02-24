@@ -3463,3 +3463,18 @@
           },
           "deadline": {
             "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deadline"
+          },
+          "percent_complete": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
