@@ -3448,3 +3448,18 @@
             "title": "Account Id"
           },
           "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "target_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Target Amount"
+          },
+          "current_amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Current Amount"
+          },
+          "deadline": {
+            "anyOf": [
