@@ -2278,3 +2278,18 @@
       }
     },
     "/api/v1/recurring-transactions/process": {
+      "post": {
+        "tags": [
+          "recurring",
+          "recurring"
+        ],
+        "summary": "Process Due Jobs",
+        "description": "Evaluates next_run_date constraints across templates, logs pending transactions\nto the ledger, and bumps the next run dates based on periodicity rules.",
+        "operationId": "process_due_jobs_api_v1_recurring_transactions_process_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
