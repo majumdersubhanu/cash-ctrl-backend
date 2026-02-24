@@ -2458,3 +2458,18 @@
         },
         "security": [
           {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications/": {
+      "get": {
+        "tags": [
+          "notifications",
+          "notifications"
+        ],
+        "summary": "List Notifications",
+        "description": "List all notifications for the current user.",
+        "operationId": "list_notifications_api_v1_notifications__get",
+        "security": [
