@@ -2098,3 +2098,18 @@
       },
       "post": {
         "tags": [
+          "goals",
+          "goals"
+        ],
+        "summary": "Create Goal",
+        "operationId": "create_goal_api_v1_goals__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalCreate"
+              }
+            }
+          },
+          "required": true
+        },
