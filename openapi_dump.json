@@ -1333,3 +1333,18 @@
           "p2p",
           "p2p-lending"
         ],
+        "summary": "Process Connection",
+        "operationId": "process_connection_api_v1_p2p_connections__request_id__patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
