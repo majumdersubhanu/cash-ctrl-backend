@@ -1153,3 +1153,18 @@
           }
         },
         "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/transactions/bulk-delete": {
+      "post": {
+        "tags": [
+          "transactions",
+          "transactions"
+        ],
+        "summary": "Bulk Delete Transactions",
+        "operationId": "bulk_delete_transactions_api_v1_transactions_bulk_delete_post",
+        "requestBody": {
