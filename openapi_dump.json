@@ -1843,3 +1843,18 @@
         ]
       }
     },
+    "/api/v1/analytics/monthly-expense": {
+      "get": {
+        "tags": [
+          "analytics",
+          "analytics"
+        ],
+        "summary": "Monthly Expense",
+        "operationId": "monthly_expense_api_v1_analytics_monthly_expense_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
