@@ -2623,3 +2623,18 @@
           "balance": {
             "type": "number",
             "title": "Balance",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "title": "AccountCreate"
+      },
+      "AccountResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
