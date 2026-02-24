@@ -1993,3 +1993,18 @@
     "/api/v1/budgets/": {
       "get": {
         "tags": [
+          "budgets",
+          "budgets"
+        ],
+        "summary": "List Budgets",
+        "operationId": "list_budgets_api_v1_budgets__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BudgetResponse"
+                  },
+                  "type": "array",
