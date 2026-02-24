@@ -1468,3 +1468,18 @@
           "p2p",
           "p2p-lending"
         ],
+        "summary": "Fund Loan",
+        "operationId": "fund_loan_api_v1_p2p_loans__loan_id__fund_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "loan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
