@@ -3763,3 +3763,18 @@
         "title": "LoanStatus"
       },
       "MFAVerifyPayload": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token"
+        ],
+        "title": "MFAVerifyPayload"
+      },
+      "NotificationResponse": {
+        "properties": {
+          "title": {
