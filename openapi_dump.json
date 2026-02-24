@@ -3658,3 +3658,18 @@
           "id": {
             "type": "string",
             "format": "uuid",
+            "title": "Id"
+          },
+          "contact_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Contact Id"
+          },
+          "is_lending": {
+            "type": "boolean",
+            "title": "Is Lending"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
