@@ -3208,3 +3208,18 @@
         "enum": [
           "PENDING",
           "ACCEPTED",
+          "REJECTED"
+        ],
+        "title": "ConnectionRequestStatus"
+      },
+      "ConnectionRequestUpdate": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ConnectionRequestStatus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ConnectionRequestUpdate"
