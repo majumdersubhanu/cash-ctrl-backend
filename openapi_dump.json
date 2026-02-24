@@ -2083,3 +2083,18 @@
                   "items": {
                     "$ref": "#/components/schemas/GoalResponse"
                   },
+                  "type": "array",
+                  "title": "Response List Goals Api V1 Goals  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
