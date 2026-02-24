@@ -3733,3 +3733,18 @@
             "title": "Agreements",
             "default": []
           }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "contact_id",
+          "is_lending",
+          "amount",
+          "currency",
+          "interest_rate",
+          "status",
+          "is_disputed",
+          "description",
+          "funding_account_id",
+          "created_at"
+        ],
