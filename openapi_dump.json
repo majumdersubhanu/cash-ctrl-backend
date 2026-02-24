@@ -3598,3 +3598,18 @@
                 "type": "null"
               }
             ],
+            "title": "Interest Rate"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "funding_account_id": {
+            "anyOf": [
