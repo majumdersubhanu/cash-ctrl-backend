@@ -2428,3 +2428,18 @@
               "application/json": {
                 "schema": {}
               }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/gamification/achievements": {
+      "get": {
+        "tags": [
+          "social",
+          "gamification"
