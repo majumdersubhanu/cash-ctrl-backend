@@ -1753,3 +1753,18 @@
         "tags": [
           "security",
           "security"
+        ],
+        "summary": "Setup Mfa",
+        "operationId": "setup_mfa_api_v1_mfa_setup_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
