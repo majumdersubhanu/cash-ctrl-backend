@@ -3313,3 +3313,18 @@
               {
                 "type": "null"
               }
+            ],
+            "title": "Linked User Id"
+          },
+          "trust_score": {
+            "type": "number",
+            "title": "Trust Score"
+          },
+          "is_trusted": {
+            "type": "boolean",
+            "title": "Is Trusted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
