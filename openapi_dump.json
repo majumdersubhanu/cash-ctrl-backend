@@ -3013,3 +3013,18 @@
           },
           "spent_amount": {
             "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spent Amount",
+            "default": "0"
+          },
+          "remaining_amount": {
+            "anyOf": [
+              {
+                "type": "string",
