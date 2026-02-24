@@ -3328,3 +3328,18 @@
         "type": "object",
         "required": [
           "name",
+          "id",
+          "trust_score",
+          "is_trusted"
+        ],
+        "title": "ContactResponse"
+      },
+      "ErrorModel": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": {
