@@ -1273,3 +1273,18 @@
             }
           }
         },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/p2p/connections/send": {
+      "post": {
+        "tags": [
+          "p2p",
+          "p2p-lending"
+        ],
+        "summary": "Send Connection",
+        "operationId": "send_connection_api_v1_p2p_connections_send_post",
