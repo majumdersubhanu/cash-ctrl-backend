@@ -2473,3 +2473,18 @@
         "description": "List all notifications for the current user.",
         "operationId": "list_notifications_api_v1_notifications__get",
         "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "unread_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Unread Only"
+            }
+          }
