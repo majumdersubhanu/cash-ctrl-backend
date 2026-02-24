@@ -2413,3 +2413,18 @@
         }
       }
     },
+    "/api/v1/gamification/streaks": {
+      "get": {
+        "tags": [
+          "social",
+          "gamification"
+        ],
+        "summary": "Get Streaks",
+        "operationId": "get_streaks_api_v1_gamification_streaks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
