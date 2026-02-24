@@ -1573,3 +1573,18 @@
     "/api/v1/p2p/loans/{loan_id}/settle": {
       "post": {
         "tags": [
+          "p2p",
+          "p2p-lending"
+        ],
+        "summary": "Settle Loan",
+        "operationId": "settle_loan_api_v1_p2p_loans__loan_id__settle_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "loan_id",
+            "in": "path",
+            "required": true,
