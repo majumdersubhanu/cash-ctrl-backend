@@ -3883,3 +3883,18 @@
                 "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
               }
             ],
+            "title": "Amount"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TransactionType"
+          },
+          "frequency": {
+            "type": "string",
+            "title": "Frequency"
+          },
+          "next_run_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Next Run Date"
+          }
+        },
