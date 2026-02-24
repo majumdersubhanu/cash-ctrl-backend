@@ -1903,3 +1903,18 @@
         "operationId": "cashflow_trends_api_v1_analytics_cashflow_trends_get",
         "security": [
           {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "months",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 6,
+              "title": "Months"
+            }
+          }
+        ],
