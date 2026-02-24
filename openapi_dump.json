@@ -2518,3 +2518,18 @@
       }
     },
     "/api/v1/notifications/{notification_id}": {
+      "patch": {
+        "tags": [
+          "notifications",
+          "notifications"
+        ],
+        "summary": "Update Notification",
+        "description": "Mark a notification as read or unread.",
+        "operationId": "update_notification_api_v1_notifications__notification_id__patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
