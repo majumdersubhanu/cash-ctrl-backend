@@ -1123,3 +1123,18 @@
                 "$ref": "#/components/schemas/TransferCreate"
               }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Create Transfer Api V1 Transactions Transfer Post"
+                }
