@@ -2173,3 +2173,18 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/GoalContribute"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalResponse"
+                }
+              }
+            }
+          },
