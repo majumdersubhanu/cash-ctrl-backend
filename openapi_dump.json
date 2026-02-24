@@ -3133,3 +3133,18 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "created_at"
+        ],
+        "title": "CategoryResponse"
+      },
+      "CategoryType": {
+        "type": "string",
+        "enum": [
