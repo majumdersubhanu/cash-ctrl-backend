@@ -2893,3 +2893,18 @@
         },
         "type": "object",
         "required": [
+          "token"
+        ],
+        "title": "Body_verify_verify_api_v1_auth_verify_post"
+      },
+      "BudgetCreate": {
+        "properties": {
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
