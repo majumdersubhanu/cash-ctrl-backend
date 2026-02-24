@@ -1198,3 +1198,18 @@
           }
         },
         "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/p2p/contacts": {
+      "get": {
+        "tags": [
+          "p2p",
+          "p2p-lending"
+        ],
+        "summary": "List Contacts",
+        "operationId": "list_contacts_api_v1_p2p_contacts_get",
+        "responses": {
