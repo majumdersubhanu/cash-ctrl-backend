@@ -3628,3 +3628,18 @@
               {
                 "$ref": "#/components/schemas/LoanAgreementCreate"
               },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "contact_id",
+          "is_lending",
+          "amount"
+        ],
+        "title": "LoanCreate"
+      },
+      "LoanRepaymentFrequency": {
