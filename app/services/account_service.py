@@ -43,3 +43,7 @@ class AccountService:
 
     async def delete_account(self, db: AsyncSession, account_id: uuid.UUID, user_id: uuid.UUID) -> None:
         account = await self.repo.get_by_id(db, account_id)
+        if not account or account.user_id != user_id:
+            raise ValueError("Account not found or access denied")
+            
+        await self.repo.delete(db, account_id)
