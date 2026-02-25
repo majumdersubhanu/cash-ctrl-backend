@@ -73,3 +73,4 @@ class BudgetService:
             budget.remaining_amount = budget.amount - budget.spent_amount
             budget.is_overrun = budget.remaining_amount < 0
 
+        return budgets
