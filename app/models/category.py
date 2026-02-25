@@ -28,3 +28,4 @@ class Category(Base, UUIDMixin, TimestampMixin):
     user: Mapped["User"] = relationship(backref="categories")
     parent: Mapped[Optional["Category"]] = relationship(
         remote_side="Category.id", backref="children"
+    )
