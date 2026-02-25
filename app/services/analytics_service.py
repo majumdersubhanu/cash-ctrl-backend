@@ -118,3 +118,18 @@ class AnalyticsService:
         Detect spending anomalies (transactions that are 200% higher than the avg for that category).
         """
         # Get avg per category
+        avg_stmt = (
+            select(
+                Transaction.category_id, func.avg(Transaction.amount).label("avg_amt")
+            )
+            .where(
+                Transaction.user_id == user_id,
+                Transaction.type == TransactionType.EXPENSE,
+            )
+            .group_by(Transaction.category_id)
+        )
+        avgs = {
+            str(row.category_id): float(row.avg_amt)
+            for row in (await db.execute(avg_stmt)).all()
+        }
+
