@@ -28,3 +28,18 @@ class GoalService:
         goals = result.scalars().all()
 
         for goal in goals:
+            if goal.target_amount > 0:
+                goal.percent_complete = round(
+                    float(goal.current_amount / goal.target_amount) * 100, 2
+                )
+            else:
+                goal.percent_complete = 0.0
+
+        return goals
+
+    async def contribute_to_goal(
+        self, db: AsyncSession, user_id: uuid.UUID, goal_id: uuid.UUID, amount: float
+    ) -> Goal:
+        stmt = select(Goal).where(Goal.user_id == user_id, Goal.id == goal_id)
+        result = await db.execute(stmt)
+        goal = result.scalar_one_or_none()
