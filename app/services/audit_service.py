@@ -13,3 +13,18 @@ class HealthAuditService:
     """Service for performing comprehensive financial health audits for users."""
 
     async def perform_audit(self, db: AsyncSession, user_id: uuid.UUID) -> Dict[str, Any]:
+        """
+        Runs a full financial health audit.
+        
+        Args:
+            db: Async database session.
+            user_id: The ID of the user to audit.
+            
+        Returns:
+            A dictionary containing health metrics.
+        """
+        now = datetime.now()
+        
+        # 1. Monthly Income & Expense
+        income_stmt = select(func.sum(Transaction.amount)).where(
+            Transaction.user_id == user_id,
