@@ -43,3 +43,18 @@ class Loan(Base, UUIDMixin, TimestampMixin):
     funding_account_id: Mapped[Optional[uuid.UUID]] = mapped_column(
         ForeignKey("accounts.id")
     )
+
+    user: Mapped["User"] = relationship(backref="loans")
+    contact: Mapped["Contact"] = relationship(backref="loans")
+    funding_account: Mapped[Optional["Account"]] = relationship()
+
+    # Relationship to nested parts
+    agreements: Mapped[List["LoanAgreement"]] = relationship(
+        back_populates="loan", cascade="all, delete-orphan"
+    )
+    installments: Mapped[List["LoanInstallment"]] = relationship(
+        back_populates="loan", cascade="all, delete-orphan"
+    )
+
+
+class LoanAgreement(Base, UUIDMixin, TimestampMixin):
