@@ -88,3 +88,4 @@ class RecurringTransactionService:
                 print(f"Failed to process job {job.id}: {e}")
 
         await db.commit()
+        return processed_count
