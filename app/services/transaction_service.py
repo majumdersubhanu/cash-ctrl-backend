@@ -88,3 +88,18 @@ class TransactionService:
         to_acc.balance += amount
 
         expense_tx = Transaction(
+            user_id=user_id,
+            account_id=from_account_id,
+            amount=amount,
+            type=TransactionType.TRANSFER,
+            note=f"Transfer to {to_acc.name}: {note or ''}",
+            transaction_date=datetime.now().date(),
+        )
+        income_tx = Transaction(
+            user_id=user_id,
+            account_id=to_account_id,
+            amount=amount,
+            type=TransactionType.TRANSFER,
+            note=f"Transfer from {from_acc.name}: {note or ''}",
+            transaction_date=datetime.now().date(),
+        )
