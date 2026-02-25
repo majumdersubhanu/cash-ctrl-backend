@@ -28,3 +28,18 @@ class RecurringTransactionService:
             is_active=True,
         )
         db.add(rt)
+        await db.commit()
+        await db.refresh(rt)
+        return rt
+
+    async def get_user_recurring(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[RecurringTransaction]:
+        stmt = select(RecurringTransaction).where(
+            RecurringTransaction.user_id == user_id
+        )
+        result = await db.execute(stmt)
+        return result.scalars().all()
+
+    async def process_due_transactions(
+        self, db: AsyncSession, user_id: uuid.UUID
