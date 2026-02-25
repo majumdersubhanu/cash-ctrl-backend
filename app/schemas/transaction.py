@@ -13,3 +13,18 @@ class TransactionCreate(BaseModel):
     category_id: Optional[UUID] = None
     type: TransactionType
     amount: Decimal
+    description: Optional[str] = None
+    note: Optional[str] = None
+
+
+class TransactionResponse(BaseModel):
+    id: UUID
+    account_id: UUID
+    category_id: Optional[UUID] = None
+    type: TransactionType
+    amount: Decimal
+    description: Optional[str] = None
+    note: Optional[str] = None
+    receipt_url: Optional[str] = None
+    transaction_date: date
+    created_at: datetime
