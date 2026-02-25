@@ -58,3 +58,18 @@ class RecurringTransactionService:
 
         result = await db.execute(stmt)
         due_jobs = result.scalars().all()
+
+        processed_count = 0
+        for job in due_jobs:
+            try:
+                await self.tx_service.create_transaction(
+                    db=db,
+                    user_id=user_id,
+                    account_id=job.account_id,
+                    category_id=job.category_id,
+                    amount=float(job.amount),
+                    tx_type=job.type,
+                    note="Auto-generated from Recurring Tracker",
+                    timestamp=None,  # defaults to now
+                )
+
