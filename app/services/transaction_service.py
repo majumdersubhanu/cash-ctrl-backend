@@ -28,3 +28,18 @@ class TransactionService:
         timestamp: Optional[datetime] = None,
     ) -> Transaction:
 
+        account = await self.account_repo.get_by_id(db, account_id)
+
+        if not account:
+            raise ValueError("Account not found")
+
+        if tx_type == TransactionType.EXPENSE:
+            if account.balance < amount:
+                raise ValueError("Insufficient balance")
+
+            account.balance -= amount
+
+        elif tx_type == TransactionType.INCOME:
+            account.balance += amount
+
+        # Handle datetimes properly
