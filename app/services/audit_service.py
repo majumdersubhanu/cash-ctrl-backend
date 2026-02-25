@@ -28,3 +28,18 @@ class HealthAuditService:
         # 1. Monthly Income & Expense
         income_stmt = select(func.sum(Transaction.amount)).where(
             Transaction.user_id == user_id,
+            Transaction.type == TransactionType.INCOME,
+            func.extract('month', Transaction.transaction_date) == now.month,
+            func.extract('year', Transaction.transaction_date) == now.year
+        )
+        expense_stmt = select(func.sum(Transaction.amount)).where(
+            Transaction.user_id == user_id,
+            Transaction.type == TransactionType.EXPENSE,
+            func.extract('month', Transaction.transaction_date) == now.month,
+            func.extract('year', Transaction.transaction_date) == now.year
+        )
+        
+        monthly_income = float((await db.execute(income_stmt)).scalar() or 0.0)
+        monthly_expense = float((await db.execute(expense_stmt)).scalar() or 0.0)
+        
+        # 2. Savings Rate: (Income - Expense) / Income
