@@ -133,3 +133,18 @@ class AnalyticsService:
             for row in (await db.execute(avg_stmt)).all()
         }
 
+        # Get recent transactions (last 30 days)
+        start_date = datetime.now().date() - relativedelta(days=30)
+        recent_stmt = select(Transaction).where(
+            Transaction.user_id == user_id,
+            Transaction.type == TransactionType.EXPENSE,
+            Transaction.transaction_date >= start_date,
+        )
+
+        recent_txs = (await db.execute(recent_stmt)).scalars().all()
+
+        anomalies = []
+        for tx in recent_txs:
+            if tx.category_id and str(tx.category_id) in avgs:
+                avg = avgs[str(tx.category_id)]
+                if avg > 0 and float(tx.amount) > (avg * 2):  # 2x the normal average
