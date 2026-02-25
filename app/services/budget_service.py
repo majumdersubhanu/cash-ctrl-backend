@@ -28,3 +28,18 @@ class BudgetService:
         )
         db.add(budget)
         await db.commit()
+        await db.refresh(budget)
+        return budget
+
+    async def get_user_budgets_with_progress(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[Budget]:
+        stmt = select(Budget).where(Budget.user_id == user_id)
+        result = await db.execute(stmt)
+        budgets = result.scalars().all()
+
+        for budget in budgets:
+            # Calculate spent amount dynamically based on category targeting and active dates
+            tx_stmt = select(
+                func.coalesce(func.sum(Transaction.amount), Decimal(0.0))
+            ).where(
