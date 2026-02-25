@@ -43,3 +43,18 @@ class BudgetService:
             tx_stmt = select(
                 func.coalesce(func.sum(Transaction.amount), Decimal(0.0))
             ).where(
+                Transaction.user_id == user_id,
+                Transaction.type == TransactionType.EXPENSE,
+            )
+
+            if budget.category_id:
+                tx_stmt = tx_stmt.where(Transaction.category_id == budget.category_id)
+
+            if budget.start_date:
+                tx_stmt = tx_stmt.where(
+                    Transaction.transaction_date >= budget.start_date
+                )
+
+            if budget.end_date:
+                tx_stmt = tx_stmt.where(Transaction.transaction_date <= budget.end_date)
+            else:
