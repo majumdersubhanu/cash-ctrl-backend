@@ -343,3 +343,18 @@ class P2PService:
         if not loan or loan.status not in (LoanStatus.ACTIVE, LoanStatus.OVERDUE):
             raise ValueError("Loan not found or cannot be settled.")
 
+        loan.status = LoanStatus.COMPLETED
+
+        # Mark all installments as paid via settlement
+        inst_stmt = select(LoanInstallment).where(LoanInstallment.loan_id == loan.id)
+        installments = (await db.execute(inst_stmt)).scalars().all()
+        for i in installments:
+            i.is_paid = True
+
+        # Mild Vouch Score bump for early settlement depending on terms.
+        from app.models.user import User
+
+        borrower_id = loan.contact_id if loan.is_lending else user_id
+        borrower = (
+            await db.execute(select(User).where(User.id == borrower_id))
+        ).scalar_one_or_none()
