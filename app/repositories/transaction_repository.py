@@ -58,3 +58,18 @@ class TransactionRepository(BaseRepository[Transaction]):
             stmt = stmt.where(Transaction.transaction_date <= end_date)
 
         if min_amount is not None:
+            stmt = stmt.where(Transaction.amount >= min_amount)
+
+        if max_amount is not None:
+            stmt = stmt.where(Transaction.amount <= max_amount)
+
+        if keyword:
+            keyword_filter = f"%{keyword}%"
+            stmt = stmt.where(
+                (Transaction.description.ilike(keyword_filter))
+                | (Transaction.note.ilike(keyword_filter))
+            )
+
+        if tags:
+            from app.models.tag import Tag
+
