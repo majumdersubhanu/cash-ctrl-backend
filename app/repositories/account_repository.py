@@ -13,3 +13,8 @@ class AccountRepository(BaseRepository[Account]):
         super().__init__(Account)
 
     async def get_user_accounts(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[Account]:
+        stmt = select(Account).where(Account.user_id == user_id)
+        result = await db.execute(stmt)
+        return result.scalars().all()
