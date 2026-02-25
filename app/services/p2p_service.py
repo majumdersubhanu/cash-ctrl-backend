@@ -388,3 +388,15 @@ class P2PService:
         # Massively penalize global Vouch Score for Disputing / Defaulting
         from app.models.user import User
 
+        borrower_id = loan.contact_id if loan.is_lending else user_id
+        borrower = (
+            await db.execute(select(User).where(User.id == borrower_id))
+        ).scalar_one_or_none()
+        if borrower:
+            # Huge 50 point social credit slash for scamming/defaulting.
+            borrower.vouch_score = max(0.0, borrower.vouch_score - 50.0)
+
+        await db.commit()
+        await db.refresh(loan, ["agreements", "installments"])
+        logger.warning("Loan disputed and trust scores slashed", extra={"loan_id": str(loan_id), "disputed_by": str(user_id)})
+        return loan
