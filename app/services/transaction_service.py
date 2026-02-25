@@ -43,3 +43,18 @@ class TransactionService:
             account.balance += amount
 
         # Handle datetimes properly
+        if timestamp is None:
+            timestamp = datetime.now()
+
+        tx = Transaction(
+            user_id=user_id,
+            account_id=account_id,
+            category_id=category_id,
+            amount=amount,
+            type=tx_type,
+            note=note,
+            transaction_date=timestamp.date(),
+        )
+
+        db.add(tx)
+        await db.commit()
