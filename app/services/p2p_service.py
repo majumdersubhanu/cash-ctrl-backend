@@ -43,3 +43,18 @@ class P2PService:
         self, db: AsyncSession, user_id: uuid.UUID
     ) -> Sequence[Contact]:
         stmt = select(Contact).where(Contact.user_id == user_id)
+        result = await db.execute(stmt)
+        return result.scalars().all()
+
+    async def send_connection_request(
+        self, db: AsyncSession, sender_id: uuid.UUID, receiver_id: uuid.UUID
+    ):
+        """
+        Sends a social connection request from one user to another.
+        """
+        from app.models.connection_request import (
+            ConnectionRequest,
+            ConnectionRequestStatus,
+        )
+        from app.models.user import User
+
