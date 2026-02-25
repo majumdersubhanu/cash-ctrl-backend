@@ -43,3 +43,18 @@ class TransactionRepository(BaseRepository[Transaction]):
         sort_order: Optional[str] = "desc",
     ) -> Sequence[Transaction]:
 
+        stmt = select(Transaction).where(Transaction.user_id == user_id)
+
+        if account_id:
+            stmt = stmt.where(Transaction.account_id == account_id)
+
+        if category_id:
+            stmt = stmt.where(Transaction.category_id == category_id)
+
+        if start_date:
+            stmt = stmt.where(Transaction.transaction_date >= start_date)
+
+        if end_date:
+            stmt = stmt.where(Transaction.transaction_date <= end_date)
+
+        if min_amount is not None:
