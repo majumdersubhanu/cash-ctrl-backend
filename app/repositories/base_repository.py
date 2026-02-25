@@ -28,3 +28,17 @@ class BaseRepository(Generic[ModelType]):
         return db_obj
 
     async def update(self, db: AsyncSession, db_obj: ModelType, **kwargs) -> ModelType:
+        for key, value in kwargs.items():
+            if hasattr(db_obj, key):
+                setattr(db_obj, key, value)
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
+        return db_obj
+
+    async def delete(self, db: AsyncSession, id: uuid.UUID) -> Optional[ModelType]:
+        obj = await self.get_by_id(db, id)
+        if obj:
+            await db.delete(obj)
+            await db.commit()
+        return obj
