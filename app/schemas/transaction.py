@@ -28,3 +28,18 @@ class TransactionResponse(BaseModel):
     receipt_url: Optional[str] = None
     transaction_date: date
     created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TransferCreate(BaseModel):
+    from_account_id: UUID
+    to_account_id: UUID
+    amount: Decimal
+    description: Optional[str] = None
+    note: Optional[str] = None
+
+
+class TransactionFilter(BaseModel):
+    account_id: Optional[UUID] = None
+    category_id: Optional[UUID] = None
