@@ -118,3 +118,18 @@ class P2PService:
             await db.execute(select(User).where(User.id == req.receiver_id))
         ).scalar_one()
 
+        contact_for_receiver = Contact(
+            user_id=req.receiver_id,
+            linked_user_id=req.sender_id,
+            name=sender.email,  # Using email as default name.
+            trust_score=sender.vouch_score,
+            is_trusted=True,
+        )
+
+        contact_for_sender = Contact(
+            user_id=req.sender_id,
+            linked_user_id=req.receiver_id,
+            name=receiver.email,
+            trust_score=receiver.vouch_score,
+            is_trusted=True,
+        )
