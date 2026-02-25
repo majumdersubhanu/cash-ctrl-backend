@@ -28,3 +28,18 @@ class AnalyticsService:
 
     async def get_category_spending(self, db: AsyncSession, user_id: uuid.UUID):
         now = datetime.now()
+        stmt = (
+            select(Transaction.category_id, func.sum(Transaction.amount).label("total"))
+            .where(
+                Transaction.user_id == user_id,
+                Transaction.type == TransactionType.EXPENSE,
+                extract("month", Transaction.transaction_date) == now.month,
+                extract("year", Transaction.transaction_date) == now.year,
+            )
+            .group_by(Transaction.category_id)
+        )
+        result = await db.execute(stmt)
+        return [
+            {"category_id": str(row.category_id), "total": float(row.total)}
+            for row in result.all()
+        ]
