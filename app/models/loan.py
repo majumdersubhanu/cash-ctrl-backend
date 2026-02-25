@@ -73,3 +73,18 @@ class LoanAgreement(Base, UUIDMixin, TimestampMixin):
 
     loan: Mapped["Loan"] = relationship(back_populates="agreements")
 
+
+class LoanInstallment(Base, UUIDMixin, TimestampMixin):
+    """
+    Individual tracked breakdown segments of repayments.
+    """
+
+    __tablename__ = "loan_installments"
+
+    loan_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("loans.id"))
+
+    amount_due: Mapped[Decimal] = mapped_column(Numeric(12, 2))
+    amount_paid: Mapped[Decimal] = mapped_column(Numeric(12, 2), default=0.0)
+
+    due_date: Mapped[datetime.date] = mapped_column(Date)
+    is_paid: Mapped[bool] = mapped_column(default=False)
