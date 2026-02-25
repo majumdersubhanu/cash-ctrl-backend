@@ -28,3 +28,18 @@ class ReportService:
             ])
             
         output.seek(0)
+        return output
+
+    def export_transactions_json(self, transactions: Sequence[Transaction]) -> str:
+        """
+        Generates a JSON report of transactions.
+        """
+        data = []
+        for tx in transactions:
+            data.append({
+                "id": str(tx.id),
+                "date": str(tx.transaction_date),
+                "amount": float(tx.amount),
+                "type": tx.type.value,
+                "note": tx.note,
+                "category_id": str(tx.category_id) if tx.category_id else None,
