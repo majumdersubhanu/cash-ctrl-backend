@@ -28,3 +28,5 @@ class ConnectionRequest(Base, UUIDMixin, TimestampMixin):
         SQLEnum(ConnectionRequestStatus), default=ConnectionRequestStatus.PENDING
     )
 
+    sender: Mapped["User"] = relationship(foreign_keys=[sender_id])
+    receiver: Mapped["User"] = relationship(foreign_keys=[receiver_id])
