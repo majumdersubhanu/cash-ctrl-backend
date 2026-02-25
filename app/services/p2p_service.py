@@ -13,3 +13,18 @@ from app.models.notification import NotificationType
 from loguru import logger
 
 
+from app.core.exceptions import (
+    ContactNotFoundError,
+)
+
+class P2PService:
+    """Service for managing Peer-to-Peer lending lifecycle and social contacts."""
+    
+    def __init__(self):
+        self.tx_service = TransactionService()
+        self.notifications = NotificationService()
+
+    async def create_contact(
+        self, db: AsyncSession, user_id: uuid.UUID, payload
+    ) -> Contact:
+        contact = Contact(
