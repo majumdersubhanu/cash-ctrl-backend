@@ -28,3 +28,5 @@ class Budget(Base, UUIDMixin, TimestampMixin):
     start_date: Mapped[Optional[datetime.date]] = mapped_column(Date)
     end_date: Mapped[Optional[datetime.date]] = mapped_column(Date)
 
+    user: Mapped["User"] = relationship(backref="budgets")
+    category: Mapped[Optional["Category"]] = relationship(backref="budgets")
