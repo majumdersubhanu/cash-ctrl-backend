@@ -28,3 +28,12 @@ class RecurringTransaction(Base, UUIDMixin, TimestampMixin):
     amount: Mapped[Decimal] = mapped_column(Numeric(12, 2))
     type: Mapped[TransactionType]
 
+    frequency: Mapped[str] = mapped_column(String)  # Daily, Weekly, Monthly, Yearly
+    next_run_date: Mapped[datetime.date] = mapped_column(Date)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    user: Mapped["User"] = relationship(backref="recurring_transactions")
+    account: Mapped["Account"] = relationship(backref="recurring_transactions")
+    category: Mapped[Optional["Category"]] = relationship(
+        backref="recurring_transactions"
+    )
