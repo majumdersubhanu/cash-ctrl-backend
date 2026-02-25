@@ -268,3 +268,18 @@ class P2PService:
         )
 
         await self.tx_service.create_transaction(
+            db=db,
+            user_id=user_id,
+            account_id=payload.account_id,
+            category_id=None,
+            amount=float(payload.amount),
+            tx_type=tx_type,
+            note=note,
+        )
+
+        # Check overall installments if applicable
+        installment_stmt = (
+            select(LoanInstallment)
+            .where(
+                LoanInstallment.loan_id == loan.id, LoanInstallment.is_paid.is_(False)
+            )
