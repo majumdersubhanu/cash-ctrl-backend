@@ -73,3 +73,17 @@ class TransactionRepository(BaseRepository[Transaction]):
         if tags:
             from app.models.tag import Tag
 
+            stmt = stmt.join(Transaction.tags).where(Tag.name.in_(tags))
+
+        # Dynamic Sorting
+        sort_column = Transaction.transaction_date
+        if sort_by == "amount":
+            sort_column = Transaction.amount
+            
+        if sort_order == "asc":
+            stmt = stmt.order_by(sort_column.asc())
+        else:
+            stmt = stmt.order_by(sort_column.desc())
+
+        result = await db.execute(stmt)
+        return result.scalars().unique().all()
