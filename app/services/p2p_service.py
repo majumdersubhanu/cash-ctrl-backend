@@ -178,3 +178,18 @@ class P2PService:
         await db.commit()
 
         # Notify borrower if linked user exists
+        if contact.linked_user_id:
+            await self.notifications.create_notification(
+                db=db,
+                user_id=contact.linked_user_id,
+                title="New Loan Request",
+                message=f"You have a new loan request for {loan.amount} {loan.currency}.",
+                notification_type=NotificationType.INFO,
+                link=f"/p2p/loans/{loan.id}"
+            )
+
+        # Load relationships for pydantic response
+        await db.refresh(loan, ["agreements"])
+        logger.info("P2P Loan created successfully", extra={"loan_id": str(loan.id), "lender_id": str(user_id) if payload.is_lending else str(contact.id)})
+        return loan
+
