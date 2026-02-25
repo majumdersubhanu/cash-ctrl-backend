@@ -298,3 +298,18 @@ class P2PService:
             if remaining_repayment >= balance_due:
                 install.amount_paid = install.amount_due
                 install.is_paid = True
+                remaining_repayment -= balance_due
+            else:
+                install.amount_paid += remaining_repayment
+                remaining_repayment = Decimal(0.0)
+
+        # Simple completion check for now
+        # Production would re-evaluate the full term balance vs total paid.
+        unpaid = [i for i in installments if not i.is_paid]
+        if not unpaid:
+            loan.status = LoanStatus.COMPLETED
+
+            # Increase trust score for successful full repayment
+            contact_stmt = select(Contact).where(Contact.id == loan.contact_id)
+            contact = (await db.execute(contact_stmt)).scalar_one_or_none()
+            if contact:
