@@ -28,3 +28,18 @@ class P2PService:
         self, db: AsyncSession, user_id: uuid.UUID, payload
     ) -> Contact:
         contact = Contact(
+            user_id=user_id,
+            linked_user_id=payload.linked_user_id,
+            name=payload.name,
+            email=payload.email,
+            phone=payload.phone,
+        )
+        db.add(contact)
+        await db.commit()
+        await db.refresh(contact)
+        return contact
+
+    async def get_user_contacts(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[Contact]:
+        stmt = select(Contact).where(Contact.user_id == user_id)
