@@ -28,3 +28,4 @@ class GoalResponse(BaseModel):
     # Computed runtime
     percent_complete: Optional[float] = 0.0
 
+    model_config = ConfigDict(from_attributes=True)
