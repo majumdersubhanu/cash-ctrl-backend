@@ -88,3 +88,5 @@ class LoanInstallment(Base, UUIDMixin, TimestampMixin):
 
     due_date: Mapped[datetime.date] = mapped_column(Date)
     is_paid: Mapped[bool] = mapped_column(default=False)
+
+    loan: Mapped["Loan"] = relationship(back_populates="installments")
