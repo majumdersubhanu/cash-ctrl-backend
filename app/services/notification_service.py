@@ -13,3 +13,18 @@ class NotificationService:
         message: str,
         notification_type: NotificationType = NotificationType.INFO,
         link: Optional[str] = None
+    ) -> Notification:
+        """
+        Creates a new notification for a specific user.
+        """
+        notification = Notification(
+            user_id=user_id,
+            title=title,
+            message=message,
+            type=notification_type,
+            link=link
+        )
+        db.add(notification)
+        await db.commit()
+        await db.refresh(notification)
+        return notification
