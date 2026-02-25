@@ -358,3 +358,18 @@ class P2PService:
         borrower = (
             await db.execute(select(User).where(User.id == borrower_id))
         ).scalar_one_or_none()
+        if borrower:
+            borrower.vouch_score += 5.0
+
+        await db.commit()
+        await db.refresh(loan, ["agreements", "installments"])
+        logger.info("Loan settled early", extra={"loan_id": str(loan_id), "user_id": str(user_id)})
+        return loan
+
+    async def dispute_loan(
+        self, db: AsyncSession, user_id: uuid.UUID, loan_id: uuid.UUID
+    ) -> Loan:
+        """
+        Flags a loan as disputed, heavily penalizing trust score.
+        """
+        stmt = select(Loan).where(Loan.id == loan_id, Loan.user_id == user_id)
