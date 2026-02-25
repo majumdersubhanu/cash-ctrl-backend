@@ -13,3 +13,18 @@ class CategoryRepository(BaseRepository[Category]):
     def __init__(self):
         super().__init__(Category)
 
+    async def get_user_categories(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[Category]:
+        stmt = select(Category).where(Category.user_id == user_id)
+        result = await db.execute(stmt)
+        return result.scalars().all()
+
+    async def get_by_type(
+        self, db: AsyncSession, user_id: uuid.UUID, category_type: CategoryType
+    ) -> Sequence[Category]:
+        stmt = select(Category).where(
+            Category.user_id == user_id, Category.type == category_type
+        )
+        result = await db.execute(stmt)
+        return result.scalars().all()
