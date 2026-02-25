@@ -328,3 +328,18 @@ class P2PService:
                 logger.info("Loan fully repaid and COMPLETED", extra={"loan_id": str(loan.id), "borrower_vouch_score": borrower.vouch_score})
 
         await db.commit()
+        await db.refresh(loan, ["agreements", "installments"])
+        logger.info("Loan repayment processed", extra={"loan_id": str(loan.id), "repayment_amount": float(payload.amount)})
+        return loan
+
+    async def settle_loan(
+        self, db: AsyncSession, user_id: uuid.UUID, loan_id: uuid.UUID
+    ) -> Loan:
+        """
+        Early settlement or forgiveness of the remaining balance.
+        """
+        stmt = select(Loan).where(Loan.id == loan_id, Loan.user_id == user_id)
+        loan = (await db.execute(stmt)).scalar_one_or_none()
+        if not loan or loan.status not in (LoanStatus.ACTIVE, LoanStatus.OVERDUE):
+            raise ValueError("Loan not found or cannot be settled.")
+
