@@ -28,3 +28,18 @@ class AccountService:
     async def get_accounts(self, db: AsyncSession, user_id: uuid.UUID):
         return await self.repo.get_user_accounts(db, user_id)
 
+    async def get_account(self, db: AsyncSession, account_id: uuid.UUID) -> Account:
+        account = await self.repo.get_by_id(db, account_id)
+        if not account:
+            raise ValueError("Account not found")
+        return account
+
+    async def update_account(self, db: AsyncSession, account_id: uuid.UUID, user_id: uuid.UUID, **kwargs) -> Account:
+        account = await self.repo.get_by_id(db, account_id)
+        if not account or account.user_id != user_id:
+            raise ValueError("Account not found or access denied")
+            
+        return await self.repo.update(db, account, **kwargs)
+
+    async def delete_account(self, db: AsyncSession, account_id: uuid.UUID, user_id: uuid.UUID) -> None:
+        account = await self.repo.get_by_id(db, account_id)
