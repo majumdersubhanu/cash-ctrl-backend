@@ -103,3 +103,18 @@ class TransactionService:
             note=f"Transfer from {from_acc.name}: {note or ''}",
             transaction_date=datetime.now().date(),
         )
+
+        db.add_all([expense_tx, income_tx])
+        await db.flush()
+
+        # Link them
+        expense_tx.transfer_id = income_tx.id
+        income_tx.transfer_id = expense_tx.id
+
+        await db.commit()
+        logger.info("Funds transferred successfuly", extra={"user_id": str(user_id), "from_account": str(from_account_id), "to_account": str(to_account_id), "amount": float(amount)})
+        return expense_tx, income_tx
+
+    async def bulk_delete_transactions(
+        self, db: AsyncSession, user_id: uuid.UUID, transaction_ids: list[uuid.UUID]
+    ) -> int:
