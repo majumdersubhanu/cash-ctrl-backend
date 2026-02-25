@@ -28,3 +28,6 @@ class AccountResponse(BaseModel):
     currency: str
     balance: float
     is_archived: bool
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
