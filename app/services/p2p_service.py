@@ -223,3 +223,18 @@ class P2PService:
             db=db,
             user_id=user_id,
             account_id=loan.funding_account_id,
+            category_id=None,
+            amount=float(loan.amount),
+            tx_type=tx_type,
+            note=note,
+        )
+
+        loan.status = LoanStatus.ACTIVE
+        await db.commit()
+        await db.refresh(loan, ["agreements"])
+        logger.info("P2P Loan funded and activated", extra={"loan_id": str(loan.id), "funding_account": str(loan.funding_account_id)})
+        return loan
+
+    async def get_user_loans(
+        self, db: AsyncSession, user_id: uuid.UUID
+    ) -> Sequence[Loan]:
