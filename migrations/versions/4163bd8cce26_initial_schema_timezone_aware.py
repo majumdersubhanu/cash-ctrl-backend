@@ -58,3 +58,18 @@ def upgrade() -> None:
     sa.Column('type', sa.Enum('INCOME', 'EXPENSE', name='categorytype'), nullable=False),
     sa.Column('color', sa.String(), nullable=True),
     sa.Column('icon', sa.String(), nullable=True),
+    sa.Column('parent_id', sa.Uuid(), nullable=True),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['parent_id'], ['categories.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('connection_requests',
+    sa.Column('sender_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('receiver_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('status', sa.Enum('PENDING', 'ACCEPTED', 'REJECTED', name='connectionrequeststatus'), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
