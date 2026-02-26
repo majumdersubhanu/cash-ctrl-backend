@@ -268,3 +268,12 @@ def downgrade() -> None:
     op.drop_table('budgets')
     op.drop_table('user_preferences')
     op.drop_table('tags')
+    op.drop_table('notifications')
+    op.drop_table('debts')
+    op.drop_table('contacts')
+    op.drop_table('connection_requests')
+    op.drop_table('categories')
+    op.drop_table('accounts')
+    op.drop_index(op.f('ix_users_email'), table_name='users')
+    op.drop_table('users')
+    # ### end Alembic commands ###
