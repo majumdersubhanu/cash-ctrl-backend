@@ -88,3 +88,18 @@ async def import_transactions_csv(
         for row in reader:
             # Flexible dictionary keys parser logic
             amt = float(row.get("Amount", row.get("amount", 0)))
+            desc = row.get("Description", row.get("description", ""))
+            type_str = row.get("Type", row.get("type", "EXPENSE")).upper()
+
+            tx_type = (
+                TransactionType.INCOME
+                if "INCOME" in type_str
+                else TransactionType.EXPENSE
+            )
+
+            await service.create_transaction(
+                db=db,
+                user_id=user.id,
+                account_id=account_id,
+                category_id=None,
+                amount=amt,
