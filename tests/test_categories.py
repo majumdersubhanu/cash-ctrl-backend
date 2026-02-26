@@ -13,3 +13,18 @@ async def test_create_category(client: AsyncClient):
         "name": "Groceries",
         "type": "EXPENSE"
     }
+    response = await client.post("/api/v1/categories", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["name"] == "Groceries"
+    assert data["type"] == "EXPENSE"
+    assert "id" in data
+
+@pytest.mark.asyncio
+async def test_create_subcategory(client: AsyncClient):
+    # Parent
+    parent_res = await client.post("/api/v1/categories", json={
+        "name": "Food",
+        "type": "EXPENSE"
+    })
+    parent_id = parent_res.json()["id"]
