@@ -223,3 +223,18 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['transfer_id'], ['transactions.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('loan_agreements',
+    sa.Column('loan_id', sa.Uuid(), nullable=False),
+    sa.Column('frequency', sa.Enum('LUMP_SUM', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY', name='loanrepaymentfrequency'), nullable=False),
+    sa.Column('due_date', sa.Date(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['loan_id'], ['loans.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('loan_installments',
+    sa.Column('loan_id', sa.Uuid(), nullable=False),
+    sa.Column('amount_due', sa.Numeric(precision=12, scale=2), nullable=False),
+    sa.Column('amount_paid', sa.Numeric(precision=12, scale=2), nullable=False),
