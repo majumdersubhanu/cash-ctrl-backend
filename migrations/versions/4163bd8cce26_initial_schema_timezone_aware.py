@@ -118,3 +118,18 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('tags',
+    sa.Column('user_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('color', sa.String(), nullable=True),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('user_preferences',
+    sa.Column('user_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('theme', sa.String(), nullable=False),
+    sa.Column('default_currency', sa.String(), nullable=False),
+    sa.Column('dashboard_layout', sa.String(), nullable=False),
