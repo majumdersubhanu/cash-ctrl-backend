@@ -88,3 +88,18 @@ async def process_connection(
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@router.post("/loans", response_model=LoanResponse)
+async def create_loan(
+    payload: LoanCreate,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: P2PService = Depends(get_p2p_service),
+):
+    try:
+        return await service.create_loan(db=db, user_id=user.id, payload=payload)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/loans", response_model=List[LoanResponse])
+async def list_loans(
