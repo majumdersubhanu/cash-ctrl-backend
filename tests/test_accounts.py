@@ -28,3 +28,18 @@ async def test_get_account(client: AsyncClient):
     # First create
     create_response = await client.post("/api/v1/accounts", json={
         "name": "Savings",
+        "type": "BANK",
+        "balance": 5000.0,
+        "currency": "USD"
+    })
+    acct_id = create_response.json()["id"]
+
+    # Then get
+    response = await client.get(f"/api/v1/accounts/{acct_id}")
+    assert response.status_code == 200
+    assert response.json()["name"] == "Savings"
+
+@pytest.mark.asyncio
+async def test_update_account(client: AsyncClient):
+    create_response = await client.post("/api/v1/accounts", json={
+        "name": "Old Name",
