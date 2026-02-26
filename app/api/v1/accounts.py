@@ -73,3 +73,15 @@ async def update_account(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.delete("/{account_id}")
+async def delete_account(
+    account_id: uuid.UUID,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AccountService = Depends(get_account_service),
+):
+    try:
+        await service.delete_account(db, account_id, user.id)
+        return {"ok": True}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
