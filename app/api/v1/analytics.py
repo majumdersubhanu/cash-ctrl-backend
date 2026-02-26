@@ -28,3 +28,18 @@ async def category_spending(
     user: User = Depends(current_active_user),
     db: AsyncSession = Depends(get_db),
     service: AnalyticsService = Depends(get_analytics_service),
+):
+    return await service.get_category_spending(db, user.id)
+
+
+@router.get("/cashflow-trends")
+async def cashflow_trends(
+    months: int = 6,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AnalyticsService = Depends(get_analytics_service),
+):
+    return await service.get_cashflow_trends(db, user.id, months)
+
+
+@router.get("/safe-to-spend")
