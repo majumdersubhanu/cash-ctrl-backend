@@ -148,3 +148,18 @@ async def settle_loan(
 ):
     try:
         return await service.settle_loan(db=db, user_id=user.id, loan_id=loan_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/loans/{loan_id}/dispute", response_model=LoanResponse)
+async def dispute_loan(
+    loan_id: uuid.UUID,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: P2PService = Depends(get_p2p_service),
+):
+    try:
+        return await service.dispute_loan(db=db, user_id=user.id, loan_id=loan_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
