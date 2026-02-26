@@ -28,3 +28,18 @@ async def list_notifications(
 @router.patch("/{notification_id}", response_model=NotificationResponse)
 async def update_notification(
     notification_id: uuid.UUID,
+    payload: NotificationUpdate,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: NotificationService = Depends(get_notification_service),
+):
+    """
+    Mark a notification as read or unread.
+    """
+    if not payload.is_read:
+        raise HTTPException(status_code=400, detail="Only marking as read is supported.")
+        
+    notification = await service.mark_as_read(db, user.id, notification_id)
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification not found")
+        
