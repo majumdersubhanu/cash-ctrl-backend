@@ -43,3 +43,16 @@ async def get_contact_public_ledger(
         raise HTTPException(
             status_code=404, detail="Contact not found in your social network."
         )
+
+    if not contact.linked_user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="This contact is not a registered user on the platform. No ledger available.",
+        )
+
+    # 2. Query the actual public Loan history of the target user
+    loan_stmt = select(Loan).where(Loan.user_id == contact.linked_user_id)
+    result = await db.execute(loan_stmt)
+    loans = result.scalars().all()
+
+    return loans
