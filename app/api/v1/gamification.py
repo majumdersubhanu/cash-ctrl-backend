@@ -28,3 +28,6 @@ async def get_achievements(
     user: User = Depends(current_active_user),
     db: AsyncSession = Depends(get_db),
     service: GamificationService = Depends(get_gamification_service),
+):
+    achievements = await service.check_achievements(db, user.id)
+    return {"achievements": achievements}
