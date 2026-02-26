@@ -13,3 +13,8 @@ audit_service = HealthAuditService()
 async def get_financial_audit(
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user)
+):
+    """
+    Returns a comprehensive financial health audit for the authenticated user.
+    """
+    return await audit_service.perform_audit(db, user.id)
