@@ -118,3 +118,18 @@ async def fund_loan(
     service: P2PService = Depends(get_p2p_service),
 ):
     try:
+        return await service.fund_loan(db=db, user_id=user.id, loan_id=loan_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/loans/{loan_id}/repay", response_model=LoanResponse)
+async def repay_loan(
+    loan_id: uuid.UUID,
+    payload: RepayLoanRequest,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: P2PService = Depends(get_p2p_service),
+):
+    try:
+        return await service.repay_loan(
