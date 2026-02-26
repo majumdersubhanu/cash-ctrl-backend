@@ -13,3 +13,18 @@ router = APIRouter(tags=["budgets"])
 
 async def get_budget_service() -> BudgetService:
     return BudgetService()
+
+
+@router.post("/", response_model=BudgetResponse)
+async def create_budget(
+    payload: BudgetCreate,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: BudgetService = Depends(get_budget_service),
+):
+    try:
+        return await service.create_budget(db=db, user_id=user.id, payload=payload)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
