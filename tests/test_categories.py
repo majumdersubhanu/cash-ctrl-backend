@@ -28,3 +28,13 @@ async def test_create_subcategory(client: AsyncClient):
         "type": "EXPENSE"
     })
     parent_id = parent_res.json()["id"]
+
+    # Child
+    child_res = await client.post("/api/v1/categories", json={
+        "name": "Fast Food",
+        "type": "EXPENSE",
+        "parent_id": parent_id
+    })
+    assert child_res.status_code == 200
+    child_data = child_res.json()
+    assert child_data["parent_id"] == parent_id
