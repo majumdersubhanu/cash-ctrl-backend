@@ -43,3 +43,12 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 
                 response.headers["X-Request-ID"] = request_id
                 response.headers["X-Process-Time"] = str(process_time_ms)
+                return response
+                
+            except Exception as e:
+                process_time_ms = (time.perf_counter() - start_time) * 1000
+                logger.exception(
+                    "Request failed with exception",
+                    extra={"status_code": 500, "process_time_ms": round(process_time_ms, 2), "error": str(e)}
+                )
+                raise e
