@@ -58,3 +58,7 @@ async def client(db_session: AsyncSession):
 
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test", follow_redirects=True
+    ) as c:
+        yield c
+
+    app.dependency_overrides.clear()
