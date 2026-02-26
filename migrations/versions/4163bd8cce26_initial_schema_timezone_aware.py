@@ -238,3 +238,18 @@ def upgrade() -> None:
     sa.Column('loan_id', sa.Uuid(), nullable=False),
     sa.Column('amount_due', sa.Numeric(precision=12, scale=2), nullable=False),
     sa.Column('amount_paid', sa.Numeric(precision=12, scale=2), nullable=False),
+    sa.Column('due_date', sa.Date(), nullable=False),
+    sa.Column('is_paid', sa.Boolean(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['loan_id'], ['loans.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('transaction_tags',
+    sa.Column('transaction_id', sa.Uuid(), nullable=False),
+    sa.Column('tag_id', sa.Uuid(), nullable=False),
+    sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], ),
+    sa.ForeignKeyConstraint(['transaction_id'], ['transactions.id'], ),
+    sa.PrimaryKeyConstraint('transaction_id', 'tag_id')
+    )
