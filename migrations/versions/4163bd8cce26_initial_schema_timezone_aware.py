@@ -43,3 +43,18 @@ def upgrade() -> None:
     sa.Column('currency', sa.String(), nullable=False),
     sa.Column('balance', sa.Float(), nullable=False),
     sa.Column('credit_limit', sa.Float(), nullable=False),
+    sa.Column('color', sa.String(), nullable=True),
+    sa.Column('icon', sa.String(), nullable=True),
+    sa.Column('is_archived', sa.Boolean(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('categories',
+    sa.Column('user_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('type', sa.Enum('INCOME', 'EXPENSE', name='categorytype'), nullable=False),
+    sa.Column('color', sa.String(), nullable=True),
+    sa.Column('icon', sa.String(), nullable=True),
