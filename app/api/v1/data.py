@@ -13,3 +13,18 @@ from app.services.transaction_service import TransactionService
 from app.services.report_service import ReportService
 from fastapi.responses import StreamingResponse, Response
 
+router = APIRouter(tags=["data"])
+
+
+async def get_tx_service() -> TransactionService:
+    return TransactionService()
+
+
+async def get_report_service() -> ReportService:
+    return ReportService()
+
+@router.get("/export/csv")
+async def export_csv(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    tx_service: TransactionService = Depends(get_tx_service),
