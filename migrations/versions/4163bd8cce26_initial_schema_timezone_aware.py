@@ -193,3 +193,18 @@ def upgrade() -> None:
     sa.Column('category_id', sa.Uuid(), nullable=True),
     sa.Column('amount', sa.Numeric(precision=12, scale=2), nullable=False),
     sa.Column('type', sa.Enum('INCOME', 'EXPENSE', 'TRANSFER', name='transactiontype'), nullable=False),
+    sa.Column('frequency', sa.String(), nullable=False),
+    sa.Column('next_run_date', sa.Date(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('id', sa.Uuid(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ),
+    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('transactions',
+    sa.Column('user_id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('account_id', sa.Uuid(), nullable=False),
+    sa.Column('category_id', sa.Uuid(), nullable=True),
