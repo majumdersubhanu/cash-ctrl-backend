@@ -28,3 +28,18 @@ async def create_test_db():
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
+    async with test_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+
+@pytest_asyncio.fixture(scope="function")
+async def db_session():
+    async with TestingSessionLocal() as session:
+        yield session
+
+
+@pytest_asyncio.fixture(scope="function")
+async def client(db_session: AsyncSession):
+    app.dependency_overrides[get_db] = lambda: db_session
+
+    # Simple dependency override for current user
