@@ -13,3 +13,18 @@ from app.schemas.p2p import (
     LoanCreate,
     LoanResponse,
     RepayLoanRequest,
+)
+from app.schemas.connection import (
+    ConnectionRequestCreate,
+    ConnectionRequestResponse,
+    ConnectionRequestUpdate,
+)
+from app.services.p2p_service import P2PService
+
+
+router = APIRouter(tags=["p2p-lending"])
+
+
+async def get_p2p_service() -> P2PService:
+    return P2PService()
+
