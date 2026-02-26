@@ -43,3 +43,18 @@ async def create_transaction(
 
 @router.post("/filter", response_model=list[TransactionResponse])
 async def filter_transactions(
+    payload: TransactionFilter,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: TransactionService = Depends(get_transaction_service),
+):
+    return await service.tx_repo.filter_transactions(
+        db=db,
+        user_id=user.id,
+        account_id=payload.account_id,
+        category_id=payload.category_id,
+        start_date=payload.start_date,
+        end_date=payload.end_date,
+        min_amount=payload.min_amount,
+        max_amount=payload.max_amount,
+        keyword=payload.keyword,
