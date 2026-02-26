@@ -28,3 +28,18 @@ async def setup_mfa(
     secret = pyotp.random_base32()
     user.totp_secret = secret
     db.add(user)
+    await db.commit()
+
+    # Generate provisioning URI for authenticator apps (Google Authenticator, Authy, etc)
+    uri = pyotp.totp.TOTP(secret).provisioning_uri(
+        name=user.email, issuer_name="CashCtrl"
+    )
+
+    return {"secret": secret, "qr_code_uri": uri}
+
+
+@router.post("/verify")
+async def verify_mfa(
+    payload: MFAVerifyPayload,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
