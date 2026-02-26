@@ -28,3 +28,10 @@ async def create_budget(
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@router.get("/", response_model=list[BudgetResponse])
+async def list_budgets(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: BudgetService = Depends(get_budget_service),
+):
+    return await service.get_user_budgets_with_progress(db, user.id)
