@@ -43,3 +43,13 @@ async def list_goals(
 async def contribute_to_goal(
     goal_id: uuid.UUID,
     payload: GoalContribute,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: GoalService = Depends(get_goal_service),
+):
+    try:
+        return await service.contribute_to_goal(
+            db=db, user_id=user.id, goal_id=goal_id, amount=payload.amount
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
