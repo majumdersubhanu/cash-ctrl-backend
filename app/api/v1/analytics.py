@@ -43,3 +43,18 @@ async def cashflow_trends(
 
 
 @router.get("/safe-to-spend")
+async def safe_to_spend(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AnalyticsService = Depends(get_analytics_service),
+):
+    amount = await service.get_safe_to_spend(db, user.id)
+    return {"safe_to_spend": amount}
+
+
+@router.get("/anomalies")
+async def get_anomalies(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AnalyticsService = Depends(get_analytics_service),
+):
