@@ -13,3 +13,18 @@ async def get_gamification_service() -> GamificationService:
     return GamificationService()
 
 
+@router.get("/streaks")
+async def get_streaks(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: GamificationService = Depends(get_gamification_service),
+):
+    streak = await service.get_no_spend_streak(db, user.id)
+    return {"current_streak_days": streak}
+
+
+@router.get("/achievements")
+async def get_achievements(
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: GamificationService = Depends(get_gamification_service),
