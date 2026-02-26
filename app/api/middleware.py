@@ -28,3 +28,18 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             path=request.url.path,
             ip=request.client.host if request.client else "unknown",
             device_family=user_agent.device.family,
+            os_family=user_agent.os.family
+        ):
+            logger.info("Request started")
+            
+            try:
+                response = await call_next(request)
+                
+                process_time_ms = (time.perf_counter() - start_time) * 1000
+                logger.info(
+                    "Request completed",
+                    extra={"status_code": response.status_code, "process_time_ms": round(process_time_ms, 2)}
+                )
+                
+                response.headers["X-Request-ID"] = request_id
+                response.headers["X-Process-Time"] = str(process_time_ms)
