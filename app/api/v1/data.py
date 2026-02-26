@@ -103,3 +103,11 @@ async def import_transactions_csv(
                 account_id=account_id,
                 category_id=None,
                 amount=amt,
+                tx_type=tx_type,
+                note=desc,
+            )
+            imported_count += 1
+
+        return {"status": "ok", "imported_count": imported_count}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to process CSV: {str(e)}")
