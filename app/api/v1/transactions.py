@@ -73,3 +73,18 @@ async def create_transfer(
 ):
     try:
         expense, income = await service.transfer_funds(
+            db=db,
+            user_id=user.id,
+            from_account_id=payload.from_account_id,
+            to_account_id=payload.to_account_id,
+            amount=payload.amount,
+            note=payload.note,
+        )
+        return [expense, income]
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.post("/bulk-delete")
+async def bulk_delete_transactions(
+    payload: BulkDeleteRequest,
