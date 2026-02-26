@@ -13,3 +13,18 @@ router = APIRouter(tags=["accounts"])
 
 async def get_account_service() -> AccountService:
     return AccountService()
+
+
+@router.post("/", response_model=AccountResponse)
+async def create_account(
+    payload: AccountCreate,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AccountService = Depends(get_account_service),
+):
+    try:
+        return await service.create_account(
+            db=db,
+            user_id=user.id,
+            name=payload.name,
+            account_type=payload.type,
