@@ -73,3 +73,18 @@ async def import_transactions_csv(
     """
     Very basic CSV import assuming standard "Type,Amount,Description" mapping.
     """
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(
+            status_code=400, detail="Invailid file format. Must be CSV."
+        )
+    try:
+        content = await file.read()
+        decoded = content.decode("utf-8")
+        reader = csv.DictReader(io.StringIO(decoded))
+
+        imported_count = 0
+        from app.utils.enums import TransactionType
+
+        for row in reader:
+            # Flexible dictionary keys parser logic
+            amt = float(row.get("Amount", row.get("amount", 0)))
