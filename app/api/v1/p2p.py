@@ -28,3 +28,18 @@ router = APIRouter(tags=["p2p-lending"])
 async def get_p2p_service() -> P2PService:
     return P2PService()
 
+
+@router.post("/contacts", response_model=ContactResponse)
+async def create_contact(
+    payload: ContactCreate,
+    user: User = Depends(current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: P2PService = Depends(get_p2p_service),
+):
+    try:
+        return await service.create_contact(db=db, user_id=user.id, payload=payload)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/contacts", response_model=List[ContactResponse])
