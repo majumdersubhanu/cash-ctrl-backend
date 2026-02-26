@@ -28,3 +28,18 @@ async def get_contact_public_ledger(
     contact_id: uuid.UUID,
     user: User = Depends(current_active_user),
     db: AsyncSession = Depends(get_db),
+):
+    """
+    Allows a user to query the P2P lending history of a *trusted contact*
+    to evaluate their creditworthiness before issuing a new loan.
+    """
+    from app.models.contact import Contact
+
+    # 1. Verify this contact actually belongs to the requesting user
+    stmt = select(Contact).where(Contact.id == contact_id, Contact.user_id == user.id)
+    contact = (await db.execute(stmt)).scalar_one_or_none()
+
+    if not contact:
+        raise HTTPException(
+            status_code=404, detail="Contact not found in your social network."
+        )
