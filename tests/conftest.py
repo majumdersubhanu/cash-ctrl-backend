@@ -43,3 +43,18 @@ async def client(db_session: AsyncSession):
     app.dependency_overrides[get_db] = lambda: db_session
 
     # Simple dependency override for current user
+    async def override_current_user():
+        import uuid
+        return User(
+            id=uuid.UUID("00000000-0000-0000-0000-000000000001"),
+            email="test@example.com",
+            is_active=True,
+            vouch_score=0.0
+        )
+
+    from app.core.users import current_active_user
+
+    app.dependency_overrides[current_active_user] = override_current_user
+
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test", follow_redirects=True
