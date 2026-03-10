@@ -1,0 +1,40 @@
+Running build hooks...Running build hooks...  0s riverpod_generator on 23 inputs; lib/auth_providers.dart
+  0s riverpod_generator on 23 inputs: 1 skipped; lib/core/di/injection.dart
+  0s riverpod_generator on 23 inputs: 23 skipped
+  0s retrofit_generator on 23 inputs; lib/auth_providers.dart
+  0s retrofit_generator on 23 inputs: 23 skipped
+  0s freezed on 23 inputs; lib/auth_providers.dart
+  0s freezed on 23 inputs: 23 skipped
+  0s json_serializable on 46 inputs; lib/auth_providers.dart
+  0s json_serializable on 46 inputs: 46 skipped
+  0s go_router_builder on 46 inputs; lib/auth_providers.dart
+  0s go_router_builder on 46 inputs: 46 skipped
+  0s drift_dev on 184 inputs; lib/auth_providers.dart
+  0s drift_dev on 184 inputs: 184 skipped
+  0s source_gen:combining_builder on 92 inputs; lib/auth_providers.dart
+  0s source_gen:combining_builder on 92 inputs: 92 skipped
+  0s injectable_generator:injectable_builder on 184 inputs; lib/auth_providers.dart
+  0s injectable_generator:injectable_builder on 184 inputs: 184 skipped
+  0s injectable_generator:injectable_config_builder on 184 inputs; lib/auth_providers.dart
+  0s injectable_generator:injectable_config_builder on 184 inputs: 184 skipped
+E injectable_generator:injectable_builder on lib/core/di/storage_module.dart:
+  type 'Null' is not a subtype of type 'ClassElement' in type cast
+  #0      DependencyResolver.resolveModuleMember (package:injectable_generator/resolvers/dependency_resolver.dart:127:37)
+  #1      InjectableGenerator.generate (package:injectable_generator/generators/injectable_generator.dart:52:42)
+  <asynchronous suspension>
+  #2      _generate (package:source_gen/src/builder.dart:370:23)
+  <asynchronous suspension>
+  #3      Stream.toList.<anonymous closure> (dart:async/stream.dart:1417:7)
+  <asynchronous suspension>
+  #4      _Builder._generateForLibrary (package:source_gen/src/builder.dart:116:9)
+  <asynchronous suspension>
+  #5      _Builder.build (package:source_gen/src/builder.dart:108:5)
+  <asynchronous suspension>
+  #6      runBuilder.buildForInput (package:build_runner/src/build/run_builder.dart:85:7)
+  <asynchronous suspension>
+  #7      Future.wait.<anonymous closure> (dart:async/future.dart:546:21)
+  <asynchronous suspension>
+  #8      BuildLogLogger.scopeLogAsync.<anonymous closure> (package:build_runner/src/logging/build_log_logger.dart:58:13)
+  <asynchronous suspension>
+  
+  Failed to build with build_runner/jit in 3s; wrote 0 outputs.
