@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'transactions.apps.TransactionsConfig',
     'lending.apps.LendingConfig',
+    'analytics.apps.AnalyticsConfig',
     # Auth
     'django.contrib.sites',
     'allauth',
