@@ -41,3 +41,18 @@ class FinancialSummaryView(APIView):
             "total_borrowed": total_borrowed,
             "total_lent": total_lent
         })
+
+class ForecastingView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        from .services import ForecastingService
+        
+        predicted_spending = ForecastingService.predict_next_month_spending(request.user)
+        cash_flow_forecast = ForecastingService.forecast_cash_flow(request.user)
+        
+        return Response({
+            "predicted_next_month_expense": predicted_spending,
+            "projected_30_day_cash_flow": cash_flow_forecast,
+            "confidence_score": "High" if Transaction.objects.filter(user=request.user).count() > 50 else "Medium"
+        })
