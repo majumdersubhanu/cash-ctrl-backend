@@ -30,4 +30,5 @@ urlpatterns = [
     # Apps
     path('api/v1/users/', include('users.urls')),
     path('api/v1/accounts/', include('accounts.urls')),
+    path('api/v1/transactions/', include('transactions.urls')),
 ]
