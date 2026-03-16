@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <table style="width: 100%;">
+            <caption>Top System Lenders</caption>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Loans Issued</th>
+                    <th>Total Capital Lent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in top_lenders %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.loans_count }}</td>
+                    <td>${{ user.total_lent|format_currency }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="module" style="margin-top: 20px;">
+        <table style="width: 100%;">
+            <caption>Top System Borrowers</caption>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Loans Taken</th>
+                    <th>Total Capital Borrowed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in top_borrowers %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.loans_count }}</td>
+                    <td>${{ user.total_borrowed|format_currency }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="module" style="margin-top: 20px;">
+        <table style="width: 100%;">
+            <caption>Most Active Split Groups</caption>
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Members</th>
+                    <th>Total Shared Expenses</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.member_count }}</td>
+                    <td>{{ group.expense_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    caption { font-size: 1.2em; font-weight: bold; background: #666; color: white; padding: 10px; text-align: left; }
+    th { text-align: left; padding: 10px; background: #eee; }
+    td { padding: 10px; border-bottom: 1px solid #eee; }
+</style>
+{% endblock %}

@@ -31,6 +31,7 @@ dependencies = [
     { name = "django-cors-headers" },
     { name = "django-environ" },
     { name = "django-filter" },
+    { name = "django-jet-reboot" },
     { name = "django-polymorphic" },
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
@@ -46,6 +47,7 @@ requires-dist = [
     { name = "django-cors-headers", specifier = ">=4.3.1" },
     { name = "django-environ", specifier = ">=0.11.2" },
     { name = "django-filter", specifier = ">=24.2" },
+    { name = "django-jet-reboot", specifier = ">=1.3.10" },
     { name = "django-polymorphic", specifier = ">=3.1.0" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
     { name = "djangorestframework-simplejwt", specifier = ">=5.3.1" },
@@ -173,6 +175,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/2c/e4/465d2699cd388c000
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c1/40/6a02495c5658beb1f31eb09952d8aa12ef3c2a66342331ce3a35f7132439/django_filter-25.2-py3-none-any.whl", hash = "sha256:9c0f8609057309bba611062fe1b720b4a873652541192d232dd28970383633e3", size = 94145, upload-time = "2025-10-05T09:51:29.728Z" },
 ]
+
+[[package]]
+name = "django-jet-reboot"
+version = "1.3.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2b/a6/8d65499767105860adfd11617fb2f6fb618e50d0f242fcba22e8b3766a9c/django_jet_reboot-1.3.10.tar.gz", hash = "sha256:d54cd4fa4d22706bf48884191300e9c22c777b835993f8112c35126c2edcf135", size = 844234, upload-time = "2024-09-29T19:03:21.299Z" }
 
 [[package]]
 name = "django-polymorphic"

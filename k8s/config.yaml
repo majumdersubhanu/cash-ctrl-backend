@@ -14,7 +14,7 @@ metadata:
   name: cashctrl-secrets
 type: Opaque
 stringData:
-  SECRET_KEY: "prod-secret-key-replace-me"
+  SECRET_KEY: "99$2knx+((uitaj&)97rxuc(yirglzackpz9r8469qo!hc*&0_"
   POSTGRES_DB: "cashctrl"
   POSTGRES_USER: "cashctrl_user"
   POSTGRES_PASSWORD: "cashctrl_pass"

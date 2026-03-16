@@ -39,6 +39,8 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,6 +74,9 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'rest_framework.authtoken',
+    # Helpers
+    'rangefilter',
+    'import_export',
 ]
 
 SITE_ID = 1
@@ -129,10 +134,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-ACCOUNT_AUTHENTICATION_METHODS = {'email'}
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Better default
 ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
 
@@ -270,3 +274,10 @@ LOGGING = {
 # Create logs directory if it doesn't exist
 LOGS_DIR = BASE_DIR / 'logs'
 LOGS_DIR.mkdir(exist_ok=True)
+
+# JET Configuration
+JET_DEFAULT_THEME = 'light-violet'
+JET_SIDE_MENU_COMPACT = True
+
+JET_INDEX_DASHBOARD = 'app.dashboard.CustomIndexDashboard'
+JET_APP_INDEX_DASHBOARD = 'app.dashboard.CustomAppIndexDashboard'

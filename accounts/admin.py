@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import Account
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
+@admin.register(Account)
+class AccountAdmin(ImportExportModelAdmin):
+    list_display = ('id', 'user', 'name', 'balance', 'currency', 'created_at')
+    list_filter = ('currency', 'created_at')
+    search_fields = ('name', 'user__email')
+    readonly_fields = ('created_at',)

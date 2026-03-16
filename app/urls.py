@@ -19,6 +19,9 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+    path('admin/p2p-analytics/', include('analytics.admin_urls')),
     path('admin/', admin.site.urls),
     # API Schema and Documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
