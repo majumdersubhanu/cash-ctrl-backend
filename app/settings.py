@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'polymorphic',
     'users.apps.UsersConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
