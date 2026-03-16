@@ -1,7 +1,10 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .models import Category, Transaction
 from .serializers import CategorySerializer, TransactionSerializer
 from .services import TransactionService
+from integrations.scanner import ScannerService
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -41,6 +44,28 @@ class TransactionViewSet(viewsets.ModelViewSet):
                 description=data.get('description', '')
             )
     
+    @action(detail=False, methods=['post'], url_path='scan-receipt')
+    def scan_receipt(self, request):
+        """
+        Endpoint to upload a receipt image and get suggested transaction data.
+        """
+        image_file = request.FILES.get('image')
+        if not image_file:
+            return Response({"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Save temporary file for processing
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+        path = default_storage.save(f'tmp/scans/{image_file.name}', ContentFile(image_file.read()))
+        
+        # Process image
+        result = ScannerService.scan_receipt(default_storage.path(path))
+        
+        # Cleanup
+        default_storage.delete(path)
+        
+        return Response(result)
+
     def destroy(self, request, *args, **kwargs):
         # Need to handle balance reversal on delete
         return super().destroy(request, *args, **kwargs)

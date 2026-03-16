@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from django.core.files.uploadedfile import SimpleUploadedFile
-from onboarding.models import KYCProfile, KYCDocument
+from onboarding.models import KYCDocument
 from onboarding.services import KYCService
 from lending.models import Loan
 from audit.models import AuditLog

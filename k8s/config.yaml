@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cashctrl-config
+data:
+  DEBUG: "1"
+  DATABASE_URL: "postgres://cashctrl_user:cashctrl_pass@db:5432/cashctrl"
+  REDIS_URL: "redis://redis:6379/1"
+  CELERY_BROKER_URL: "redis://redis:6379/0"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cashctrl-secrets
+type: Opaque
+stringData:
+  SECRET_KEY: "prod-secret-key-replace-me"
+  POSTGRES_DB: "cashctrl"
+  POSTGRES_USER: "cashctrl_user"
+  POSTGRES_PASSWORD: "cashctrl_pass"

@@ -1,5 +1,4 @@
 from django.conf import settings
-import requests
 import logging
 
 logger = logging.getLogger(__name__)
@@ -18,7 +17,7 @@ class TruecallerService:
             
         # This is a stub for the verification logic
         # Usually involves checking the request signature and calling Truecaller API
-        logger.info(f"Attempting Truecaller verification for payload: {request_payload}")
+        logger.info(f"Attempting Truecaller verification for payload: {request_payload}. Partner Key available: {bool(partner_key)}")
         
         # Mocking successful verification for now
         return {
@@ -36,7 +35,7 @@ class CashfreeService:
         app_id = getattr(settings, 'CASHFREE_APP_ID', None)
         secret = getattr(settings, 'CASHFREE_SECRET_KEY', None)
         
-        logger.info(f"Calling Cashfree Aadhaar verification for: {aadhaar_number[:4]}xxxx")
+        logger.info(f"Calling Cashfree Aadhaar verification for: {aadhaar_number[:4]}xxxx. Configured: {bool(app_id and secret)}")
         
         # Mocking API response
         return {"status": "SUCCESS", "message": "Aadhaar verified successfully"}
@@ -49,7 +48,7 @@ class SetuService:
         """
         client_id = getattr(settings, 'SETU_CLIENT_ID', None)
         
-        logger.info(f"Creating Setu account linking request for user: {user_id}")
+        logger.info(f"Creating Setu account linking request for user: {user_id}. Client ID available: {bool(client_id)}")
         
         # Mocking Setu session link
         return {

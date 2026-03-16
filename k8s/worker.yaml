@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cashctrl-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cashctrl-worker
+  template:
+    metadata:
+      labels:
+        app: cashctrl-worker
+    spec:
+      containers:
+      - name: worker
+        image: cashctrl-backend:latest
+        command: ["celery", "-A", "app", "worker", "-l", "info"]
+        envFrom:
+        - configMapRef:
+            name: cashctrl-config
+        - secretRef:
+            name: cashctrl-secrets
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "400m"
+            memory: "512Mi"
