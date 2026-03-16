@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'lending.apps.LendingConfig',
     'analytics.apps.AnalyticsConfig',
     'onboarding.apps.OnboardingConfig',
+    'currencies.apps.CurrenciesConfig',
     # Auth
     'django.contrib.sites',
     'allauth',
