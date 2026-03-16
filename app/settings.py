@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +96,8 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True  # Ensure ACID compliance by defa
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'users.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
