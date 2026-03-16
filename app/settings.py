@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'currencies.apps.CurrenciesConfig',
     'splits.apps.SplitsConfig',
     'audit.apps.AuditConfig',
+    'integrations.apps.IntegrationsConfig',
     # Auth
     'django.contrib.sites',
     'allauth',
@@ -211,6 +212,13 @@ if not DEBUG:
 # CORS Configuration
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOW_CREDENTIALS = True
+
+# Fintech Integrations (Placeholders)
+TRUECALLER_PARTNER_KEY = env('TRUECALLER_PARTNER_KEY', default='')
+CASHFREE_APP_ID = env('CASHFREE_APP_ID', default='')
+CASHFREE_SECRET_KEY = env('CASHFREE_SECRET_KEY', default='')
+SETU_CLIENT_ID = env('SETU_CLIENT_ID', default='')
+SETU_SECRET_KEY = env('SETU_SECRET_KEY', default='')
 
 # Logging Configuration
 LOGGING = {
