@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'analytics.apps.AnalyticsConfig',
     'onboarding.apps.OnboardingConfig',
     'currencies.apps.CurrenciesConfig',
+    'splits.apps.SplitsConfig',
     # Auth
     'django.contrib.sites',
     'allauth',
