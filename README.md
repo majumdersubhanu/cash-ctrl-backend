@@ -147,4 +147,5 @@ We follow the **Conventional Commits** specification. Please ensure every commit
 - **Bcrypt Hashing**: Secure password storage by default.
 
 ---
-*Built with precision and autonomy. CashCtrl v1.0.0*
+
+Built with ❤️ by Subhanu Majumder
