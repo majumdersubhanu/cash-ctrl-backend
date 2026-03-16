@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'onboarding.apps.OnboardingConfig',
     'currencies.apps.CurrenciesConfig',
     'splits.apps.SplitsConfig',
+    'audit.apps.AuditConfig',
     # Auth
     'django.contrib.sites',
     'allauth',
@@ -195,3 +196,17 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+# Security Settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000 # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# CORS Configuration
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOW_CREDENTIALS = True

@@ -32,7 +32,7 @@ class SplitService:
     @staticmethod
     def calculate_equal_split(amount, members):
         """
-        Helper to calculate equal shares.
+        Calculates equal shares.
         """
         amount = Decimal(str(amount))
         count = len(members)
@@ -45,7 +45,6 @@ class SplitService:
         total_calculated = Decimal('0.00')
         
         for i, member in enumerate(members):
-            # Add remaining cents to the last member to ensure total matches exactly
             if i == count - 1:
                 member_share = amount - total_calculated
             else:
@@ -55,3 +54,41 @@ class SplitService:
             participants.append({'user': member, 'share_amount': member_share})
             
         return participants
+
+    @staticmethod
+    def calculate_percentage_split(amount, user_percentages):
+        """
+        user_percentages: list of dicts {'user': user_obj, 'percentage': decimal}
+        """
+        amount = Decimal(str(amount))
+        total_pct = sum(Decimal(str(p['percentage'])) for p in user_percentages)
+        
+        if total_pct != Decimal('100.00'):
+            raise ValueError(f"Percentages must sum to 100. Total is {total_pct}")
+            
+        participants = []
+        total_calculated = Decimal('0.00')
+        
+        for i, item in enumerate(user_percentages):
+            if i == len(user_percentages) - 1:
+                share = amount - total_calculated
+            else:
+                share = (amount * Decimal(str(item['percentage'])) / Decimal('100')).quantize(Decimal('0.01'))
+                total_calculated += share
+                
+            participants.append({'user': item['user'], 'share_amount': share})
+            
+        return participants
+
+    @staticmethod
+    def calculate_fixed_amounts(amount, user_amounts):
+        """
+        user_amounts: list of dicts {'user': user_obj, 'amount': decimal}
+        """
+        amount = Decimal(str(amount))
+        total_fixed = sum(Decimal(str(a['amount'])) for a in user_amounts)
+        
+        if total_fixed != amount:
+            raise ValueError(f"Fixed amounts must sum to total amount {amount}. Total is {total_fixed}")
+            
+        return [{'user': item['user'], 'share_amount': Decimal(str(item['amount']))} for item in user_amounts]

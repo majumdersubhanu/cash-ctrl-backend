@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.utils import timezone
+from audit.services import AuditService
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
@@ -41,6 +42,15 @@ class LoanService:
                 due_date=due_date,
                 status='PENDING'
             )
+            
+        # Log loan creation
+        AuditService.log_action(
+            user=lender if lender else borrower,
+            action='LOAN_CREATED',
+            resource_type='Loan',
+            resource_id=loan.id,
+            changes={'amount': str(amount), 'borrower': borrower.email}
+        )
             
         return loan
 

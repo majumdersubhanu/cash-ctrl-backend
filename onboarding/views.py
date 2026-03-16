@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from .models import KYCProfile
 from .serializers import KYCProfileSerializer, KYCDocumentSerializer
 from .services import KYCService
+from audit.services import AuditService
+from rest_framework.throttling import UserRateThrottle
 
 class KYCViewSet(viewsets.ModelViewSet):
     serializer_class = KYCProfileSerializer
@@ -20,10 +22,17 @@ class KYCViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'], throttle_classes=[UserRateThrottle])
     def submit(self, request):
         profile = self.get_object()
         if KYCService.submit_for_verification(profile):
+            AuditService.log_action(
+                user=request.user,
+                action='KYC_SUBMITTED',
+                resource_type='KYCProfile',
+                resource_id=profile.id,
+                ip_address=request.META.get('REMOTE_ADDR')
+            )
             return Response({"status": "PENDING", "message": "Verification submitted."})
         return Response(
             {"error": "Incomplete profile. Ensure name and documents are provided."}, 
