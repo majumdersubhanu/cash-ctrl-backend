@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'splits.apps.SplitsConfig',
     'audit.apps.AuditConfig',
     'integrations.apps.IntegrationsConfig',
+    'recurring.apps.RecurringConfig',
+    'notifications.apps.NotificationsConfig',
     # Auth
     'django.contrib.sites',
     'allauth',

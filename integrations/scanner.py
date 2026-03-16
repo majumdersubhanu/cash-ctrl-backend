@@ -1,5 +1,10 @@
-import pytesseract
-from PIL import Image
+try:
+    import pytesseract
+    from PIL import Image
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
+    
 import re
 import logging
 from decimal import Decimal
@@ -12,20 +17,25 @@ class ScannerService:
         """
         Performs OCR on the receipt image and extracts transaction details.
         """
+        if not OCR_AVAILABLE:
+            logger.warning("OCR (Pytesseract) is not installed. Using fallback mock data.")
+            return {
+                "amount": Decimal('42.00'),
+                "description": "Mocked Receipt (OCR unavailable)",
+                "raw_text": "Sample Receipt Text\nTotal: $42.00\nMerchant: Gemini Mart"
+            }
+
         try:
             # 1. OCR Extraction
             text = pytesseract.image_to_string(Image.open(image_path))
             logger.info(f"OCR text extracted: {text[:100]}...")
             
-            # 2. Heuristic Parsing (Amount, Date)
-            # Find amounts (e.g., $12.34 or 12.34)
+            # 2. Heuristic Parsing
             amounts = re.findall(r'(\d+\.\d{2})', text)
-            # Typically the largest amount is the TOTAL
             total_amount = Decimal('0.00')
             if amounts:
                 total_amount = max([Decimal(a) for a in amounts])
             
-            # Find possible merchants (first non-empty line usually)
             lines = [line.strip() for line in text.split('\n') if line.strip()]
             merchant = lines[0] if lines else "Unknown Merchant"
             
@@ -36,9 +46,8 @@ class ScannerService:
             }
         except Exception as e:
             logger.error(f"OCR failed: {str(e)}")
-            # Fallback for systems without Tesseract installed (common in dev)
             return {
-                "amount": Decimal('42.00'),
-                "description": "Scanned Receipt (Mocked due to environment)",
+                "amount": Decimal('0.00'),
+                "description": "Scanned Receipt (Error)",
                 "error": str(e)
             }
