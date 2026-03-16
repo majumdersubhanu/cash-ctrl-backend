@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
-from django.db.models import Sum
+from django.utils import timezone
 from transactions.models import Transaction
 from accounts.models import Account
 from lending.models import Loan
@@ -56,3 +56,33 @@ class ForecastingView(APIView):
             "projected_30_day_cash_flow": cash_flow_forecast,
             "confidence_score": "High" if Transaction.objects.filter(user=request.user).count() > 50 else "Medium"
         })
+
+class ReportExportView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        import csv
+        from django.http import HttpResponse
+        
+        # Get transactions for the user
+        queryset = Transaction.objects.filter(user=request.user).order_by('-date')
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="cash_ctrl_report_{request.user.email}_{timezone.now().date()}.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Date', 'Account', 'Type', 'Amount', 'Currency', 'Category', 'Description', 'Status'])
+        
+        for tx in queryset:
+            writer.writerow([
+                tx.date,
+                tx.account.name,
+                tx.get_type_display(),
+                tx.amount,
+                tx.currency,
+                tx.category.name if tx.category else 'N/A',
+                tx.description,
+                tx.get_status_display()
+            ])
+            
+        return response
