@@ -19,4 +19,4 @@ class LoanSerializer(serializers.ModelSerializer):
             'amount', 'interest_rate', 'duration_months', 'status',
             'start_date', 'end_date', 'installments', 'created_at', 'updated_at'
         )
-        read_only_fields = ('id', 'status', 'start_date', 'end_date', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'borrower', 'status', 'start_date', 'end_date', 'created_at', 'updated_at')

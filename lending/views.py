@@ -18,14 +18,16 @@ class LoanViewSet(viewsets.ModelViewSet):
         ).distinct()
 
     def perform_create(self, serializer):
-        # For now, handles borrowing
-        LoanService.create_loan(
+        # We use the service to create the loan and its installments atomically
+        loan = LoanService.create_loan(
             borrower=self.request.user,
             amount=serializer.validated_data['amount'],
             interest_rate=serializer.validated_data['interest_rate'],
             duration_months=serializer.validated_data['duration_months'],
             lender=serializer.validated_data.get('lender')
         )
+        # Link to serializer so its data (including ID) is returned in the response
+        serializer.instance = loan
 
     @action(detail=True, methods=['post'], url_path='pay/(?P<installment_id>[^/.]+)')
     def pay_installment(self, request, pk=None, installment_id=None):
