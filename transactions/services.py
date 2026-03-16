@@ -1,6 +1,6 @@
 from django.db import transaction
 from decimal import Decimal
-from .models import Transaction, Category
+from .models import Transaction
 
 class TransactionService:
     @staticmethod
