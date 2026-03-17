@@ -141,9 +141,20 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # Better default
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "cashctrl-auth",
+    "JWT_AUTH_REFRESH_COOKIE": "cashctrl-refresh",
+    "JWT_AUTH_RETURN_EXPIRATION": True,
+    "JWT_SERIALIZER": "users.serializers.CustomTokenSerializer",
+    "REGISTER_SERIALIZER": "users.serializers.UserRegistrationSerializer",
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

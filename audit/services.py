@@ -7,7 +7,9 @@ class AuditService:
         user, action, resource_type, resource_id=None, changes=None, ip_address=None
     ):
         """
-        Creates an audit log entry.
+        Records a detailed immutable event in the system audit trail.
+        Captures the actor, the specific business action, the targeted cloud resource, 
+        and any state changes for compliance and security forensics.
         """
         return AuditLog.objects.create(
             user=user,

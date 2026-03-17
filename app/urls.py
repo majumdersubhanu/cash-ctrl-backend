@@ -22,8 +22,10 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from .views import HealthCheckView
 
 urlpatterns = [
+    path("health/", HealthCheckView.as_view(), name="health"),
     path("jet/", include("jet.urls", "jet")),
     path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/p2p-analytics/", include("analytics.admin_urls")),

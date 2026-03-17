@@ -1,3 +1,6 @@
+<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD041 -->
+
 <div align="center">
   <h1>💰 CashCtrl Backend</h1>
   <p><em>World-class, AI-Powered, and Mathematically Precise Financial Engine</em></p>

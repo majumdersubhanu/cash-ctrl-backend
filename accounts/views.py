@@ -13,8 +13,11 @@ from .serializers import AccountSerializer
 )
 class AccountViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for managing user financial accounts.
-    Allows users to perform CRUD operations on their own accounts.
+    Unified Command Center for User Financial Entities.
+    
+    Provides a high-performance interface for managing various account types 
+    (Banks, Wallets, etc.) through DRF's polymorphic view inheritance.
+    Enforces strict ownership isolation and audit-ready data structures.
     """
     permission_classes = (permissions.IsAuthenticated,)
 

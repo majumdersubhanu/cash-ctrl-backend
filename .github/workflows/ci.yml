@@ -1,0 +1,73 @@
+name: CashCtrl CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: cashctrl_user
+          POSTGRES_PASSWORD: supersecretpassword
+          POSTGRES_DB: cashctrl_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        
+    - name: Install dependencies via UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        $HOME/.cargo/bin/uv pip install --system -r requirements.txt
+        $HOME/.cargo/bin/uv pip install --system -r requirements-test.txt
+        
+    - name: Lint with Ruff
+      run: |
+        $HOME/.cargo/bin/uv run ruff check .
+        
+    - name: Run Pytest Test Suite
+      env:
+        DJANGO_SETTINGS_MODULE: app.settings
+        DATABASE_URL: postgres://cashctrl_user:supersecretpassword@localhost:5432/cashctrl_db
+        REDIS_URL: redis://localhost:6379/1
+        SECRET_KEY: testing-secret-key-123
+      run: |
+        $HOME/.cargo/bin/uv run pytest --cov=. --cov-report=xml
+        
+  docker-build:
+    needs: test-and-lint
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build local Docker image for verification
+      run: |
+        docker build -t cashctrl-backend:latest -f Dockerfile .
