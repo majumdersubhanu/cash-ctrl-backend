@@ -236,3 +236,10 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 gunicorn.ctl
+
+# SSL certificates (local dev)
+certs/
+
+# Temp test output
+pytest_output*.txt
+

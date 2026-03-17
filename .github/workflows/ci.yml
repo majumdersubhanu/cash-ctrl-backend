@@ -6,16 +6,22 @@ on:
   pull_request:
     branches: [ "master", "main" ]
 
+env:
+  # CI-only ephemeral credentials (destroyed after each run)
+  CI_DB_USER: cashctrl_user
+  CI_DB_PASS: ci_test_password_42
+  CI_DB_NAME: cashctrl_db
+
 jobs:
   test-and-lint:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:16-alpine
         env:
-          POSTGRES_USER: cashctrl_user
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: cashctrl_db
+          POSTGRES_USER: ${{ env.CI_DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.CI_DB_PASS }}
+          POSTGRES_DB: ${{ env.CI_DB_NAME }}
         ports:
           - 5432:5432
         options: >-
@@ -62,9 +68,12 @@ jobs:
     - name: Run Pytest Test Suite
       env:
         DJANGO_SETTINGS_MODULE: app.settings
-        DATABASE_URL: postgres://cashctrl_user:${{ secrets.DB_PASSWORD }}@localhost:5432/cashctrl_db
+        DATABASE_URL: postgres://${{ env.CI_DB_USER }}:${{ env.CI_DB_PASS }}@localhost:5432/${{ env.CI_DB_NAME }}
         REDIS_URL: redis://localhost:6379/1
-        SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'ci-ephemeral-secret-key-not-for-production' }}
+        SECURE_SSL_REDIRECT: "False"
+        SESSION_COOKIE_SECURE: "False"
+        CSRF_COOKIE_SECURE: "False"
       run: uv run pytest --cov=. --cov-report=xml
 
   docker-build:
