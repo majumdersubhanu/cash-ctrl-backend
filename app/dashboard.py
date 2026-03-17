@@ -55,13 +55,13 @@ class CustomIndexDashboard(Dashboard):
             children=[
                 {
                     'title': _('Lending Network Nodes'),
-                    'url': '#',
+                    'url': '/admin/p2p-analytics/p2p-network/',
                     'external': False,
                     'description': f"{Loan.objects.values('lender', 'borrower').distinct().count()} unique peer relationships"
                 },
                 {
                     'title': _('Group Splits Active'),
-                    'url': '#',
+                    'url': '/admin/p2p-analytics/p2p-network/',
                     'external': False,
                     'description': f"{Transaction.objects.filter(type='TRANSFER').count()} shared transactions"
                 }
