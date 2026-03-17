@@ -45,11 +45,11 @@ RUN addgroup --system django && adduser --system --group django
 # Copy app code with correct ownership
 COPY --chown=django:django . .
 
-# Ensure required directories exist
-RUN mkdir -p /app/static /app/media
+# Ensure required directories exist and are owned by django
+RUN mkdir -p /app/static /app/media && chown -R django:django /app/static /app/media
 
 # Entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY --chown=django:django entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 USER django
