@@ -46,7 +46,7 @@ RUN addgroup --system django && adduser --system --group django
 COPY --chown=django:django . .
 
 # Ensure required directories exist and are owned by django
-RUN mkdir -p /app/static /app/media && chown -R django:django /app/static /app/media
+RUN mkdir -p /app/static /app/media /app/logs && chown -R django:django /app/static /app/media /app/logs
 
 # Entrypoint
 COPY --chown=django:django entrypoint.sh /entrypoint.sh
