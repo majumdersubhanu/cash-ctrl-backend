@@ -4,6 +4,7 @@ from users.services import UserService
 
 User = get_user_model()
 
+
 @pytest.mark.django_db
 class TestUserService:
     def test_create_user_success(self):
@@ -22,9 +23,11 @@ class TestUserService:
         email = "custom_un@cashctrl.com"
         password = "securepassword123"
         username = "custom_username_xyz"
-        
-        user = UserService.create_user(email=email, password=password, username=username)
-        
+
+        user = UserService.create_user(
+            email=email, password=password, username=username
+        )
+
         assert user.email == email
         assert user.username == username
 

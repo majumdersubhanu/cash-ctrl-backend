@@ -13,12 +13,13 @@ class FinancialSummaryView(APIView):
     """
     Consolidated financial health snapshot.
     """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     @extend_schema(
         summary="Get Financial Summary",
         description="Calculates a real-time snapshot of the user's financial state, including net worth, total balance, current month liquidity (Income vs Expense), and P2P lending exposure.",
-        tags=["Analytics"]
+        tags=["Analytics"],
     )
     def get(self, request):
         user = request.user
@@ -67,15 +68,17 @@ class ForecastingView(APIView):
     """
     Predictive financial projection engine.
     """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     @extend_schema(
         summary="Get Spending Forecasts",
         description="Leverages the ForecastingService to project next month's spending and 30-day cash flow based on historical transaction velocity and volatility.",
-        tags=["Analytics"]
+        tags=["Analytics"],
     )
     def get(self, request):
         from .services import ForecastingService
+
         # ...
         predicted_spending = ForecastingService.predict_next_month_spending(
             request.user
@@ -96,12 +99,13 @@ class ReportExportView(APIView):
     """
     Forensic report generation (CSV).
     """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     @extend_schema(
         summary="Export Financial Report",
         description="Generates a downloadable CSV audit of all user transactions. Includes account details, categories, descriptions, and normalized amounts for external reconciliation.",
-        tags=["Analytics"]
+        tags=["Analytics"],
     )
     def get(self, request):
         import csv

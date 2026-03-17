@@ -13,38 +13,39 @@ User = get_user_model()
     list=extend_schema(
         summary="List split groups",
         description="Retrieve all social groups where the user is either the creator or a participant. These groups serve as the shared context for multi-party expenses.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
     retrieve=extend_schema(
         summary="Get specific group details",
         description="Access full metadata for a split group, including the member roster and historical group expenses.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
     create=extend_schema(
         summary="Create a new split group",
         description="Establish a new social ledger for expense sharing. The creator is automatically added as the first member.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
     update=extend_schema(
         summary="Update group metadata",
         description="Synchronize group attributes like the name. Typically used for group rename or structural updates.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
     partial_update=extend_schema(
         summary="Partially update group info",
         description="Modify specific group fields without impacting the member list or expense history.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
     destroy=extend_schema(
         summary="Disband a split group",
         description="Permanently archive or remove a group. Note: This may be restricted if there are unsettled expenses tethered to the group.",
-        tags=["Splits"]
+        tags=["Splits"],
     ),
 )
 class SplitGroupViewSet(viewsets.ModelViewSet):
     """
     Orchestration center for social financial groups.
     """
+
     serializer_class = SplitGroupSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

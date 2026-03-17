@@ -6,9 +6,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
 
 @pytest.mark.django_db
 class TestUserRegistrationAPI:
@@ -18,16 +20,16 @@ class TestUserRegistrationAPI:
         payload = {
             "email": "api_test@cashctrl.com",
             "password": "StrongPassword123!",
-            "password_confirm": "StrongPassword123!"
+            "password_confirm": "StrongPassword123!",
         }
-        
+
         response = api_client.post(url, payload, format="json")
-        
+
         assert response.status_code == status.HTTP_201_CREATED
         assert "access" in response.data
         assert "refresh" in response.data
         assert response.data["kyc_status"] == "PENDING"
         assert response.data["redirect_to"] == "/onboarding/kyc"
-        
+
         # Verify database insertion
         assert User.objects.filter(email=payload["email"]).exists()

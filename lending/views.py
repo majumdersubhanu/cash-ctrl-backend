@@ -14,32 +14,32 @@ from accounts.models import Account
     list=extend_schema(
         summary="List user loans",
         description="Retrieve a complete record of P2P loans associated with the user. Includes both 'Loans Given' (lender profile) and 'Loans Taken' (borrower profile), enabling dual-perspective financial oversight.",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
     retrieve=extend_schema(
         summary="Get specific loan details",
         description="Access full metadata for a specific loan contract. Returns high-precision data including principal, annual interest rate, and the current repayment status (Active, Defaulted, etc.).",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
     create=extend_schema(
         summary="Request a new P2P loan",
         description="Instantiates a Peer-to-Peer lending agreement. The engine automatically computes an immutable amortization schedule (Installments) with simple interest, ensuring forensic transparency for both parties.",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
     update=extend_schema(
         summary="Update a loan record",
         description="Replace high-level loan metadata. Note: Amortization schedules for active loans are typically protected from mutation to maintain contract integrity.",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
     partial_update=extend_schema(
         summary="Partially update a loan",
         description="Safely adjust non-critical loan attributes (e.g., tags or notes) without disturbing the core principal or interest calculations.",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
     destroy=extend_schema(
         summary="Terminate a loan proposal",
         description="Remove a loan proposal from the system. Typically only allowed for 'PENDING' loans that have not yet triggered disbursement or installment events.",
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     ),
 )
 class LoanViewSet(viewsets.ModelViewSet):
@@ -47,6 +47,7 @@ class LoanViewSet(viewsets.ModelViewSet):
     Core gateway for the P2P Lending Engine.
     Handles loan instantiation, schedule generation, and installment lifecycle.
     """
+
     serializer_class = LoanSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -76,9 +77,14 @@ class LoanViewSet(viewsets.ModelViewSet):
         summary="Pay Loan Installment",
         description="Processes a payment for a specific loan installment. Atomically transfers funds from the specified account to the lender, registers the transaction, and marks the installment as PAID.",
         parameters=[
-            OpenApiParameter(name="installment_id", type=OpenApiTypes.UUID, location=OpenApiParameter.PATH, description="The unique ID of the installment being paid.")
+            OpenApiParameter(
+                name="installment_id",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.PATH,
+                description="The unique ID of the installment being paid.",
+            )
         ],
-        tags=["P2P Lending"]
+        tags=["P2P Lending"],
     )
     @action(detail=True, methods=["post"], url_path="pay/(?P<installment_id>[^/.]+)")
     def pay_installment(self, request, pk=None, installment_id=None):

@@ -8,7 +8,7 @@ class AuditService:
     ):
         """
         Records a detailed immutable event in the system audit trail.
-        Captures the actor, the specific business action, the targeted cloud resource, 
+        Captures the actor, the specific business action, the targeted cloud resource,
         and any state changes for compliance and security forensics.
         """
         return AuditLog.objects.create(

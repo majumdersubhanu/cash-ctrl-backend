@@ -3,46 +3,48 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from .models import Account
 from .serializers import AccountSerializer
 
+
 @extend_schema_view(
     list=extend_schema(
         summary="List user accounts",
         description="Retrieve a comprehensive list of all financial accounts (Banks, Wallets, etc.) owned by the authenticated user. Useful for displaying a global balance overview.",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
     retrieve=extend_schema(
         summary="Get specific account details",
         description="Enables detailed inspection of a singular account by its UUID. Returns the polymorphic data specific to the account type (e.g., bank_name for BankAccounts).",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
     create=extend_schema(
         summary="Create a new account",
         description="Provision a new financial entity. The system automatically handles polymorphic instantiation and binds the account to the requesting user's identity.",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
     update=extend_schema(
         summary="Update an entire account",
         description="Replace all fields of an existing account. Requires all mandatory fields. Use with caution as this affects the root financial entity.",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
     partial_update=extend_schema(
         summary="Partially update an account",
         description="Safely mutate specific fields of an account (e.g., changing the name) without impacting other attributes or the current balance.",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
     destroy=extend_schema(
         summary="Delete an account",
         description="Permanently remove an account from the system. Warning: This action is destructive and may fail if there are dependent transaction records.",
-        tags=["Accounts"]
+        tags=["Accounts"],
     ),
 )
 class AccountViewSet(viewsets.ModelViewSet):
     """
     Unified Command Center for User Financial Entities.
-    
-    Provides a high-performance interface for managing various account types 
+
+    Provides a high-performance interface for managing various account types
     (Banks, Wallets, etc.) through DRF's polymorphic view inheritance.
     Enforces strict ownership isolation and audit-ready data structures.
     """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):

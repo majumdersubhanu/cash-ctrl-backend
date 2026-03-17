@@ -22,9 +22,7 @@ def create_user_dependencies(sender, instance, created, **kwargs):
             last_name=instance.last_name,
             status="PENDING",
         )
-        
+
         WalletAccount.objects.create(
-            user=instance,
-            name="Main Wallet",
-            wallet_provider="System CashCtrl Gateway"
+            user=instance, name="Main Wallet", wallet_provider="System CashCtrl Gateway"
         )

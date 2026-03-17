@@ -10,7 +10,7 @@ from django.template.defaultfilters import register
 def format_currency(value):
     try:
         return "{:,.2f}".format(float(value))
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         return value
 
 

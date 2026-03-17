@@ -7,9 +7,10 @@ import uuid
 class Category(models.Model):
     """
     Hierarchical classification system for income and expense tracking.
-    
+
     Supports nested subcategories and user-specific customizations (icons, colors).
     """
+
     class CategoryType(models.TextChoices):
         INCOME = "INCOME", _("Income")
         EXPENSE = "EXPENSE", _("Expense")
@@ -42,10 +43,11 @@ class Category(models.Model):
 class Transaction(models.Model):
     """
     Granular record of all financial movements within the ecosystem.
-    
+
     Serves as the source of truth for account balances and analytics.
     Automatically linked to categories and accounts.
     """
+
     class TransactionType(models.TextChoices):
         INCOME = "INCOME", _("Income")
         EXPENSE = "EXPENSE", _("Expense")
