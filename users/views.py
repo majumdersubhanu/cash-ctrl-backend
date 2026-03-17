@@ -21,6 +21,7 @@ from dj_rest_auth.registration.views import SocialLoginView
         summary="Register User",
         description="Public endpoint to register a new user using their Email and Password.",
         tags=["Authentication"],
+        operation_id="register"
     )
 )
 class RegistrationView(generics.CreateAPIView):
@@ -59,6 +60,7 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
         responses={200: {"example": {"message": "OTP sent successfully"}}},
         tags=["Authentication"],
         summary="Request OTP",
+        operation_id="request_otp"
     )
     @action(detail=False, methods=["post"])
     def request_otp(self, request):
@@ -74,6 +76,7 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
         responses={200: CustomTokenSerializer},
         tags=["Authentication"],
         summary="Verify OTP",
+        operation_id="verify_otp"
     )
     @action(detail=False, methods=["post"])
     def verify_otp(self, request):
@@ -109,10 +112,10 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
 
 
 @extend_schema_view(
-    get=extend_schema(summary="Get Current User Profile", tags=["Authentication"]),
-    put=extend_schema(summary="Update Current User Profile", tags=["Authentication"]),
+    get=extend_schema(summary="Get Current User Profile", tags=["Profiles"], operation_id="get_profile"),
+    put=extend_schema(summary="Update Current User Profile", tags=["Profiles"], operation_id="update_profile"),
     patch=extend_schema(
-        summary="Partially Update Current User Profile", tags=["Authentication"]
+        summary="Partially Update Current User Profile", tags=["Profiles"], operation_id="partial_update_profile"
     ),
 )
 class MeView(generics.RetrieveUpdateAPIView):
@@ -127,6 +130,13 @@ class MeView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema_view(
+    post=extend_schema(
+        summary="Google Login",
+        tags=["Authentication"],
+        operation_id="google_login"
+    )
+)
 class GoogleLogin(SocialLoginView):
     """
     Google social login bridge.

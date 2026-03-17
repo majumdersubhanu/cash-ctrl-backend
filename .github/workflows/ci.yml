@@ -14,7 +14,7 @@ jobs:
         image: postgres:15-alpine
         env:
           POSTGRES_USER: cashctrl_user
-          POSTGRES_PASSWORD: supersecretpassword
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
           POSTGRES_DB: cashctrl_db
         ports:
           - 5432:5432
@@ -62,9 +62,9 @@ jobs:
     - name: Run Pytest Test Suite
       env:
         DJANGO_SETTINGS_MODULE: app.settings
-        DATABASE_URL: postgres://cashctrl_user:supersecretpassword@localhost:5432/cashctrl_db
+        DATABASE_URL: postgres://cashctrl_user:${{ secrets.DB_PASSWORD }}@localhost:5432/cashctrl_db
         REDIS_URL: redis://localhost:6379/1
-        SECRET_KEY: testing-secret-key-123
+        SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       run: uv run pytest --cov=. --cov-report=xml
 
   docker-build:

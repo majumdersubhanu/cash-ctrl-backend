@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "rest_framework.authtoken",
+    "allauth.mfa",
     # Helpers
     "rangefilter",
     "import_export",
@@ -229,6 +230,14 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/day",
+        "user": "1000/hour",
+    },
 }
 
 # Simple JWT Settings
@@ -242,22 +251,38 @@ SIMPLE_JWT = {
 
 # Spectacular Settings
 SPECTACULAR_SETTINGS = {
-    "TITLE": "CashCtrl API",
-    "DESCRIPTION": "World-class financial management API",
+    "TITLE": "CashCtrl Core API",
+    "DESCRIPTION": "Advanced Fintech Ecosystem - Multi-tenant, Real-time Transaction Orchestration & P2P Lending Platform.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_PATCH": True,
+    "SCHEMA_PATH_PREFIX": r"/api/v1/",
+    "ENUM_NAME_OVERRIDES": {
+        "TransactionTypeEnum": "transactions.models.Transaction.TYPE_CHOICES",
+    },
+    "TAGS": [
+        {"name": "Authentication", "description": "Identity Management, Registration, and Social OAuth flows."},
+        {"name": "Profiles", "description": "User persona and KYC state management."},
+        {"name": "Accounts", "description": "Core wallet and banking infrastructure."},
+        {"name": "Transactions", "description": "Double-entry ledger orchestration and scanning."},
+        {"name": "Lending", "description": "P2P debt instruments and amortization schedules."},
+        {"name": "Splits", "description": "Multi-party expense distribution logic."},
+        {"name": "Analytics", "description": "Real-time KPI and financial health insights."},
+    ],
+    "POSTPROCESSING_HOOKS": [
+        "app.schema_hooks.custom_postprocessing_hook",
+    ],
 }
 # Security Settings
-if not DEBUG:
-    SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=False)
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=False)
+SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=True)
+CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=True)
+SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=31536000)  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
+SECURE_HSTS_PRELOAD = env.bool("SECURE_HSTS_PRELOAD", default=True)
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # CORS Configuration
 CORS_ALLOW_ALL_ORIGINS = DEBUG
