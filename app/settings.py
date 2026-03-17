@@ -262,13 +262,25 @@ SPECTACULAR_SETTINGS = {
         "TransactionTypeEnum": "transactions.models.Transaction.TYPE_CHOICES",
     },
     "TAGS": [
-        {"name": "Authentication", "description": "Identity Management, Registration, and Social OAuth flows."},
+        {
+            "name": "Authentication",
+            "description": "Identity Management, Registration, and Social OAuth flows.",
+        },
         {"name": "Profiles", "description": "User persona and KYC state management."},
         {"name": "Accounts", "description": "Core wallet and banking infrastructure."},
-        {"name": "Transactions", "description": "Double-entry ledger orchestration and scanning."},
-        {"name": "Lending", "description": "P2P debt instruments and amortization schedules."},
+        {
+            "name": "Transactions",
+            "description": "Double-entry ledger orchestration and scanning.",
+        },
+        {
+            "name": "Lending",
+            "description": "P2P debt instruments and amortization schedules.",
+        },
         {"name": "Splits", "description": "Multi-party expense distribution logic."},
-        {"name": "Analytics", "description": "Real-time KPI and financial health insights."},
+        {
+            "name": "Analytics",
+            "description": "Real-time KPI and financial health insights.",
+        },
     ],
     "POSTPROCESSING_HOOKS": [
         "app.schema_hooks.custom_postprocessing_hook",
@@ -279,7 +291,9 @@ SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=False)
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=True)
 CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=True)
 SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=31536000)  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True
+)
 SECURE_HSTS_PRELOAD = env.bool("SECURE_HSTS_PRELOAD", default=True)
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True

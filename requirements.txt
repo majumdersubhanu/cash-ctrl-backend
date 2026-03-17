@@ -58,5 +58,5 @@ django-prometheus==2.3.1
 prometheus-client==0.21.1
 # Authentication
 django-phonenumber-field[phonenumbers]==8.0.0
-django-allauth[socialaccount]==65.15.0
+django-allauth[socialaccount,mfa]==65.15.0
 
