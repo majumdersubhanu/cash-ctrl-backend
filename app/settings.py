@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -22,8 +23,9 @@ env = environ.Env(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Read .env file if it exists
-environ.Env.read_env(BASE_DIR / ".env")
+# Read .env file if it exists, default to .env, but allow overriding via environment variable
+env_file = os.environ.get('DJANGO_ENV_FILE', '.env')
+environ.Env.read_env(BASE_DIR / env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/

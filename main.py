@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 import subprocess
 import time
 
@@ -21,15 +22,19 @@ def start_services():
 def start_django(env_name):
     """Starts the Django development server."""
     print(f"Starting Django with env: {env_name}")
+    
+    # Establish which env file to use
+    env_file = '.env.dev' if env_name == 'dev' else '.env'
+    os.environ['DJANGO_ENV_FILE'] = env_file
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
-    # In a real app, env_name would choose different settings files or .env files
-    # For now, we follow the user's wish for flag selection
-    subprocess.call(['py', 'manage.py', 'runserver'])
+    
+    # Pass the env variable to the subprocess
+    subprocess.call([sys.executable, 'manage.py', 'runserver'])
 
 def start_celery():
     """Starts the Celery worker."""
     print("Starting Celery worker...")
-    subprocess.Popen(['py', '-m', 'celery', '-A', 'app', 'worker', '-l', 'info'])
+    subprocess.Popen([sys.executable, '-m', 'celery', '-A', 'app', 'worker', '-l', 'info'])
 
 def main():
     parser = argparse.ArgumentParser(description="CashCtrl Backend Entry Point")
