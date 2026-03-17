@@ -42,11 +42,13 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Create non-root user early
 RUN addgroup --system django && adduser --system --group django
 
-# Copy app code with correct ownership
-COPY --chown=django:django . .
+# Copy app code
+COPY . .
 
-# Ensure required directories exist and are owned by django
-RUN mkdir -p /app/static /app/media /app/logs && chown -R django:django /app/static /app/media /app/logs
+# Ensure the django user owns EVERYTHING in /app and /app itself
+RUN mkdir -p /app/static /app/media /app/logs && \
+    chown -R django:django /app && \
+    chmod -R 755 /app
 
 # Entrypoint
 COPY --chown=django:django entrypoint.sh /entrypoint.sh

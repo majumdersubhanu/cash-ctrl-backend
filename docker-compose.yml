@@ -29,7 +29,7 @@ services:
     image: cash-ctrl-backend-web
     container_name: cashctrl_web
     restart: no
-    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers 3 --worker-tmp-dir /dev/shm
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
@@ -43,10 +43,11 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health/" ]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
 
   celery_worker:
     image: cash-ctrl-backend-web
