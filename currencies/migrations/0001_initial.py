@@ -5,25 +5,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ExchangeRate',
+            name="ExchangeRate",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('base_currency', models.CharField(default='USD', max_length=3)),
-                ('target_currency', models.CharField(max_length=3)),
-                ('rate', models.DecimalField(decimal_places=6, max_digits=18)),
-                ('provider', models.CharField(default='manual', max_length=50)),
-                ('last_updated', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("base_currency", models.CharField(default="USD", max_length=3)),
+                ("target_currency", models.CharField(max_length=3)),
+                ("rate", models.DecimalField(decimal_places=6, max_digits=18)),
+                ("provider", models.CharField(default="manual", max_length=50)),
+                ("last_updated", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'unique_together': {('base_currency', 'target_currency')},
+                "unique_together": {("base_currency", "target_currency")},
             },
         ),
     ]

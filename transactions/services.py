@@ -2,15 +2,18 @@ from django.db import transaction
 from decimal import Decimal
 from .models import Transaction
 
+
 class TransactionService:
     @staticmethod
     @transaction.atomic
-    def create_transaction(user, account, type, amount, category=None, description="", status='POSTED'):
+    def create_transaction(
+        user, account, type, amount, category=None, description="", status="POSTED"
+    ):
         """
         Creates a transaction and updates the account balance atomically.
         """
         amount = Decimal(str(amount))
-        
+
         # Create the transaction record
         tx = Transaction.objects.create(
             user=user,
@@ -19,17 +22,17 @@ class TransactionService:
             amount=amount,
             category=category,
             description=description,
-            status=status
+            status=status,
         )
-        
+
         # Update account balance
-        if status != 'CANCELLED' and status != 'DRAFT':
-            if type == 'INCOME':
+        if status != "CANCELLED" and status != "DRAFT":
+            if type == "INCOME":
                 account.balance += amount
-            elif type == 'EXPENSE':
+            elif type == "EXPENSE":
                 account.balance -= amount
             account.save()
-            
+
         return tx
 
     @staticmethod
@@ -39,24 +42,24 @@ class TransactionService:
         Transfers money between accounts atomically.
         """
         amount = Decimal(str(amount))
-        
+
         # Create the transfer record (Type: TRANSFER)
         # We record it on the 'from_account' and link 'to_account'
         tx = Transaction.objects.create(
             user=user,
             account=from_account,
             to_account=to_account,
-            type='TRANSFER',
+            type="TRANSFER",
             amount=amount,
             description=description,
-            status='POSTED'
+            status="POSTED",
         )
-        
+
         # Update balances
         from_account.balance -= amount
         to_account.balance += amount
-        
+
         from_account.save()
         to_account.save()
-        
+
         return tx

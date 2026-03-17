@@ -3,8 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import ExchangeRateViewSet
 
 router = DefaultRouter()
-router.register(r'rates', ExchangeRateViewSet, basename='exchangerate')
+router.register(r"rates", ExchangeRateViewSet, basename="exchangerate")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

@@ -3,8 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import KYCViewSet
 
 router = DefaultRouter()
-router.register(r'kyc', KYCViewSet, basename='kyc')
+router.register(r"kyc", KYCViewSet, basename="kyc")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

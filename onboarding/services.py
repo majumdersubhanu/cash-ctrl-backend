@@ -1,6 +1,7 @@
 from django.utils import timezone
 from .models import KYCProfile
 
+
 class KYCService:
     @staticmethod
     def get_or_create_profile(user):
@@ -13,7 +14,7 @@ class KYCService:
         Transitions profile to PENDING status if basic info exists.
         """
         if profile.first_name and profile.last_name and profile.documents.exists():
-            profile.status = 'PENDING'
+            profile.status = "PENDING"
             profile.save()
             return True
         return False
@@ -23,7 +24,7 @@ class KYCService:
         """
         Marks profile as VERIFIED (usually by an admin).
         """
-        profile.status = 'VERIFIED'
+        profile.status = "VERIFIED"
         profile.verified_at = timezone.now()
         profile.save()
         return True
@@ -33,7 +34,7 @@ class KYCService:
         """
         Rejects a profile.
         """
-        profile.status = 'REJECTED'
+        profile.status = "REJECTED"
         profile.save()
         # In a real app, we'd send a notification/email with the reason
         return True

@@ -7,6 +7,7 @@ from .services import KYCService
 from audit.services import AuditService
 from rest_framework.throttling import UserRateThrottle
 
+
 class KYCViewSet(viewsets.ModelViewSet):
     serializer_class = KYCProfileSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -22,24 +23,24 @@ class KYCViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'], throttle_classes=[UserRateThrottle])
+    @action(detail=False, methods=["post"], throttle_classes=[UserRateThrottle])
     def submit(self, request):
         profile = self.get_object()
         if KYCService.submit_for_verification(profile):
             AuditService.log_action(
                 user=request.user,
-                action='KYC_SUBMITTED',
-                resource_type='KYCProfile',
+                action="KYC_SUBMITTED",
+                resource_type="KYCProfile",
                 resource_id=profile.id,
-                ip_address=request.META.get('REMOTE_ADDR')
+                ip_address=request.META.get("REMOTE_ADDR"),
             )
             return Response({"status": "PENDING", "message": "Verification submitted."})
         return Response(
-            {"error": "Incomplete profile. Ensure name and documents are provided."}, 
-            status=status.HTTP_400_BAD_REQUEST
+            {"error": "Incomplete profile. Ensure name and documents are provided."},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
-    @action(detail=False, methods=['post'], url_path='upload-document')
+    @action(detail=False, methods=["post"], url_path="upload-document")
     def upload_document(self, request):
         profile = self.get_object()
         serializer = KYCDocumentSerializer(data=request.data)

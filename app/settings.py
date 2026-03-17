@@ -24,7 +24,7 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read .env file if it exists, default to .env, but allow overriding via environment variable
-env_file = os.environ.get('DJANGO_ENV_FILE', '.env')
+env_file = os.environ.get("DJANGO_ENV_FILE", ".env")
 environ.Env.read_env(BASE_DIR / env_file)
 
 # Quick-start development settings - unsuitable for production
@@ -123,7 +123,9 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True  # Ensure ACID compliance by default
-DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # Database connection pooling
+DATABASES["default"]["CONN_MAX_AGE"] = env.int(
+    "CONN_MAX_AGE", default=60
+)  # Database connection pooling
 DATABASES["default"]["CONN_HEALTH_CHECKS"] = True  # Drop dead pooled connections
 
 
