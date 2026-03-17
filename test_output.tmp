@@ -1,0 +1,192 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\subhanu\PythonProjects\cash-ctrl-backend\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+django: version: 6.0.3, settings: app.settings (from ini)
+rootdir: C:\Users\subhanu\PythonProjects\cash-ctrl-backend
+configfile: pytest.ini
+plugins: Faker-40.11.0, cov-7.0.0, django-4.12.0
+collecting ... collected 1 item
+
+Creating test database for alias 'default' ('test_cashctrl')...
+
+WARNING Slow Request: POST /api/v1/users/register/ took 0.71s (User: AnonymousUser)
+users/test_integration.py::TestUserRegistrationAPI::test_user_registration_api_success DEBUG Response Data: {'id': '633f4aa1-dadd-4f61-b546-2ef7305f3d21', 'email': 'api_test@cashctrl.com'}
+Destroying test database for alias 'default' ('test_cashctrl')...
+
+FAILED
+
+================================== FAILURES ===================================
+_________ TestUserRegistrationAPI.test_user_registration_api_success __________
+
+self = <users.test_integration.TestUserRegistrationAPI object at 0x00000163E3944190>
+api_client = <rest_framework.test.APIClient object at 0x00000163E392DFD0>
+
+    def test_user_registration_api_success(self, api_client):
+        """Test integration of the DJ-Rest-Auth custom registration endpoint."""
+        url = reverse("register")
+        payload = {
+            "email": "api_test@cashctrl.com",
+            "password": "StrongPassword123!",
+            "password_confirm": "StrongPassword123!",
+        }
+    
+        response = api_client.post(url, payload, format="json")
+        print(f"DEBUG Response Data: {response.data}")
+    
+        assert response.status_code == status.HTTP_201_CREATED
+>       assert "access" in response.data
+E       assert 'access' in {'id': '633f4aa1-dadd-4f61-b546-2ef7305f3d21', 'email': 'api_test@cashctrl.com'}
+E        +  where {'id': '633f4aa1-dadd-4f61-b546-2ef7305f3d21', 'email': 'api_test@cashctrl.com'} = <Response status_code=201, "application/json">.data
+
+users\test_integration.py:30: AssertionError
+------------------------------ Captured log call ------------------------------
+WARNING  app.middleware:middleware.py:20 Slow Request: POST /api/v1/users/register/ took 0.71s (User: AnonymousUser)
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.14.3-final-0 _______________
+
+Name                                           Stmts   Miss  Cover
+------------------------------------------------------------------
+accounts\__init__.py                               0      0   100%
+accounts\admin.py                                  9      0   100%
+accounts\apps.py                                   3      0   100%
+accounts\migrations\0001_initial.py                8      8     0%
+accounts\migrations\__init__.py                    0      0   100%
+accounts\models.py                                19      1    95%
+accounts\serializers.py                           15      0   100%
+accounts\tests.py                                  0      0   100%
+accounts\urls.py                                   6      0   100%
+accounts\views.py                                 15      5    67%
+analytics\__init__.py                              0      0   100%
+analytics\admin.py                                12      0   100%
+analytics\admin_urls.py                            3      0   100%
+analytics\admin_views.py                          19      9    53%
+analytics\apps.py                                  3      0   100%
+analytics\migrations\0001_initial.py               8      8     0%
+analytics\migrations\__init__.py                   0      0   100%
+analytics\models.py                               26      2    92%
+analytics\services.py                             24     24     0%
+analytics\tests.py                                 0      0   100%
+analytics\urls.py                                  3      0   100%
+analytics\views.py                                42     21    50%
+app\__init__.py                                    2      0   100%
+app\asgi.py                                        4      4     0%
+app\celery.py                                      9      1    89%
+app\dashboard.py                                  23     23     0%
+app\middleware.py                                 13      0   100%
+app\settings.py                                   72      0   100%
+app\urls.py                                        5      0   100%
+app\views.py                                      25     16    36%
+app\wsgi.py                                        4      4     0%
+audit\__init__.py                                  0      0   100%
+audit\admin.py                                    14      3    79%
+audit\apps.py                                      3      0   100%
+audit\migrations\0001_initial.py                   8      8     0%
+audit\migrations\__init__.py                       0      0   100%
+audit\models.py                                   16      1    94%
+audit\services.py                                  5      1    80%
+audit\tests.py                                     0      0   100%
+audit\views.py                                     0      0   100%
+currencies\__init__.py                             0      0   100%
+currencies\admin.py                                0      0   100%
+currencies\apps.py                                 3      0   100%
+currencies\migrations\0001_initial.py              6      6     0%
+currencies\migrations\__init__.py                  0      0   100%
+currencies\models.py                              25     11    56%
+currencies\serializers.py                          7      0   100%
+currencies\services.py                            15     15     0%
+currencies\tests.py                                0      0   100%
+currencies\urls.py                                 6      0   100%
+currencies\views.py                               10      3    70%
+integrations\__init__.py                           0      0   100%
+integrations\admin.py                              0      0   100%
+integrations\apps.py                               3      0   100%
+integrations\migrations\__init__.py                0      0   100%
+integrations\models.py                             0      0   100%
+integrations\scanner.py                           29     18    38%
+integrations\services.py                          25     25     0%
+integrations\tests.py                              0      0   100%
+integrations\views.py                              0      0   100%
+lending\__init__.py                                0      0   100%
+lending\admin.py                                  13      0   100%
+lending\apps.py                                    3      0   100%
+lending\migrations\0001_initial.py                 8      8     0%
+lending\migrations\__init__.py                     0      0   100%
+lending\models.py                                 38      2    95%
+lending\serializers.py                            15      0   100%
+lending\services.py                               37     23    38%
+lending\tests.py                                  45     45     0%
+lending\urls.py                                    6      0   100%
+lending\views.py                                  39     20    49%
+main.py                                           36     36     0%
+manage.py                                         11     11     0%
+notifications\__init__.py                          0      0   100%
+notifications\admin.py                             7      0   100%
+notifications\apps.py                              3      0   100%
+notifications\migrations\0001_initial.py           8      8     0%
+notifications\migrations\__init__.py               0      0   100%
+notifications\models.py                           14      1    93%
+notifications\services.py                         13     13     0%
+notifications\tests.py                             0      0   100%
+notifications\views.py                             0      0   100%
+onboarding\__init__.py                             0      0   100%
+onboarding\admin.py                               15      0   100%
+onboarding\apps.py                                 3      0   100%
+onboarding\migrations\0001_initial.py              8      8     0%
+onboarding\migrations\__init__.py                  0      0   100%
+onboarding\models.py                              36      2    94%
+onboarding\serializers.py                         14      0   100%
+onboarding\services.py                            25     14    44%
+onboarding\tests.py                                0      0   100%
+onboarding\tests_integration.py                   41     41     0%
+onboarding\urls.py                                 6      0   100%
+onboarding\views.py                               36     16    56%
+recurring\__init__.py                              0      0   100%
+recurring\admin.py                                 7      0   100%
+recurring\apps.py                                  3      0   100%
+recurring\migrations\0001_initial.py               8      8     0%
+recurring\migrations\__init__.py                   0      0   100%
+recurring\models.py                               21      1    95%
+recurring\services.py                             29     29     0%
+recurring\tests.py                                 0      0   100%
+recurring\views.py                                 0      0   100%
+splits\admin.py                                   15      0   100%
+splits\apps.py                                     4      0   100%
+splits\models.py                                  30      3    90%
+splits\serializers.py                             22      0   100%
+splits\services.py                                50     37    26%
+splits\urls.py                                     6      0   100%
+splits\views.py                                   45     29    36%
+transactions\__init__.py                           0      0   100%
+transactions\admin.py                             17      1    94%
+transactions\apps.py                               3      0   100%
+transactions\migrations\0001_initial.py            8      8     0%
+transactions\migrations\__init__.py                0      0   100%
+transactions\models.py                            45      2    96%
+transactions\serializers.py                       15      0   100%
+transactions\services.py                          26     16    38%
+transactions\tests.py                             28     28     0%
+transactions\urls.py                               7      0   100%
+transactions\views.py                             42     17    60%
+users\__init__.py                                  0      0   100%
+users\admin.py                                    11      0   100%
+users\apps.py                                      6      0   100%
+users\backends.py                                 15     15     0%
+users\migrations\0001_initial.py                   9      9     0%
+users\migrations\0002_alter_user_managers.py       4      4     0%
+users\migrations\__init__.py                       0      0   100%
+users\models.py                                   32      6    81%
+users\phone_auth_service.py                       25     14    44%
+users\serializers.py                              47     10    79%
+users\services.py                                 13      0   100%
+users\signals.py                                  11      0   100%
+users\test_integration.py                         22      4    82%
+users\tests.py                                    24     24     0%
+users\urls.py                                      7      0   100%
+users\views.py                                    50     19    62%
+------------------------------------------------------------------
+TOTAL                                           1734    749    57%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ===========================
+FAILED users/test_integration.py::TestUserRegistrationAPI::test_user_registration_api_success - assert 'access' in {'id': '633f4aa1-dadd-4f61-b546-2ef7305f3d21', 'email': 'api_test@cashctrl.com'}
+ +  where {'id': '633f4aa1-dadd-4f61-b546-2ef7305f3d21', 'email': 'api_test@cashctrl.com'} = <Response status_code=201, "application/json">.data
+============================== 1 failed in 4.33s ==============================

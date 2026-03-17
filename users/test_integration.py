@@ -24,6 +24,7 @@ class TestUserRegistrationAPI:
         }
 
         response = api_client.post(url, payload, format="json")
+        print(f"DEBUG Response Data: {response.data}")
 
         assert response.status_code == status.HTTP_201_CREATED
         assert "access" in response.data

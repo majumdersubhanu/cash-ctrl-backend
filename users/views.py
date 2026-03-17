@@ -26,10 +26,25 @@ from dj_rest_auth.registration.views import SocialLoginView
 class RegistrationView(generics.CreateAPIView):
     """
     Public registration gateway for new users.
+    Returns JWT tokens and user profile upon success.
     """
 
     serializer_class = UserRegistrationSerializer
     permission_classes = (permissions.AllowAny,)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Generate tokens
+        refresh = RefreshToken.for_user(user)
+        data = {
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": user,
+        }
+        return Response(CustomTokenSerializer(data).data, status=status.HTTP_201_CREATED)
 
 
 class PhoneAuthViewSet(viewsets.GenericViewSet):
