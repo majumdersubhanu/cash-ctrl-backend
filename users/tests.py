@@ -32,6 +32,6 @@ class TestUserService:
         assert user.username == username
 
     def test_create_user_missing_email(self):
-        """Ensure ValueError is raised if email is missing."""
-        with pytest.raises(ValueError, match="The Email field must be set"):
+        """Ensure ValueError is raised if email and phone are missing."""
+        with pytest.raises(ValueError, match="Email or Phone Number must be set"):
             UserService.create_user(email="", password="securepassword123")
