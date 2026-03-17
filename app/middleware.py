@@ -1,5 +1,6 @@
 import time
 import logging
+from django.db import connection
 
 logger = logging.getLogger(__name__)
 
@@ -23,3 +24,22 @@ class PerformanceMiddleware:
             )
 
         return response
+
+class RLSMiddleware:
+    """
+    Injects the authenticated user's ID into the PostgreSQL transaction context
+    for Row-Level Security evaluation.
+    Requires ATOMIC_REQUESTS = True to persist the SET LOCAL across the request.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if hasattr(request, 'user') and request.user.is_authenticated:
+            with connection.cursor() as cursor:
+                cursor.execute("SET LOCAL app.current_user_id = %s;", [request.user.id])
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute("SET LOCAL app.current_user_id = '';")
+
+        return self.get_response(request)
