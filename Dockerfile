@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -44,7 +44,9 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 RUN addgroup --system django && adduser --system --group django
+RUN mkdir -p /app/static /app/media /app/logs
 RUN chown -R django:django /app
+
 USER django
 
 ENTRYPOINT ["/entrypoint.sh"]
