@@ -1,9 +1,21 @@
 #!/bin/sh
+set -e
 
-echo "Applying database migrations..."
-python manage.py migrate --noinput
+echo "Waiting for database..."
 
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
+while ! pg_isready -h db -U cashctrl_user -d cashctrl; do
+  sleep 1
+done
+
+echo "Database is ready!"
+
+# Run only for web (gunicorn)
+if [ "$1" = "gunicorn" ]; then
+  echo "Applying migrations..."
+  python manage.py migrate --noinput
+
+  echo "Collecting static files..."
+  python manage.py collectstatic --noinput
+fi
 
 exec "$@"

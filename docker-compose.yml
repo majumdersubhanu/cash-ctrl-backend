@@ -2,7 +2,8 @@ services:
 
   db:
     image: postgres:16
-    restart: unless-stopped
+    container_name: cashctrl_db
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -15,7 +16,8 @@ services:
 
   redis:
     image: redis:7-alpine
-    restart: unless-stopped
+    container_name: cashctrl_redis
+    restart: always
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
@@ -24,21 +26,32 @@ services:
 
   web:
     build: .
-    restart: unless-stopped
+    image: cash-ctrl-backend-web
+    container_name: cashctrl_web
+    restart: always
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers 3
     volumes:
       - static_volume:/app/static
       - media_volume:/app/media
     env_file:
       - .env
+    expose:
+      - "8000"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   celery_worker:
-    build: .
-    restart: unless-stopped
+    image: cash-ctrl-backend-web
+    container_name: cashctrl_celery_worker
+    restart: always
     command: celery -A app worker -l info
     env_file:
       - .env
@@ -49,8 +62,9 @@ services:
         condition: service_healthy
 
   celery_beat:
-    build: .
-    restart: unless-stopped
+    image: cash-ctrl-backend-web
+    container_name: cashctrl_celery_beat
+    restart: always
     command: celery -A app beat -l info
     env_file:
       - .env
@@ -62,7 +76,8 @@ services:
 
   nginx:
     image: nginx:1.25-alpine
-    restart: unless-stopped
+    container_name: cashctrl_nginx
+    restart: always
     ports:
       - "80:80"
     volumes:
