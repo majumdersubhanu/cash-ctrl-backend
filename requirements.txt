@@ -52,3 +52,11 @@ uritemplate==4.2.0
 urllib3==2.6.3
 vine==5.1.0
 wcwidth==0.6.0
+# Monitoring
+flower==2.0.1
+django-prometheus==2.3.1
+prometheus-client==0.21.1
+# Authentication
+django-phonenumber-field[phonenumbers]==8.0.0
+django-allauth[socialaccount]==65.15.0
+

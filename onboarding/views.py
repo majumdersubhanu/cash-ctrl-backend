@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from .models import KYCProfile
 from .serializers import KYCProfileSerializer, KYCDocumentSerializer
 from .services import KYCService
@@ -8,7 +9,32 @@ from audit.services import AuditService
 from rest_framework.throttling import UserRateThrottle
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="Get KYC Profile Status",
+        description="Retrieve the current verification state of the user's KYC profile. Returns essential metadata including verification level and pending document requirements.",
+        tags=["KYC & Onboarding"]
+    ),
+    retrieve=extend_schema(
+        summary="Inspect specific KYC details",
+        description="Detailed view of the user's identity profile, including PII and submitted verification tokens.",
+        tags=["KYC & Onboarding"]
+    ),
+    submit=extend_schema(
+        summary="Submit for identity verification",
+        description="Initiates the manual or automated background check. This action is immutable once the profile enters 'PENDING' state.",
+        tags=["KYC & Onboarding"]
+    ),
+    upload_document=extend_schema(
+        summary="Upload identity documents",
+        description="Securely ingest proof-of-identity or proof-of-address documents. Supports multiple document types (Passport, Utility Bill, etc.) with encrypted storage handles.",
+        tags=["KYC & Onboarding"]
+    ),
+)
 class KYCViewSet(viewsets.ModelViewSet):
+    """
+    Gateway to the user identity verification lifecycle.
+    """
     serializer_class = KYCProfileSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

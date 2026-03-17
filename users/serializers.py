@@ -37,8 +37,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "username", "email", "first_name", "last_name")
-        read_only_fields = ("id", "email")
+        fields = ("id", "username", "email", "phone_number", "first_name", "last_name", "profile_picture")
+        read_only_fields = ("id", "email", "phone_number")
+
+
+class PhoneAuthSerializer(serializers.Serializer):
+    phone_number = serializers.CharField()
+
+
+class PhoneVerifySerializer(serializers.Serializer):
+    phone_number = serializers.CharField()
+    otp = serializers.CharField(max_length=6)
 
 
 class CustomTokenSerializer(serializers.Serializer):

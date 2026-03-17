@@ -11,12 +11,36 @@ from accounts.models import Account
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List P2P Loans", description="Retrieve all loans where the authenticated user is either the lender or the borrower.", tags=["P2P Lending"]),
-    retrieve=extend_schema(summary="Get Loan Details", tags=["P2P Lending"]),
-    create=extend_schema(summary="Request/Create a Loan", description="Instantiates a new P2P computing contract. Automatically generates mathematically precise amortization schedules (installments) based on interest rate and duration.", tags=["P2P Lending"]),
-    update=extend_schema(summary="Update Loan state", tags=["P2P Lending"]),
-    partial_update=extend_schema(summary="Partially update Loan", tags=["P2P Lending"]),
-    destroy=extend_schema(summary="Delete or Cancel a pending Loan", tags=["P2P Lending"]),
+    list=extend_schema(
+        summary="List user loans",
+        description="Retrieve a complete record of P2P loans associated with the user. Includes both 'Loans Given' (lender profile) and 'Loans Taken' (borrower profile), enabling dual-perspective financial oversight.",
+        tags=["P2P Lending"]
+    ),
+    retrieve=extend_schema(
+        summary="Get specific loan details",
+        description="Access full metadata for a specific loan contract. Returns high-precision data including principal, annual interest rate, and the current repayment status (Active, Defaulted, etc.).",
+        tags=["P2P Lending"]
+    ),
+    create=extend_schema(
+        summary="Request a new P2P loan",
+        description="Instantiates a Peer-to-Peer lending agreement. The engine automatically computes an immutable amortization schedule (Installments) with simple interest, ensuring forensic transparency for both parties.",
+        tags=["P2P Lending"]
+    ),
+    update=extend_schema(
+        summary="Update a loan record",
+        description="Replace high-level loan metadata. Note: Amortization schedules for active loans are typically protected from mutation to maintain contract integrity.",
+        tags=["P2P Lending"]
+    ),
+    partial_update=extend_schema(
+        summary="Partially update a loan",
+        description="Safely adjust non-critical loan attributes (e.g., tags or notes) without disturbing the core principal or interest calculations.",
+        tags=["P2P Lending"]
+    ),
+    destroy=extend_schema(
+        summary="Terminate a loan proposal",
+        description="Remove a loan proposal from the system. Typically only allowed for 'PENDING' loans that have not yet triggered disbursement or installment events.",
+        tags=["P2P Lending"]
+    ),
 )
 class LoanViewSet(viewsets.ModelViewSet):
     """

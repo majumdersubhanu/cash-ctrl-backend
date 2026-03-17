@@ -88,7 +88,41 @@ services:
     depends_on:
       - web
 
+  flower:
+    image: cash-ctrl-backend-web
+    container_name: cashctrl_flower
+    command: celery -A app flower --port=5555
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cashctrl_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - web
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: cashctrl_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  grafana_data:

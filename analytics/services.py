@@ -6,10 +6,17 @@ from transactions.models import Transaction
 
 
 class ForecastingService:
+    """
+    Predictive engine utilizing historical transaction patterns to project future states.
+    
+    Leverages time-series aggregation to provide actionable financial insights.
+    """
     @staticmethod
     def predict_next_month_spending(user):
         """
-        Simple forecasting based on moving average of last 3 months.
+        Calculates a statistical projection for the user's spending in the next cycle.
+        
+        Methodology: 3-month rolling average of verified outgoing 'POSTED' expenses.
         """
         now = timezone.now()
         three_months_ago = now - timedelta(days=90)
@@ -34,7 +41,10 @@ class ForecastingService:
     @staticmethod
     def forecast_cash_flow(user, days=30):
         """
-        Projects cash flow based on average daily net income.
+        Estimates the net liquidity shift over a projected horizon.
+        
+        Methodology: Projects current net daily velocity (Inflow - Outflow) over 
+        the specified window.
         """
         now = timezone.now()
         thirty_days_ago = now - timedelta(days=30)

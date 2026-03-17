@@ -5,6 +5,12 @@ import uuid
 
 
 class Account(PolymorphicModel):
+    """
+    Base abstraction for all financial holding entities in the CashCtrl ecosystem.
+    
+    This model utilizes polymorphic inheritance to support diverse account types 
+    while maintaining a unified interface for transactions and balance tracking.
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="accounts"
@@ -20,9 +26,15 @@ class Account(PolymorphicModel):
 
 
 class BankAccount(Account):
+    """
+    Represents a formal banking relationship with external institutional identifiers.
+    """
     bank_name = models.CharField(max_length=100)
     account_number = models.CharField(max_length=50)
 
 
 class WalletAccount(Account):
+    """
+    Represents digital wallets or neo-banking credit lines.
+    """
     wallet_provider = models.CharField(max_length=100)

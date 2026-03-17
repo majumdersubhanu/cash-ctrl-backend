@@ -4,6 +4,11 @@ import uuid
 
 
 class SplitGroup(models.Model):
+    """
+    Social grouping for expense sharing and collective debt management.
+    
+    Serves as the organizational container for multi-party financial splits.
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     creator = models.ForeignKey(
@@ -21,6 +26,12 @@ class SplitGroup(models.Model):
 
 
 class SplitExpense(models.Model):
+    """
+    Primary debit entry within a SplitGroup.
+    
+    Represents a master expenditure that will be proportionally allocated 
+    among group participants.
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     group = models.ForeignKey(
         SplitGroup, on_delete=models.CASCADE, related_name="expenses"
@@ -41,6 +52,11 @@ class SplitExpense(models.Model):
 
 
 class SplitParticipation(models.Model):
+    """
+    Proportional debt obligation belonging to a specific user for a given expense.
+    
+    Links individual users to their specific share of a SplitExpense.
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     expense = models.ForeignKey(
         SplitExpense, on_delete=models.CASCADE, related_name="participants"

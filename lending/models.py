@@ -5,6 +5,12 @@ import uuid
 
 
 class Loan(models.Model):
+    """
+    Central ledger for Peer-to-Peer (P2P) lending contracts.
+    
+    Tracks the lifecycle of a loan from proposal to full settlement or default.
+    Enforces interest calculation logic and installment schedules.
+    """
     class LoanStatus(models.TextChoices):
         PENDING = "PENDING", _("Pending")
         ACTIVE = "ACTIVE", _("Active")

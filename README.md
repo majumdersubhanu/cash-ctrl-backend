@@ -25,6 +25,7 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 - **Financial Integrity**: Double-entry bookkeeping concepts, atomic transactions, and an immutable audit trail.
 - **AI Intelligence**: Automated transaction entry from physical receipts via Pytesseract Vision integration.
 - **Group Versatility**: The "Splitter" engine supports unequal, percentage-based, and exact-amount splits for complex social financial scenarios.
+- **Observability Built-in**: Real-time monitoring of task queues and system health via a professional observability stack.
 - **Developer First**: Clean, heavily documented APIs featuring OpenAPI 3.0 via `drf-spectacular`, with out-of-the-box Docker/K8s orchestration support.
 
 ---
@@ -32,12 +33,13 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 ## 🛠 Tech Stack
 
 - **Core Framework**: Django 6.0 + Django REST Framework (DRF)
-- **Database**: PostgreSQL (Production) / SQLite (Development)
-- **Authentication**: `django-allauth` + JWT (JSON Web Tokens)
-- **Asynchronous Task Queue**: Celery + Redis (for background jobs, PDF generation, bulk processing)
+- **Database**: PostgreSQL (Production) / Redis (Cache & Queue)
+- **Authentication**: Phone (OTP) + Google OAuth2 + JWT
+- **Observability**: Prometheus, Grafana, Flower
+- **Asynchronous Task Queue**: Celery + Redis
 - **AI/Vision Integration**: Pytesseract + Pillow for Receipt OCR Parsing
-- **API Documentation**: OpenAPI 3.0 via `drf-spectacular` (Swagger/Redoc UI)
-- **Deployment & Orchestration**: Docker, Docker Compose, Kubernetes (Helm-ready manifests)
+- **API Documentation**: OpenAPI 3.0 via `drf-spectacular` (Swagger/Redoc)
+- **Environment**: Docker, Kubernetes, Google Cloud Platform (GCP)
 
 ---
 
@@ -47,28 +49,31 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 
 - **Multi-currency Support**: Intelligent exchange rate engine automatically bridging global usage.
 - **Hierarchical Categorization**: Multi-level categories for highly granular tracking.
-- **Audit Trails**: Immutable, system-level logs tracking every sensitive financial state change in the database.
+- **Audit Trails**: Immutable, system-level logs tracking every sensitive financial state change.
 
 ### 2. P2P Lending Engine
 
 - **Lifecycle Management**: Request -> Approval -> Disbursement -> Repayment.
 - **Amortization Schedules**: Automatic generation of monthly installments with precise interest calculation.
-- **Hardened Validation**: Borrowers must complete KYC verification before interacting with the credit system.
+- **Verification Gates**: Borrowers must complete KYC verification before interacting with the credit engine.
 
 ### 3. Split Payment Engine (The Splitter)
 
 - **Group Contexts**: Dedicated shard for maintaining shared expenses within a specific group.
 - **Mathematical Diversity**: Safely processes **Equal**, **Percentage-based**, and **Fixed-amount** splits with zero drift.
-- **Settlement Ledger**: Real-time "who-owes-who" calculations with automated settlement resolution paths.
+- **Settlement Ledger**: Real-time "who-owes-who" calculations with automated resolution paths.
 
-### 4. AI Perception (Vision Module)
+### 4. Hardened Multi-Method Authentication
 
-- **Receipt Scanning**: Secure receipt photo upload workflow. The system extracts Amount, Merchant, and Date automatically using backend OCR. Temp files are securely expunged post-processing.
+- **Phone Auth**: Secure OTP-based registration and login via mobile verification.
+- **Google OAuth**: One-tap social login integrated via `django-allauth`.
+- **DualAuth Backend**: Custom authentication backend allowing login via Email OR Phone Number.
 
-### 5. Analytics & Forecasting
+### 5. Advanced Monitoring & Observability
 
-- **Predictive Spending**: Time-series analysis of historical data to forecast future cash flow vectors.
-- **Detailed Reports**: Automated financial health exports generated as asynchronous Celery tasks.
+- **Flower**: Real-time monitoring and management of Celery distributed task queues.
+- **Prometheus**: High-fidelity metric collection for application performance and resource utilization.
+- **Grafana**: Professionally curated dashboards for visualizing system health and transaction velocity.
 
 ---
 
@@ -88,18 +93,18 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
    ```bash
    uv venv
    # On Windows: .venv\Scripts\activate
-   # On Linux/macOS: source .venv/bin/activate
    uv sync
    ```
 
 3. **Configure Environment Variables**:
-   Copy `.env.example` to `.env.dev` and tailor your database keys.
+
+   Copy `.env.example` to `.env.dev` and tailor your database and social auth keys.
 
 4. **Run Migrations & Seed Data**:
 
    ```bash
    python manage.py migrate
-   python manage.py seed_data  # Generates 5k Users & 500k Transactions
+   python manage.py seed_data
    ```
 
 5. **Start the Unified Entry Point**:
@@ -110,47 +115,22 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 
 ### Docker (Production Setup)
 
-The stack is fully containerized inside a multi-stage, Linux-secure Dockerfile running Gunicorn behind Nginx. `docker-compose` spins up Redis, Celery Workers, Celery Beat, PostgreSQL, and the Web container automatically.
+The stack is fully containerized inside a multi-stage, Linux-secure Dockerfile running Gunicorn behind Nginx. `docker-compose` spins up Redis, Celery Workers, Prometheus, Grafana, and Flower automatically.
 
 ```bash
 docker compose up --build -d
 ```
 
-### Kubernetes Orchestration
+### Google Cloud Deployment
 
-Manifests are actively maintained in the `k8s/` directory for rolling out to a production cluster.
-
-```bash
-kubectl apply -f k8s/config.yaml
-kubectl apply -f k8s/db.yaml
-kubectl apply -f k8s/redis.yaml
-kubectl apply -f k8s/web.yaml
-kubectl apply -f k8s/worker.yaml
-```
-
----
-
-## 📁 Project Structure
-
-- `app/`: Project configuration, core settings, Celery setup, and security middleware.
-- `users/`: Custom User model, email-based auth, and the massive data seeder.
-- `accounts/`: Balance tracking, account types, and currency management.
-- `transactions/`: Core atomic ledger operations and Vision/Receipt OCR Parsing.
-- `lending/`: P2P Loan request orchestration and amortization schedules.
-- `splits/`: Multi-actor group expense mathematical engine.
-- `analytics/`: Budgets, savings goals, and time-series forecasting logic.
-- `recurring/`: Celery Beat crontab-driven scheduled transaction generation.
-- `onboarding/`: Identity verification and compliance (KYC) workflows.
-- `integrations/`: Third-party API wrappers (Truecaller, Cashfree, Setu).
-- `audit/`: The immovable object: append-only system activity logs.
-- `notifications/`: User alerting and WebSocket/Email hook targets.
+CashCtrl is optimized for GCP deployment via Cloud Run and Cloud SQL.
+See [GCLOUD_DEPLOYMENT.md](file:///c:/Users/subhanu/PythonProjects/cash-ctrl-backend/GCLOUD_DEPLOYMENT.md) for the full orchestration guide.
 
 ---
 
 ## 📖 API Documentation
 
 The REST API is strictly typed and documented using the OpenAPI 3.0 specification.
-When the server is running, you can interact with the endpoints through the beautiful, autogenerated UI interfaces:
 
 - **Swagger UI**: `http://localhost:8000/api/docs/`
 - **ReDoc**: `http://localhost:8000/api/redoc/`
@@ -159,19 +139,8 @@ When the server is running, you can interact with the endpoints through the beau
 
 ## 📜 Git & Contributions
 
-We strictly follow the **Conventional Commits** specification. Please ensure every commit follows the format:
-
-- `feat(component): description`
-- `fix(component): description`
-- `perf(component): description`
-- `docs(component): description`
-
-## 🛡 Security Hardening
-
-- **Throttling**: DRF rate limits on sensitive authentication and transaction mutating endpoints.
-- **Scanning Contexts**: OCR payloads exist strictly in-memory or temporary encrypted volumes and are immediately purged.
-- **Bcrypt Hashing**: Immutable Secure password storage by default.
-- **Connection Pools**: Managed psycopg2 persistent connection pools handling ultra-high concurrency safely (`CONN_MAX_AGE`).
+We strictly follow **Conventional Commits** and maintain a forensic-grade git history.
+See [CONTRIBUTING.md](file:///c:/Users/subhanu/PythonProjects/cash-ctrl-backend/CONTRIBUTING.md) for setup and PR guidelines.
 
 ---
 

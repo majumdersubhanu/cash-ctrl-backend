@@ -4,13 +4,21 @@ from .models import Transaction
 
 
 class TransactionService:
+    """
+    Orchestration layer for financial movements.
+    
+    Ensures that every transaction or transfer is processed atomically with its
+    corresponding account balance updates.
+    """
     @staticmethod
     @transaction.atomic
     def create_transaction(
         user, account, type, amount, category=None, description="", status="POSTED"
     ):
         """
-        Creates a transaction and updates the account balance atomically.
+        Executes a single-sided transaction (Income/Expense).
+        
+        Atomically records the entry and modifies the target account balance.
         """
         amount = Decimal(str(amount))
 
@@ -39,7 +47,10 @@ class TransactionService:
     @transaction.atomic
     def transfer_money(user, from_account, to_account, amount, description=""):
         """
-        Transfers money between accounts atomically.
+        Synchronizes a double-sided transfer between two internal accounts.
+        
+        Maintains total system balance by decrementing the source and incrementing
+        the destination atomically.
         """
         amount = Decimal(str(amount))
 

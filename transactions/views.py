@@ -10,12 +10,36 @@ from integrations.scanner import ScannerService
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List categories", description="Retrieves all custom transaction categories created by the authenticated user.", tags=["Categories"]),
-    retrieve=extend_schema(summary="Get a specific category", tags=["Categories"]),
-    create=extend_schema(summary="Create an expense/income category", tags=["Categories"]),
-    update=extend_schema(summary="Update a category", tags=["Categories"]),
-    partial_update=extend_schema(summary="Partially update a category", tags=["Categories"]),
-    destroy=extend_schema(summary="Delete a category", tags=["Categories"]),
+    list=extend_schema(
+        summary="List transaction categories",
+        description="Retrieve a structured list of all financial categories available to the user. Categories are used to classify entries as Income or Expense, enabling granular analytics.",
+        tags=["Categories"]
+    ),
+    retrieve=extend_schema(
+        summary="Get specific category details",
+        description="Access full metadata for a single category, including its hierarchical relationship (parent/subcategories) and visual attributes (icon/color).",
+        tags=["Categories"]
+    ),
+    create=extend_schema(
+        summary="Create a new financial category",
+        description="Establish a new classification vector for tracking money movement. Supports nested hierarchies for complex budgeting scenarios.",
+        tags=["Categories"]
+    ),
+    update=extend_schema(
+        summary="Update a category definition",
+        description="Synchronize all fields of a category record. Used for global reclassification or structural changes in the category tree.",
+        tags=["Categories"]
+    ),
+    partial_update=extend_schema(
+        summary="Partially update category metadata",
+        description="Refine specific category attributes like the icon or color code without affecting the underlying classification type.",
+        tags=["Categories"]
+    ),
+    destroy=extend_schema(
+        summary="Remove a category",
+        description="Permanently delete a categorization entry. Recommended only for unused categories to maintain historical analytical integrity.",
+        tags=["Categories"]
+    ),
 )
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -34,12 +58,36 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List transactions", description="Fetches all transactions for the user, ordered chronologically by default.", tags=["Transactions"]),
-    retrieve=extend_schema(summary="Get transaction details", tags=["Transactions"]),
-    create=extend_schema(summary="Post a new transaction", description="Safely mutates account balances via the core TransactionService. Supports Transfers, Incomes, and Expenses.", tags=["Transactions"]),
-    update=extend_schema(summary="Update a transaction", tags=["Transactions"]),
-    partial_update=extend_schema(summary="Partially update a transaction", tags=["Transactions"]),
-    destroy=extend_schema(summary="Delete a transaction", tags=["Transactions"]),
+    list=extend_schema(
+        summary="List user transactions",
+        description="Retrieve a forensic-grade ledger of all money movements. Supports high-performance chronological ordering and detailed linkings to accounts and categories.",
+        tags=["Transactions"]
+    ),
+    retrieve=extend_schema(
+        summary="Inspect a specific transaction",
+        description="Returns the full audit trail and metadata for a single financial event, including transfer details and status (Posted/Cleared).",
+        tags=["Transactions"]
+    ),
+    create=extend_schema(
+        summary="Initiate a new financial event",
+        description="Primary gateway for posting Income, Expenses, or internal Transfers. This operation triggers real-time account balance updates through the TransactionService.",
+        tags=["Transactions"]
+    ),
+    update=extend_schema(
+        summary="Correct a transaction record",
+        description="Perform a full replacement of a transaction's data. Automatically recalibrates the affected account balances to maintain ledger consistency.",
+        tags=["Transactions"]
+    ),
+    partial_update=extend_schema(
+        summary="Adjust transaction attributes",
+        description="Mutate specific transaction metadata (e.g., description) without disrupting the core financial amounts or account reconciliation logic.",
+        tags=["Transactions"]
+    ),
+    destroy=extend_schema(
+        summary="Void a transaction entry",
+        description="Removes a transaction from the ledger. This action triggers a balance reversal on the associated accounts to maintain absolute system integrity.",
+        tags=["Transactions"]
+    ),
 )
 class TransactionViewSet(viewsets.ModelViewSet):
     """
