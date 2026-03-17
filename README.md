@@ -79,7 +79,7 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 1. **Clone the repository**:
 
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/majumdersubhanu/cash-ctrl-backend
    cd cash-ctrl-backend
    ```
 
