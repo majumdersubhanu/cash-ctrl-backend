@@ -15,7 +15,7 @@ class UserService:
     @staticmethod
     @transaction.atomic
     def create_user(
-        email=None, phone_number=None, password=None, username=None, **extra_fields
+            email=None, phone_number=None, password=None, username=None, **extra_fields
     ):
         """
         Creates a new user record atomically.

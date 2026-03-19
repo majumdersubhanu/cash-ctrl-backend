@@ -1,7 +1,8 @@
+import logging
+import random
+
 from django.core.cache import cache
 from rest_framework.exceptions import ValidationError
-import random
-import logging
 
 logger = logging.getLogger(__name__)
 

@@ -64,7 +64,6 @@ def main():
 
     if args.start_services:
         start_services()
-        # Wait a bit for redis to be ready
         time.sleep(2)
         start_celery()
 

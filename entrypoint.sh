@@ -9,7 +9,6 @@ done
 
 echo "Database is ready!"
 
-# Run only for web (gunicorn)
 if [ "$1" = "gunicorn" ]; then
   echo "Applying migrations..."
   python manage.py migrate --noinput

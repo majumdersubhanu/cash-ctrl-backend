@@ -1,10 +1,12 @@
-from django.core.management.base import BaseCommand
-from recurring.services import RecurringService
-from analytics.models import Budget
-from transactions.models import Transaction
-from notifications.services import NotificationService
-from django.db.models import Sum
 from decimal import Decimal
+
+from django.core.management.base import BaseCommand
+from django.db.models import Sum
+
+from analytics.models import Budget
+from notifications.services import NotificationService
+from recurring.services import RecurringService
+from transactions.models import Transaction
 
 
 class Command(BaseCommand):

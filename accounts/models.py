@@ -1,7 +1,8 @@
-from django.db import models
-from django.conf import settings
-from polymorphic.models import PolymorphicModel
 import uuid
+
+from django.conf import settings
+from django.db import models
+from polymorphic.models import PolymorphicModel
 
 
 class Account(PolymorphicModel):

@@ -1,7 +1,8 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-import uuid
 
 
 class UserManager(BaseUserManager):

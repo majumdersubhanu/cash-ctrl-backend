@@ -1,5 +1,6 @@
 import re
 
+
 def custom_postprocessing_hook(result, generator, **kwargs):
     """
     Hook to clean up operation IDs to be more human-readable.
@@ -13,11 +14,11 @@ def custom_postprocessing_hook(result, generator, **kwargs):
 
             if 'operationId' in operation:
                 old_id = operation['operationId']
-                
+
                 # Logic to simplify operation IDs
                 new_id = re.sub(r'^api_v1_', '', old_id)
                 new_id = new_id.replace('auth_', '')
-                
+
                 # Further simplification for common auth patterns
                 if 'password_reset_confirm' in new_id:
                     new_id = 'password_reset_confirm'
@@ -39,10 +40,11 @@ def custom_postprocessing_hook(result, generator, **kwargs):
                     new_id = 'register_alt'
                 elif 'registration_verify_email_create' in new_id:
                     new_id = 'verify_email'
-                
+
                 operation['operationId'] = new_id
 
     return result
+
 
 def custom_preprocessing_hook(endpoints):
     """

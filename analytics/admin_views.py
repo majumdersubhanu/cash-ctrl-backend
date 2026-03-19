@@ -1,9 +1,10 @@
-from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, Sum
+from django.shortcuts import render
+from django.template.defaultfilters import register
+
 from splits.models import SplitGroup
 from users.models import User
-from django.template.defaultfilters import register
 
 
 @register.filter

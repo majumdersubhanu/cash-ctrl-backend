@@ -1,12 +1,13 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework.throttling import UserRateThrottle
+
+from audit.services import AuditService
 from .models import KYCProfile
 from .serializers import KYCProfileSerializer, KYCDocumentSerializer
 from .services import KYCService
-from audit.services import AuditService
-from rest_framework.throttling import UserRateThrottle
 
 
 @extend_schema_view(

@@ -36,45 +36,45 @@ jobs:
           - 6379:6379
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql-client
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
 
-    - name: Install UV and dependencies
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-        uv pip install --system -r requirements.txt
-        uv pip install --system -r requirements-test.txt
+      - name: Install UV and dependencies
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          uv pip install --system -r requirements.txt
+          uv pip install --system -r requirements-test.txt
 
-    - name: Wait for Postgres
-      run: |
-        until pg_isready -h localhost -p 5432; do
-          echo "Waiting for Postgres..."
-          sleep 2
-        done
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for Postgres..."
+            sleep 2
+          done
 
-    - name: Lint with Ruff
-      run: uv run ruff check .
+      - name: Lint with Ruff
+        run: uv run ruff check .
 
-    - name: Run Pytest Test Suite
-      env:
-        DJANGO_SETTINGS_MODULE: app.settings
-        DATABASE_URL: postgres://${{ env.CI_DB_USER }}:${{ env.CI_DB_PASS }}@localhost:5432/${{ env.CI_DB_NAME }}
-        REDIS_URL: redis://localhost:6379/1
-        SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'ci-ephemeral-secret-key-not-for-production' }}
-        SECURE_SSL_REDIRECT: "False"
-        SESSION_COOKIE_SECURE: "False"
-        CSRF_COOKIE_SECURE: "False"
-      run: uv run pytest --cov=. --cov-report=xml
+      - name: Run Pytest Test Suite
+        env:
+          DJANGO_SETTINGS_MODULE: app.settings
+          DATABASE_URL: postgres://${{ env.CI_DB_USER }}:${{ env.CI_DB_PASS }}@localhost:5432/${{ env.CI_DB_NAME }}
+          REDIS_URL: redis://localhost:6379/1
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY || 'ci-ephemeral-secret-key-not-for-production' }}
+          SECURE_SSL_REDIRECT: "False"
+          SESSION_COOKIE_SECURE: "False"
+          CSRF_COOKIE_SECURE: "False"
+        run: uv run pytest --cov=. --cov-report=xml
 
   docker-build:
     needs: test-and-lint
@@ -82,10 +82,10 @@ jobs:
     if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Build Docker image
-      run: docker build -t cashctrl-backend:latest -f Dockerfile .
+      - name: Build Docker image
+        run: docker build -t cashctrl-backend:latest -f Dockerfile .

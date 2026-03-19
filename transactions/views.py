@@ -1,12 +1,13 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
-from drf_spectacular.types import OpenApiTypes
+
+from integrations.scanner import ScannerService
 from .models import Category, Transaction
 from .serializers import CategorySerializer, TransactionSerializer
 from .services import TransactionService
-from integrations.scanner import ScannerService
 
 
 @extend_schema_view(

@@ -5,28 +5,34 @@
   <h1>💰 CashCtrl Backend</h1>
   <p><em>World-class, AI-Powered, and Mathematically Precise Financial Engine</em></p>
 
-  <a href="https://github.com/subhanu/cash-ctrl-backend/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Status"></a>
-  <a href="https://www.djangoproject.com/"><img src="https://img.shields.io/badge/django-6.0.3-092E20?style=flat-square&logo=django" alt="Django Version"></a>
-  <a href="https://www.django-rest-framework.org/"><img src="https://img.shields.io/badge/drf-3.16.1-red?style=flat-square" alt="DRF Version"></a>
-  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker" alt="Docker"></a>
-  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
+<a href="https://github.com/subhanu/cash-ctrl-backend/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Status"></a>
+<a href="https://www.djangoproject.com/"><img src="https://img.shields.io/badge/django-6.0.3-092E20?style=flat-square&logo=django" alt="Django Version"></a>
+<a href="https://www.django-rest-framework.org/"><img src="https://img.shields.io/badge/drf-3.16.1-red?style=flat-square" alt="DRF Version"></a>
+<a href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker" alt="Docker"></a>
+<a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
 </div>
 
 <br />
 
-CashCtrl is a high-performance, secure, and highly scalable financial backend built for modern personal and enterprise finance management. It rigorously adheres to industry standards such as **SOLID**, **ACID**, and **DRY**, ensuring an immutable and robust foundation for P2P lending, complex group expense management, and predictive analytics.
+CashCtrl is a high-performance, secure, and highly scalable financial backend built for modern personal and enterprise
+finance management. It rigorously adheres to industry standards such as **SOLID**, **ACID**, and **DRY**, ensuring an
+immutable and robust foundation for P2P lending, complex group expense management, and predictive analytics.
 
 ---
 
 ## 🚀 Vision & Ecosystem
 
-CashCtrl aims to serve as the definitive open-source financial ledger API, abstracting away the immense complexity of multi-actor financial states.
+CashCtrl aims to serve as the definitive open-source financial ledger API, abstracting away the immense complexity of
+multi-actor financial states.
 
 - **Financial Integrity**: Double-entry bookkeeping concepts, atomic transactions, and an immutable audit trail.
 - **AI Intelligence**: Automated transaction entry from physical receipts via Pytesseract Vision integration.
-- **Group Versatility**: The "Splitter" engine supports unequal, percentage-based, and exact-amount splits for complex social financial scenarios.
-- **Observability Built-in**: Real-time monitoring of task queues and system health via a professional observability stack.
-- **Developer First**: Clean, heavily documented APIs featuring OpenAPI 3.0 via `drf-spectacular`, with out-of-the-box Docker/K8s orchestration support.
+- **Group Versatility**: The "Splitter" engine supports unequal, percentage-based, and exact-amount splits for complex
+  social financial scenarios.
+- **Observability Built-in**: Real-time monitoring of task queues and system health via a professional observability
+  stack.
+- **Developer First**: Clean, heavily documented APIs featuring OpenAPI 3.0 via `drf-spectacular`, with out-of-the-box
+  Docker/K8s orchestration support.
 
 ---
 
@@ -60,7 +66,8 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 ### 3. Split Payment Engine (The Splitter)
 
 - **Group Contexts**: Dedicated shard for maintaining shared expenses within a specific group.
-- **Mathematical Diversity**: Safely processes **Equal**, **Percentage-based**, and **Fixed-amount** splits with zero drift.
+- **Mathematical Diversity**: Safely processes **Equal**, **Percentage-based**, and **Fixed-amount** splits with zero
+  drift.
 - **Settlement Ledger**: Real-time "who-owes-who" calculations with automated resolution paths.
 
 ### 4. Hardened Multi-Method Authentication
@@ -115,7 +122,8 @@ CashCtrl aims to serve as the definitive open-source financial ledger API, abstr
 
 ### Docker (Production Setup)
 
-The stack is fully containerized inside a multi-stage, Linux-secure Dockerfile running Gunicorn behind Nginx. `docker-compose` spins up Redis, Celery Workers, Prometheus, Grafana, and Flower automatically.
+The stack is fully containerized inside a multi-stage, Linux-secure Dockerfile running Gunicorn behind Nginx.
+`docker-compose` spins up Redis, Celery Workers, Prometheus, Grafana, and Flower automatically.
 
 ```bash
 docker compose up --build -d
@@ -124,7 +132,8 @@ docker compose up --build -d
 ### Google Cloud Deployment
 
 CashCtrl is optimized for GCP deployment via Cloud Run and Cloud SQL.
-See [GCLOUD_DEPLOYMENT.md](file:///c:/Users/subhanu/PythonProjects/cash-ctrl-backend/GCLOUD_DEPLOYMENT.md) for the full orchestration guide.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the full
+orchestration guide.
 
 ---
 
@@ -140,7 +149,8 @@ The REST API is strictly typed and documented using the OpenAPI 3.0 specificatio
 ## 📜 Git & Contributions
 
 We strictly follow **Conventional Commits** and maintain a forensic-grade git history.
-See [CONTRIBUTING.md](file:///c:/Users/subhanu/PythonProjects/cash-ctrl-backend/CONTRIBUTING.md) for setup and PR guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and PR
+guidelines.
 
 ---
 

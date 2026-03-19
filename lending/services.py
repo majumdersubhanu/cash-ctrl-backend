@@ -1,11 +1,12 @@
-from django.db import transaction
-from django.utils import timezone
-from audit.services import AuditService
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
-from .models import Loan, Installment
+from django.db import transaction
+from django.utils import timezone
+
+from audit.services import AuditService
 from transactions.services import TransactionService
+from .models import Loan, Installment
 
 
 class LoanService:
@@ -30,7 +31,7 @@ class LoanService:
 
         # Calculate monthly installment (Simple Interest for now)
         total_interest = (amount * interest_rate * Decimal(duration_months)) / (
-            Decimal("100") * Decimal("12")
+                Decimal("100") * Decimal("12")
         )
         total_repayable = amount + total_interest
         monthly_amount = total_repayable / Decimal(duration_months)
@@ -81,7 +82,7 @@ class LoanService:
 
         # Check if loan is fully paid
         if not installment.loan.installments.filter(
-            status__in=["PENDING", "OVERDUE"]
+                status__in=["PENDING", "OVERDUE"]
         ).exists():
             installment.loan.status = "FULLY_PAID"
             installment.loan.save()

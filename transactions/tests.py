@@ -1,8 +1,10 @@
-from django.test import TestCase
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
 from accounts.models import BankAccount
 from transactions.services import TransactionService
-from decimal import Decimal
 
 User = get_user_model()
 

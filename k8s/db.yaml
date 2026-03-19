@@ -13,20 +13,20 @@ spec:
         app: cashctrl-db
     spec:
       containers:
-      - name: db
-        image: postgres:16
-        ports:
-        - containerPort: 5432
-        envFrom:
-        - secretRef:
-            name: cashctrl-secrets
-        volumeMounts:
-        - name: db-storage
-          mountPath: /var/lib/postgresql/data
+        - name: db
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: cashctrl-secrets
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/postgresql/data
       volumes:
-      - name: db-storage
-        persistentVolumeClaim:
-          claimName: cashctrl-db-pvc
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: cashctrl-db-pvc
 ---
 apiVersion: v1
 kind: Service

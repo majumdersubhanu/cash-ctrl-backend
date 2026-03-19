@@ -1,5 +1,6 @@
-import time
 import logging
+import time
+
 from django.db import connection
 
 logger = logging.getLogger(__name__)
@@ -25,12 +26,14 @@ class PerformanceMiddleware:
 
         return response
 
+
 class RLSMiddleware:
     """
     Injects the authenticated user's ID into the PostgreSQL transaction context
     for Row-Level Security evaluation.
     Requires ATOMIC_REQUESTS = True to persist the SET LOCAL across the request.
     """
+
     def __init__(self, get_response):
         self.get_response = get_response
 

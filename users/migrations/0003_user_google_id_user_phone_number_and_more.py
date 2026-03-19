@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('users', '0002_alter_user_managers'),
     ]
@@ -19,7 +18,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='phone_number',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None, unique=True),
+            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None,
+                                                                 unique=True),
         ),
         migrations.AddField(
             model_name='user',

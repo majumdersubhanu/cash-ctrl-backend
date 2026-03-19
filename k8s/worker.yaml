@@ -13,18 +13,18 @@ spec:
         app: cashctrl-worker
     spec:
       containers:
-      - name: worker
-        image: cashctrl-backend:latest
-        command: ["celery", "-A", "app", "worker", "-l", "info"]
-        envFrom:
-        - configMapRef:
-            name: cashctrl-config
-        - secretRef:
-            name: cashctrl-secrets
-        resources:
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
-          limits:
-            cpu: "400m"
-            memory: "512Mi"
+        - name: worker
+          image: cashctrl-backend:latest
+          command: [ "celery", "-A", "app", "worker", "-l", "info" ]
+          envFrom:
+            - configMapRef:
+                name: cashctrl-config
+            - secretRef:
+                name: cashctrl-secrets
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "400m"
+              memory: "512Mi"

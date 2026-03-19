@@ -1,5 +1,6 @@
-from notifications.models import Notification
 import logging
+
+from notifications.models import Notification
 
 logger = logging.getLogger(__name__)
 

@@ -1,12 +1,13 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import permissions
-from drf_spectacular.utils import extend_schema
 from django.db.models import Sum
 from django.utils import timezone
-from transactions.models import Transaction
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from accounts.models import Account
 from lending.models import Loan
+from transactions.models import Transaction
 
 
 class FinancialSummaryView(APIView):
@@ -25,32 +26,32 @@ class FinancialSummaryView(APIView):
         user = request.user
         # ... (logic remains same)
         total_balance = (
-            Account.objects.filter(user=user).aggregate(total=Sum("balance"))["total"]
-            or 0
+                Account.objects.filter(user=user).aggregate(total=Sum("balance"))["total"]
+                or 0
         )
         income = (
-            Transaction.objects.filter(
-                user=user, type="INCOME", status="POSTED"
-            ).aggregate(total=Sum("amount"))["total"]
-            or 0
+                Transaction.objects.filter(
+                    user=user, type="INCOME", status="POSTED"
+                ).aggregate(total=Sum("amount"))["total"]
+                or 0
         )
         expense = (
-            Transaction.objects.filter(
-                user=user, type="EXPENSE", status="POSTED"
-            ).aggregate(total=Sum("amount"))["total"]
-            or 0
+                Transaction.objects.filter(
+                    user=user, type="EXPENSE", status="POSTED"
+                ).aggregate(total=Sum("amount"))["total"]
+                or 0
         )
         total_borrowed = (
-            Loan.objects.filter(borrower=user, status="ACTIVE").aggregate(
-                total=Sum("amount")
-            )["total"]
-            or 0
+                Loan.objects.filter(borrower=user, status="ACTIVE").aggregate(
+                    total=Sum("amount")
+                )["total"]
+                or 0
         )
         total_lent = (
-            Loan.objects.filter(lender=user, status="ACTIVE").aggregate(
-                total=Sum("amount")
-            )["total"]
-            or 0
+                Loan.objects.filter(lender=user, status="ACTIVE").aggregate(
+                    total=Sum("amount")
+                )["total"]
+                or 0
         )
         return Response(
             {

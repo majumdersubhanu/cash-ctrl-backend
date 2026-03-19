@@ -1,10 +1,11 @@
+from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, extend_schema_view
+
 from .serializers import SplitGroupSerializer, SplitExpenseSerializer
 from .services import SplitService
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 

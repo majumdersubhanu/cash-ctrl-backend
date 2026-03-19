@@ -4,7 +4,7 @@ from .models import AuditLog
 class AuditService:
     @staticmethod
     def log_action(
-        user, action, resource_type, resource_id=None, changes=None, ip_address=None
+            user, action, resource_type, resource_id=None, changes=None, ip_address=None
     ):
         """
         Records a detailed immutable event in the system audit trail.

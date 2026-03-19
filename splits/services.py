@@ -1,5 +1,7 @@
-from django.db import transaction
 from decimal import Decimal
+
+from django.db import transaction
+
 from .models import SplitExpense, SplitParticipation
 
 
@@ -7,7 +9,7 @@ class SplitService:
     @staticmethod
     @transaction.atomic
     def create_expense(
-        group, paid_by, amount, description, participants_data, currency="USD"
+            group, paid_by, amount, description, participants_data, currency="USD"
     ):
         """
         Creates an expense and split participations.
@@ -77,7 +79,7 @@ class SplitService:
                 share = amount - total_calculated
             else:
                 share = (
-                    amount * Decimal(str(item["percentage"])) / Decimal("100")
+                        amount * Decimal(str(item["percentage"])) / Decimal("100")
                 ).quantize(Decimal("0.01"))
                 total_calculated += share
 

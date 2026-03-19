@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth import get_user_model
+
 from users.services import UserService
 
 User = get_user_model()

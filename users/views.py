@@ -1,7 +1,13 @@
-from rest_framework import generics, permissions, status, viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import generics, permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .phone_auth_service import PhoneAuthService
 from .serializers import (
     UserRegistrationSerializer,
     UserSerializer,
@@ -9,11 +15,6 @@ from .serializers import (
     PhoneVerifySerializer,
     CustomTokenSerializer,
 )
-from .phone_auth_service import PhoneAuthService
-from rest_framework_simplejwt.tokens import RefreshToken
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from dj_rest_auth.registration.views import SocialLoginView
 
 
 @extend_schema_view(

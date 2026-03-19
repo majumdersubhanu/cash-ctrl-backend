@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .admin_views import p2p_network_analytics
 
 urlpatterns = [

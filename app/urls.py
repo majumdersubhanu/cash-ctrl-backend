@@ -22,6 +22,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+
 from .views import HealthCheckView
 
 urlpatterns = [

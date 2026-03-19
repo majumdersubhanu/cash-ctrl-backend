@@ -1,5 +1,7 @@
-from django.db import transaction
 from decimal import Decimal
+
+from django.db import transaction
+
 from .models import Transaction
 
 
@@ -14,7 +16,7 @@ class TransactionService:
     @staticmethod
     @transaction.atomic
     def create_transaction(
-        user, account, type, amount, category=None, description="", status="POSTED"
+            user, account, type, amount, category=None, description="", status="POSTED"
     ):
         """
         Executes a single-sided transaction (Income/Expense).

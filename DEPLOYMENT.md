@@ -1,6 +1,7 @@
 # ☁️ Google Cloud Deployment Guide
 
-This document provides a professional blueprint for deploying the CashCtrl ecosystem to **Google Cloud Platform (GCP)**, ensuring high availability, security, and scalability.
+This document provides a professional blueprint for deploying the CashCtrl ecosystem to **Google Cloud Platform (GCP)**,
+ensuring high availability, security, and scalability.
 
 ## 🏗 High-Level Architecture
 
@@ -95,8 +96,10 @@ gcloud run jobs create cash-ctrl-migrate \
 
 ## 🔒 Security Posture
 
-1. **VPC Connector**: Ensure Cloud Run services are connected to a VPC to communicate with Memorystore and Cloud SQL via private IPs.
-2. **IAM Roles**: Use a custom Service Account with minimal permissions (`Cloud SQL Client`, `Secret Manager Secret Accessor`).
+1. **VPC Connector**: Ensure Cloud Run services are connected to a VPC to communicate with Memorystore and Cloud SQL via
+   private IPs.
+2. **IAM Roles**: Use a custom Service Account with minimal permissions (`Cloud SQL Client`,
+   `Secret Manager Secret Accessor`).
 3. **HTTPS**: Cloud Run provides managed SSL certificates by default.
 
 ---

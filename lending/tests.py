@@ -1,9 +1,11 @@
-import pytest
 from decimal import Decimal
-from lending.services import LoanService
-from lending.models import Installment
-from users.services import UserService
+
+import pytest
+
 from accounts.models import WalletAccount
+from lending.models import Installment
+from lending.services import LoanService
+from users.services import UserService
 
 
 @pytest.fixture

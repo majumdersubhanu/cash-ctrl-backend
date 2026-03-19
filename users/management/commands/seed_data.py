@@ -1,16 +1,18 @@
 import random
+from datetime import timedelta
 from decimal import Decimal
-from faker import Faker
-from django.core.management.base import BaseCommand
+
 from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
-from datetime import timedelta
+from faker import Faker
+
 from accounts.models import Account
-from transactions.models import Category, Transaction
+from analytics.models import Budget, SavingsGoal
 from lending.models import Loan
 from splits.models import SplitGroup, SplitExpense
-from analytics.models import Budget, SavingsGoal
+from transactions.models import Category, Transaction
 
 User = get_user_model()
 fake = Faker()
@@ -230,7 +232,7 @@ class Command(BaseCommand):
                     target_amount=target,
                     current_amount=target * Decimal(random.uniform(0.1, 0.9)),
                     target_date=timezone.now().date()
-                    + timedelta(days=random.randint(30, 365)),
+                                + timedelta(days=random.randint(30, 365)),
                 )
             )
         SavingsGoal.objects.bulk_create(goals, batch_size=500, ignore_conflicts=True)

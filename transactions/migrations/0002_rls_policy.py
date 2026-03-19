@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('transactions', '0001_initial'),
     ]
@@ -12,10 +11,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunSQL(
             sql="""
-            ALTER TABLE transactions_transaction ENABLE ROW LEVEL SECURITY;
-            CREATE POLICY tenant_isolation_policy ON transactions_transaction
+                ALTER TABLE transactions_transaction ENABLE ROW LEVEL SECURITY;
+                CREATE
+                POLICY tenant_isolation_policy ON transactions_transaction
                 USING (user_id = NULLIF(current_setting('app.current_user_id', true), '')::uuid);
-            """,
+                """,
             reverse_sql="""
             DROP POLICY IF EXISTS tenant_isolation_policy ON transactions_transaction;
             ALTER TABLE transactions_transaction DISABLE ROW LEVEL SECURITY;

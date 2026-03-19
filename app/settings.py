@@ -38,7 +38,6 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", "web"])
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -123,7 +122,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -133,7 +131,6 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int(
     "CONN_MAX_AGE", default=60
 )  # Database connection pooling
 DATABASES["default"]["CONN_HEALTH_CHECKS"] = True  # Drop dead pooled connections
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -166,7 +163,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # Better default
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
@@ -196,7 +192,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -207,7 +202,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -361,7 +355,6 @@ JET_SIDE_MENU_COMPACT = True
 
 JET_INDEX_DASHBOARD = "app.dashboard.CustomIndexDashboard"
 JET_APP_INDEX_DASHBOARD = "app.dashboard.CustomAppIndexDashboard"
-
 
 CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]

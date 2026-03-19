@@ -1,10 +1,11 @@
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from jet.dashboard import modules
 from jet.dashboard.dashboard import Dashboard, AppIndexDashboard
-from django.db.models import Sum
+
 from accounts.models import Account
-from transactions.models import Transaction
 from lending.models import Loan
+from transactions.models import Transaction
 from users.models import User
 
 
@@ -16,8 +17,8 @@ class CustomIndexDashboard(Dashboard):
         total_balance = Account.objects.aggregate(total=Sum("balance"))["total"] or 0
         total_volume = Transaction.objects.aggregate(total=Sum("amount"))["total"] or 0
         active_loans = (
-            Loan.objects.filter(status="ACTIVE").aggregate(total=Sum("amount"))["total"]
-            or 0
+                Loan.objects.filter(status="ACTIVE").aggregate(total=Sum("amount"))["total"]
+                or 0
         )
         user_count = User.objects.count()
 

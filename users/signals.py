@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth import get_user_model
-from onboarding.models import KYCProfile
+
 from accounts.models import WalletAccount
+from onboarding.models import KYCProfile
 
 User = get_user_model()
 

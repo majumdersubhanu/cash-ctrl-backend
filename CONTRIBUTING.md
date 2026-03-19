@@ -1,6 +1,7 @@
 # Contributing to CashCtrl
 
-Thank you for your interest in contributing to CashCtrl! We welcome all contributions, including bug reports, feature requests, documentation improvements, and code patches.
+Thank you for your interest in contributing to CashCtrl! We welcome all contributions, including bug reports, feature
+requests, documentation improvements, and code patches.
 
 ## Tech Stack
 
@@ -61,7 +62,8 @@ Format: `type(scope?): subject`
 
 ### Testing & Linting
 
-Before opening a Pull Request, ensure the codebase is clean and all tests pass. Our CI/CD pipeline will automatically run these checks, but running them locally saves time!
+Before opening a Pull Request, ensure the codebase is clean and all tests pass. Our CI/CD pipeline will automatically
+run these checks, but running them locally saves time!
 
 ```bash
 uv run ruff check .

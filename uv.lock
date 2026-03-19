@@ -74,6 +74,7 @@ dependencies = [
     { name = "django-redis" },
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
+    { name = "djangorestframework-stubs" },
     { name = "drf-spectacular" },
     { name = "faker" },
     { name = "flower" },
@@ -130,12 +131,13 @@ requires-dist = [
     { name = "django-filter", specifier = "==25.2" },
     { name = "django-import-export", specifier = "==4.4.0" },
     { name = "django-jet-reboot", specifier = "==1.3.10" },
-    { name = "django-phonenumber-field", extras = ["phonenumbers"], specifier = "==8.0.0" },
+    { name = "django-phonenumber-field", extras = ["phonenumbers"], specifier = "==8.4.0" },
     { name = "django-polymorphic", specifier = "==4.11.2" },
     { name = "django-prometheus", specifier = "==2.3.1" },
     { name = "django-redis", specifier = "==6.0.0" },
     { name = "djangorestframework", specifier = "==3.16.1" },
     { name = "djangorestframework-simplejwt", specifier = "==5.5.1" },
+    { name = "djangorestframework-stubs", specifier = ">=3.16.8" },
     { name = "drf-spectacular", specifier = "==0.29.0" },
     { name = "faker", specifier = "==40.11.0" },
     { name = "flower", specifier = "==2.0.1" },
@@ -146,7 +148,7 @@ requires-dist = [
     { name = "jsonschema-specifications", specifier = "==2025.9.1" },
     { name = "kombu", specifier = "==5.6.2" },
     { name = "packaging", specifier = "==26.0" },
-    { name = "prometheus-client", specifier = "==0.21.1" },
+    { name = "prometheus-client", specifier = "==0.24.1" },
     { name = "prompt-toolkit", specifier = "==3.0.52" },
     { name = "psycopg2", specifier = "==2.9.11" },
     { name = "pyjwt", specifier = "==2.12.1" },
@@ -503,14 +505,14 @@ sdist = { url = "https://files.pythonhosted.org/packages/2b/a6/8d65499767105860a
 
 [[package]]
 name = "django-phonenumber-field"
-version = "8.0.0"
+version = "8.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/d1/0a2ba41434d98ac9a2669ea7edfc8d1bc75055da450d94894c597913e01c/django_phonenumber_field-8.0.0.tar.gz", hash = "sha256:8a560fe1b01b94c9de8cde22bc373b695f023cc6df4baba00264cb079da9f631", size = 43759, upload-time = "2024-06-24T13:49:13.649Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/87/bf/8aa60c9834773b955dff1ddea842e361e8daaf6b0945d5bfc29fc66d53ab/django_phonenumber_field-8.4.0.tar.gz", hash = "sha256:2b83e843dac35eec6a69880a166487235b737a71a1e38c9a52e5ad67d6996083", size = 45512, upload-time = "2025-11-24T15:09:51.904Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/ab/4738a40d6f297688ecedd08cf6dc1608ad06c08ba3c03d1fc85b19ac6717/django_phonenumber_field-8.0.0-py3-none-any.whl", hash = "sha256:196c917b70c01a98e327f482eb8a4a4a55a29891db551f99078585397370b3ba", size = 66441, upload-time = "2024-06-24T13:49:11.65Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/a3/f6b85a9246e22cf719752ad83f5e95aa9ba12419b2f9eff70f20d30e55df/django_phonenumber_field-8.4.0-py3-none-any.whl", hash = "sha256:7a1cb3a6456edb54d879f11ffa0acb227ded08c93b587035d0f28093f0e46511", size = 69528, upload-time = "2025-11-24T15:09:45.479Z" },
 ]
 
 [package.optional-dependencies]
@@ -557,6 +559,34 @@ wheels = [
 ]
 
 [[package]]
+name = "django-stubs"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-stubs-ext" },
+    { name = "types-pyyaml" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/09/1a/24f0bdd54fccbd1ea0a72bfef2cadd2f53a2138d319c603f6519346b93fb/django_stubs-6.0.0.tar.gz", hash = "sha256:14e7c667d2de73dbaf91ae43d117f923639107d8d3e84a2257ebc101861f18ed", size = 272752, upload-time = "2026-03-17T00:25:12.195Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/63/a2/b0e8d16fa33e07aa096eacb12d032d4561ce0e7e21248b4d34e943daf8d9/django_stubs-6.0.0-py3-none-any.whl", hash = "sha256:747baa97fb9a5c1892ef93bf881d06b4f211f719da18e4ddfd1e74bbad71e752", size = 535559, upload-time = "2026-03-17T00:25:10.335Z" },
+]
+
+[[package]]
+name = "django-stubs-ext"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e5/39/d9f4ae9506458bfb77bbcd45bf21cd5eb460026acac6727af456a9deabec/django_stubs_ext-6.0.0.tar.gz", hash = "sha256:fb860210b496e75ae751cadee02a3449d5a7599de68c8db9df40c84e559d9298", size = 6686, upload-time = "2026-03-17T00:24:33.688Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/63/f727323c6e422ad72846558d8464955448dfcac3268419929332fc6e31a5/django_stubs_ext-6.0.0-py3-none-any.whl", hash = "sha256:6f8c29e0dd5111fd36aa72519446c8a21c3e419e48c5d7dc7f418c8eec9c43ae", size = 10168, upload-time = "2026-03-17T00:24:32.289Z" },
+]
+
+[[package]]
 name = "djangorestframework"
 version = "3.16.1"
 source = { registry = "https://pypi.org/simple" }
@@ -580,6 +610,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a8/27/2874a325c11112066139769f7794afae238a07ce6adf96259f08fd37a9d7/djangorestframework_simplejwt-5.5.1.tar.gz", hash = "sha256:e72c5572f51d7803021288e2057afcbd03f17fe11d484096f40a460abc76e87f", size = 101265, upload-time = "2025-07-21T16:52:25.026Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/60/94/fdfb7b2f0b16cd3ed4d4171c55c1c07a2d1e3b106c5978c8ad0c15b4a48b/djangorestframework_simplejwt-5.5.1-py3-none-any.whl", hash = "sha256:2c30f3707053d384e9f315d11c2daccfcb548d4faa453111ca19a542b732e469", size = 107674, upload-time = "2025-07-21T16:52:07.493Z" },
+]
+
+[[package]]
+name = "djangorestframework-stubs"
+version = "3.16.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django-stubs" },
+    { name = "types-pyyaml" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/78/d5/87166a827833eb39703856ef957ca0fb4e9d15285331251186a2e738c20c/djangorestframework_stubs-3.16.8.tar.gz", hash = "sha256:f6d464b54fa2f929610e957446c04e6ac29558265418e0a2d9f653a4cdd410b5", size = 32312, upload-time = "2026-02-03T22:35:53.182Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ea/e9/d9c363b08d07d975c21793fe821b2020dfd3627ac4ce19c5c12df94ce9d0/djangorestframework_stubs-3.16.8-py3-none-any.whl", hash = "sha256:c5bf61def0f330a071dd5f470f05710189d06c467b3f3e186b32c5a23d4952fb", size = 56517, upload-time = "2026-02-03T22:35:50.67Z" },
 ]
 
 [[package]]
@@ -737,11 +781,11 @@ wheels = [
 
 [[package]]
 name = "prometheus-client"
-version = "0.21.1"
+version = "0.24.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/62/14/7d0f567991f3a9af8d1cd4f619040c93b68f09a02b6d0b6ab1b2d1ded5fe/prometheus_client-0.21.1.tar.gz", hash = "sha256:252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb", size = 78551, upload-time = "2024-12-03T14:59:12.164Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/58/a794d23feb6b00fc0c72787d7e87d872a6730dd9ed7c7b3e954637d8f280/prometheus_client-0.24.1.tar.gz", hash = "sha256:7e0ced7fbbd40f7b84962d5d2ab6f17ef88a72504dcf7c0b40737b43b2a461f9", size = 85616, upload-time = "2026-01-14T15:26:26.965Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ff/c2/ab7d37426c179ceb9aeb109a85cda8948bb269b7561a0be870cc656eefe4/prometheus_client-0.21.1-py3-none-any.whl", hash = "sha256:594b45c410d6f4f8888940fe80b5cc2521b305a1fafe1c58609ef715a001f301", size = 54682, upload-time = "2024-12-03T14:59:10.935Z" },
+    { url = "https://files.pythonhosted.org/packages/74/c3/24a2f845e3917201628ecaba4f18bab4d18a337834c1df2a159ee9d22a42/prometheus_client-0.24.1-py3-none-any.whl", hash = "sha256:150db128af71a5c2482b36e588fc8a6b95e498750da4b17065947c16070f4055", size = 64057, upload-time = "2026-01-14T15:26:24.42Z" },
 ]
 
 [[package]]
@@ -951,6 +995,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/5a/76/4921c00511f88af86a33de770d64141170f1cfd9c00311aea689949e274e/tornado-6.5.5-cp39-abi3-win32.whl", hash = "sha256:dd3eafaaeec1c7f2f8fdcd5f964e8907ad788fe8a5a32c4426fbbdda621223b7", size = 448582, upload-time = "2026-03-10T21:30:57.142Z" },
     { url = "https://files.pythonhosted.org/packages/2c/23/f6c6112a04d28eed765e374435fb1a9198f73e1ec4b4024184f21faeb1ad/tornado-6.5.5-cp39-abi3-win_amd64.whl", hash = "sha256:6443a794ba961a9f619b1ae926a2e900ac20c34483eea67be4ed8f1e58d3ef7b", size = 448990, upload-time = "2026-03-10T21:30:58.857Z" },
     { url = "https://files.pythonhosted.org/packages/b7/c8/876602cbc96469911f0939f703453c1157b0c826ecb05bdd32e023397d4e/tornado-6.5.5-cp39-abi3-win_arm64.whl", hash = "sha256:2c9a876e094109333f888539ddb2de4361743e5d21eece20688e3e351e4990a6", size = 448016, upload-time = "2026-03-10T21:31:00.43Z" },
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20250915"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/69/3c51b36d04da19b92f9e815be12753125bd8bc247ba0470a982e6979e71c/types_pyyaml-6.0.12.20250915.tar.gz", hash = "sha256:0f8b54a528c303f0e6f7165687dd33fafa81c807fcac23f632b63aa624ced1d3", size = 17522, upload-time = "2025-09-15T03:01:00.728Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/e0/1eed384f02555dde685fff1a1ac805c1c7dcb6dd019c916fe659b1c1f9ec/types_pyyaml-6.0.12.20250915-py3-none-any.whl", hash = "sha256:e7d4d9e064e89a3b3cae120b4990cd370874d2bf12fa5f46c97018dd5d3c9ab6", size = 20338, upload-time = "2025-09-15T03:00:59.218Z" },
 ]
 
 [[package]]

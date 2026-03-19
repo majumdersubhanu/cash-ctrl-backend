@@ -1,13 +1,14 @@
 from django.db import models
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
-from drf_spectacular.types import OpenApiTypes
+
+from accounts.models import Account
 from .models import Loan, Installment
 from .serializers import LoanSerializer
 from .services import LoanService
-from accounts.models import Account
 
 
 @extend_schema_view(

@@ -6,8 +6,8 @@ try:
 except ImportError:
     OCR_AVAILABLE = False
 
-import re
 import logging
+import re
 from decimal import Decimal
 
 logger = logging.getLogger(__name__)

@@ -1,7 +1,9 @@
-from django.db import models
-from django.conf import settings
-from transactions.models import Category
 import uuid
+
+from django.conf import settings
+from django.db import models
+
+from transactions.models import Category
 
 
 class Budget(models.Model):
