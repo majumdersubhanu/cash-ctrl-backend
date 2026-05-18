@@ -1,0 +1,151 @@
+from django.db.models import Sum
+from django.utils import timezone
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from accounts.models import Account
+from lending.models import Loan
+from transactions.models import Transaction
+
+
+class FinancialSummaryView(APIView):
+    """
+    Consolidated financial health snapshot.
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @extend_schema(
+        summary="Get Financial Summary",
+        description="Calculates a real-time snapshot of the user's financial state, including net worth, total balance, current month liquidity (Income vs Expense), and P2P lending exposure.",
+        tags=["Analytics"],
+    )
+    def get(self, request):
+        user = request.user
+        # ... (logic remains same)
+        total_balance = (
+                Account.objects.filter(user=user).aggregate(total=Sum("balance"))["total"]
+                or 0
+        )
+        income = (
+                Transaction.objects.filter(
+                    user=user, type="INCOME", status="POSTED"
+                ).aggregate(total=Sum("amount"))["total"]
+                or 0
+        )
+        expense = (
+                Transaction.objects.filter(
+                    user=user, type="EXPENSE", status="POSTED"
+                ).aggregate(total=Sum("amount"))["total"]
+                or 0
+        )
+        total_borrowed = (
+                Loan.objects.filter(borrower=user, status="ACTIVE").aggregate(
+                    total=Sum("amount")
+                )["total"]
+                or 0
+        )
+        total_lent = (
+                Loan.objects.filter(lender=user, status="ACTIVE").aggregate(
+                    total=Sum("amount")
+                )["total"]
+                or 0
+        )
+        return Response(
+            {
+                "net_worth": total_balance + total_lent - total_borrowed,
+                "total_balance": total_balance,
+                "monthly_income": income,
+                "monthly_expense": expense,
+                "total_borrowed": total_borrowed,
+                "total_lent": total_lent,
+            }
+        )
+
+
+class ForecastingView(APIView):
+    """
+    Predictive financial projection engine.
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @extend_schema(
+        summary="Get Spending Forecasts",
+        description="Leverages the ForecastingService to project next month's spending and 30-day cash flow based on historical transaction velocity and volatility.",
+        tags=["Analytics"],
+    )
+    def get(self, request):
+        from .services import ForecastingService
+
+        # ...
+        predicted_spending = ForecastingService.predict_next_month_spending(
+            request.user
+        )
+        cash_flow_forecast = ForecastingService.forecast_cash_flow(request.user)
+        return Response(
+            {
+                "predicted_next_month_expense": predicted_spending,
+                "projected_30_day_cash_flow": cash_flow_forecast,
+                "confidence_score": "High"
+                if Transaction.objects.filter(user=request.user).count() > 50
+                else "Medium",
+            }
+        )
+
+
+class ReportExportView(APIView):
+    """
+    Forensic report generation (CSV).
+    """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @extend_schema(
+        summary="Export Financial Report",
+        description="Generates a downloadable CSV audit of all user transactions. Includes account details, categories, descriptions, and normalized amounts for external reconciliation.",
+        tags=["Analytics"],
+    )
+    def get(self, request):
+        import csv
+        from django.http import HttpResponse
+
+        # Get transactions for the user
+        queryset = Transaction.objects.filter(user=request.user).order_by("-date")
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = (
+            f'attachment; filename="cash_ctrl_report_{request.user.email}_{timezone.now().date()}.csv"'
+        )
+
+        writer = csv.writer(response)
+        writer.writerow(
+            [
+                "Date",
+                "Account",
+                "Type",
+                "Amount",
+                "Currency",
+                "Category",
+                "Description",
+                "Status",
+            ]
+        )
+
+        for tx in queryset:
+            writer.writerow(
+                [
+                    tx.date,
+                    tx.account.name,
+                    tx.get_type_display(),
+                    tx.amount,
+                    tx.currency,
+                    tx.category.name if tx.category else "N/A",
+                    tx.description,
+                    tx.get_status_display(),
+                ]
+            )
+
+        return response
