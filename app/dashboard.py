@@ -17,8 +17,8 @@ class CustomIndexDashboard(Dashboard):
         total_balance = Account.objects.aggregate(total=Sum("balance"))["total"] or 0
         total_volume = Transaction.objects.aggregate(total=Sum("amount"))["total"] or 0
         active_loans = (
-                Loan.objects.filter(status="ACTIVE").aggregate(total=Sum("amount"))["total"]
-                or 0
+            Loan.objects.filter(status="ACTIVE").aggregate(total=Sum("amount"))["total"]
+            or 0
         )
         user_count = User.objects.count()
 

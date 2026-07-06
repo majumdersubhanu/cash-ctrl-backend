@@ -22,7 +22,7 @@ from .serializers import (
         summary="Register User",
         description="Public endpoint to register a new user using their Email and Password.",
         tags=["Authentication"],
-        operation_id="register"
+        operation_id="register",
     )
 )
 class RegistrationView(generics.CreateAPIView):
@@ -46,7 +46,9 @@ class RegistrationView(generics.CreateAPIView):
             "refresh": str(refresh),
             "user": user,
         }
-        return Response(CustomTokenSerializer(data).data, status=status.HTTP_201_CREATED)
+        return Response(
+            CustomTokenSerializer(data).data, status=status.HTTP_201_CREATED
+        )
 
 
 class PhoneAuthViewSet(viewsets.GenericViewSet):
@@ -61,7 +63,7 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
         responses={200: {"example": {"message": "OTP sent successfully"}}},
         tags=["Authentication"],
         summary="Request OTP",
-        operation_id="request_otp"
+        operation_id="request_otp",
     )
     @action(detail=False, methods=["post"])
     def request_otp(self, request):
@@ -77,7 +79,7 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
         responses={200: CustomTokenSerializer},
         tags=["Authentication"],
         summary="Verify OTP",
-        operation_id="verify_otp"
+        operation_id="verify_otp",
     )
     @action(detail=False, methods=["post"])
     def verify_otp(self, request):
@@ -113,10 +115,20 @@ class PhoneAuthViewSet(viewsets.GenericViewSet):
 
 
 @extend_schema_view(
-    get=extend_schema(summary="Get Current User Profile", tags=["Profiles"], operation_id="get_profile"),
-    put=extend_schema(summary="Update Current User Profile", tags=["Profiles"], operation_id="update_profile"),
+    get=extend_schema(
+        summary="Get Current User Profile",
+        tags=["Profiles"],
+        operation_id="get_profile",
+    ),
+    put=extend_schema(
+        summary="Update Current User Profile",
+        tags=["Profiles"],
+        operation_id="update_profile",
+    ),
     patch=extend_schema(
-        summary="Partially Update Current User Profile", tags=["Profiles"], operation_id="partial_update_profile"
+        summary="Partially Update Current User Profile",
+        tags=["Profiles"],
+        operation_id="partial_update_profile",
     ),
 )
 class MeView(generics.RetrieveUpdateAPIView):
@@ -133,9 +145,7 @@ class MeView(generics.RetrieveUpdateAPIView):
 
 @extend_schema_view(
     post=extend_schema(
-        summary="Google Login",
-        tags=["Authentication"],
-        operation_id="google_login"
+        summary="Google Login", tags=["Authentication"], operation_id="google_login"
     )
 )
 class GoogleLogin(SocialLoginView):

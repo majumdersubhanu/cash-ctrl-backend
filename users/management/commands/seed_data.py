@@ -235,7 +235,7 @@ class Command(BaseCommand):
                     target_amount=target,
                     current_amount=target * Decimal(random.uniform(0.1, 0.9)),
                     target_date=timezone.now().date()
-                                + timedelta(days=random.randint(30, 365)),
+                    + timedelta(days=random.randint(30, 365)),
                 )
             )
         SavingsGoal.objects.bulk_create(goals, batch_size=500, ignore_conflicts=True)

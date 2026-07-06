@@ -107,7 +107,6 @@ class TestLoanService:
         assert tx.type == "EXPENSE"
         assert "Loan Repayment" in tx.description
 
-
     def test_create_loan_rounding_drift(self, users_and_accounts):
         """Test that rounding drift is absorbed by the last installment."""
         borrower = users_and_accounts["borrower"]

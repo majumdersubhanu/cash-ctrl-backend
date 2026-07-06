@@ -43,7 +43,11 @@ class RLSMiddleware:
 
     def __call__(self, request):
         # Since SQLite is deprecated, we execute PostgreSQL SET LOCAL commands directly.
-        user_id = str(request.user.id) if hasattr(request, "user") and request.user.is_authenticated else ""
+        user_id = (
+            str(request.user.id)
+            if hasattr(request, "user") and request.user.is_authenticated
+            else ""
+        )
 
         with connection.cursor() as cursor:
             cursor.execute("SET LOCAL app.current_user_id = %s;", [user_id])

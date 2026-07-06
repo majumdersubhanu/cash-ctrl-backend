@@ -31,7 +31,7 @@ class LoanService:
 
         # Calculate monthly installment (Simple Interest for now)
         total_interest = (amount * interest_rate * Decimal(duration_months)) / (
-                Decimal("100") * Decimal("12")
+            Decimal("100") * Decimal("12")
         )
         total_repayable = (amount + total_interest).quantize(Decimal("0.01"))
         monthly_amount = (total_repayable / Decimal(duration_months)).quantize(
@@ -50,7 +50,10 @@ class LoanService:
                 total_calculated += monthly_amount
 
             Installment.objects.create(
-                loan=loan, amount=installment_amount, due_date=due_date, status="PENDING"
+                loan=loan,
+                amount=installment_amount,
+                due_date=due_date,
+                status="PENDING",
             )
 
         # Log loan creation
@@ -91,7 +94,7 @@ class LoanService:
 
         # Check if loan is fully paid
         if not installment.loan.installments.filter(
-                status__in=["PENDING", "OVERDUE"]
+            status__in=["PENDING", "OVERDUE"]
         ).exists():
             installment.loan.status = "FULLY_PAID"
             installment.loan.save()

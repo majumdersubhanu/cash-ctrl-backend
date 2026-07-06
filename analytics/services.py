@@ -53,17 +53,17 @@ class ForecastingService:
         thirty_days_ago = now - timedelta(days=30)
 
         incoming = (
-                Transaction.objects.filter(
-                    user=user, type="INCOME", status="POSTED", date__gte=thirty_days_ago
-                ).aggregate(total=Sum("amount"))["total"]
-                or 0
+            Transaction.objects.filter(
+                user=user, type="INCOME", status="POSTED", date__gte=thirty_days_ago
+            ).aggregate(total=Sum("amount"))["total"]
+            or 0
         )
 
         outgoing = (
-                Transaction.objects.filter(
-                    user=user, type="EXPENSE", status="POSTED", date__gte=thirty_days_ago
-                ).aggregate(total=Sum("amount"))["total"]
-                or 0
+            Transaction.objects.filter(
+                user=user, type="EXPENSE", status="POSTED", date__gte=thirty_days_ago
+            ).aggregate(total=Sum("amount"))["total"]
+            or 0
         )
 
         net_daily = (Decimal(str(incoming)) - Decimal(str(outgoing))) / Decimal("30")

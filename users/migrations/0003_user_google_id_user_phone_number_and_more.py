@@ -6,29 +6,30 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('users', '0002_alter_user_managers'),
+        ("users", "0002_alter_user_managers"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='google_id',
+            model_name="user",
+            name="google_id",
             field=models.CharField(blank=True, max_length=255, null=True, unique=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='phone_number',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, null=True, region=None,
-                                                                 unique=True),
+            model_name="user",
+            name="phone_number",
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                blank=True, max_length=128, null=True, region=None, unique=True
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='profile_picture',
+            model_name="user",
+            name="profile_picture",
             field=models.URLField(blank=True, max_length=500, null=True),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='email',
+            model_name="user",
+            name="email",
             field=models.EmailField(blank=True, max_length=254, null=True, unique=True),
         ),
     ]

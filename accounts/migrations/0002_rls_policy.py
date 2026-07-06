@@ -5,7 +5,7 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
             reverse_sql="""
             DROP POLICY IF EXISTS tenant_isolation_policy ON accounts_account;
             ALTER TABLE accounts_account DISABLE ROW LEVEL SECURITY;
-            """
+            """,
         )
     ]
