@@ -117,6 +117,7 @@ The CashCtrl ecosystem is designed to run in a fully containerized environment u
    - **PostgreSQL** (`cashctrl_db`)
    - **Redis** (`cashctrl_redis`)
    - **Django Web Gunicorn** (`cashctrl_web`)
+   - **Local HTTPS (mkcert)**: Run `scripts/generate_cert.sh` to create a dev self‑signed cert and enable HTTPS via Nginx.
    - **Celery Worker & Beat** (`cashctrl_celery_worker`, `cashctrl_celery_beat`)
    - **Flower Dashboard** (`cashctrl_flower`) at [http://localhost:5555](http://localhost:5555)
    - **Nginx Reverse Proxy** (`cashctrl_nginx`) at [http://localhost:80](http://localhost:80)
