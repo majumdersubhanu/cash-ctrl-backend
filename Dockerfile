@@ -17,6 +17,12 @@ COPY requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir \
+    pytest==9.0.2 \
+    pytest-django==4.12.0 \
+    pytest-cov==7.0.0 \
+    model-bakery==1.23.3 \
+    coverage==7.13.4
 
 
 # -------------------------------
