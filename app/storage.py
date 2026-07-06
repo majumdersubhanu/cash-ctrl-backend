@@ -1,5 +1,6 @@
 from whitenoise.storage import CompressedManifestStaticFilesStorage
 
+
 class IgnoreMissingManifestStorage(CompressedManifestStaticFilesStorage):
     manifest_strict = False
 
