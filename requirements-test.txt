@@ -59,15 +59,17 @@ colorama==0.4.6
     #   pytest
 coverage==7.13.4
     # via pytest-cov
-cryptography==46.0.5
-    # via pyjwt
+cryptography==49.0.0
+    # via
+    #   cash-ctrl-backend
+    #   pyjwt
 diff-match-patch==20241021
     # via
     #   cash-ctrl-backend
     #   django-import-export
 dj-rest-auth==7.2.0
     # via cash-ctrl-backend
-django==6.0.3
+django==6.0.6
     # via
     #   cash-ctrl-backend
     #   dj-rest-auth
@@ -107,9 +109,9 @@ django-prometheus==2.3.1
     # via cash-ctrl-backend
 django-redis==6.0.0
     # via cash-ctrl-backend
-django-stubs==6.0.0
+django-stubs==6.0.6
     # via djangorestframework-stubs
-django-stubs-ext==6.0.0
+django-stubs-ext==6.0.6
     # via django-stubs
 djangorestframework==3.16.1
     # via
@@ -119,7 +121,7 @@ djangorestframework==3.16.1
     #   drf-spectacular
 djangorestframework-simplejwt==5.5.1
     # via cash-ctrl-backend
-djangorestframework-stubs==3.16.8
+djangorestframework-stubs==3.17.0
     # via cash-ctrl-backend
 drf-spectacular==0.29.0
     # via cash-ctrl-backend
@@ -129,9 +131,9 @@ flower==2.0.1
     # via cash-ctrl-backend
 gunicorn==25.1.0
     # via cash-ctrl-backend
-humanize==4.15.0
+humanize==4.16.0
     # via flower
-idna==3.11
+idna==3.18
     # via
     #   cash-ctrl-backend
     #   requests
@@ -162,7 +164,7 @@ packaging==26.0
     #   gunicorn
     #   kombu
     #   pytest
-phonenumbers==9.0.26
+phonenumbers==9.0.34
     # via django-phonenumber-field
 pluggy==1.6.0
     # via
@@ -183,12 +185,12 @@ pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementatio
     # via cffi
 pygments==2.20.0
     # via pytest
-pyjwt==2.12.1
+pyjwt==2.13.0
     # via
     #   cash-ctrl-backend
     #   django-allauth
     #   djangorestframework-simplejwt
-pytest==9.0.2
+pytest==9.1.1
     # via
     #   pytest-cov
     #   pytest-django
@@ -198,7 +200,7 @@ python-dateutil==2.9.0.post0
     # via
     #   cash-ctrl-backend
     #   celery
-pytz==2026.1.post1
+pytz==2026.2
     # via flower
 pyyaml==6.0.3
     # via
@@ -213,7 +215,7 @@ referencing==0.37.0
     #   cash-ctrl-backend
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.5
+requests==2.34.2
     # via
     #   cash-ctrl-backend
     #   django-allauth
@@ -235,9 +237,11 @@ tablib==3.9.0
     # via
     #   cash-ctrl-backend
     #   django-import-export
-tornado==6.5.5
-    # via flower
-types-pyyaml==6.0.12.20250915
+tornado==6.5.7
+    # via
+    #   cash-ctrl-backend
+    #   flower
+types-pyyaml==6.0.12.20260518
     # via
     #   django-stubs
     #   djangorestframework-stubs
@@ -263,7 +267,7 @@ uritemplate==4.2.0
     # via
     #   cash-ctrl-backend
     #   drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   cash-ctrl-backend
     #   requests
@@ -277,3 +281,5 @@ wcwidth==0.6.0
     # via
     #   cash-ctrl-backend
     #   prompt-toolkit
+whitenoise==6.8.2
+    # via cash-ctrl-backend
