@@ -56,15 +56,17 @@ colorama==0.4.6
     # via
     #   cash-ctrl-backend
     #   click
-cryptography==46.0.5
-    # via pyjwt
+cryptography==49.0.0
+    # via
+    #   cash-ctrl-backend
+    #   pyjwt
 diff-match-patch==20241021
     # via
     #   cash-ctrl-backend
     #   django-import-export
 dj-rest-auth==7.2.0
     # via cash-ctrl-backend
-django==6.0.3
+django==6.0.6
     # via
     #   cash-ctrl-backend
     #   dj-rest-auth
@@ -127,7 +129,7 @@ gunicorn==25.1.0
     # via cash-ctrl-backend
 humanize==4.15.0
     # via flower
-idna==3.11
+idna==3.18
     # via
     #   cash-ctrl-backend
     #   requests
@@ -169,7 +171,7 @@ psycopg2==2.9.11
     # via cash-ctrl-backend
 pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
-pyjwt==2.12.1
+pyjwt==2.13.0
     # via
     #   cash-ctrl-backend
     #   django-allauth
@@ -193,7 +195,7 @@ referencing==0.37.0
     #   cash-ctrl-backend
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.5
+requests==2.34.2
     # via
     #   cash-ctrl-backend
     #   django-allauth
@@ -214,8 +216,10 @@ tablib==3.9.0
     # via
     #   cash-ctrl-backend
     #   django-import-export
-tornado==6.5.5
-    # via flower
+tornado==6.5.7
+    # via
+    #   cash-ctrl-backend
+    #   flower
 types-pyyaml==6.0.12.20250915
     # via
     #   django-stubs
@@ -242,7 +246,7 @@ uritemplate==4.2.0
     # via
     #   cash-ctrl-backend
     #   drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   cash-ctrl-backend
     #   requests

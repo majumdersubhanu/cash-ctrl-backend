@@ -6,7 +6,8 @@
   <p><em>World-class, AI-Powered, and Mathematically Precise Financial Engine</em></p>
 
 <a href="https://github.com/subhanu/cash-ctrl-backend/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build Status"></a>
-<a href="https://www.djangoproject.com/"><img src="https://img.shields.io/badge/django-6.0.3-092E20?style=flat-square&logo=django" alt="Django Version"></a>
+<a href="https://www.djangoproject.com/"><img src="https://img.shields.io/badge/django-6.0.6-092E20?style=flat-square&logo=django" alt="Django Version"></a>
+<a href="https://github.com/majumdersubhanu/cash-ctrl-backend/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License: MIT"></a>
 <a href="https://www.django-rest-framework.org/"><img src="https://img.shields.io/badge/drf-3.16.1-red?style=flat-square" alt="DRF Version"></a>
 <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker" alt="Docker"></a>
 <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
@@ -168,6 +169,14 @@ The REST API is strictly typed and documented using the OpenAPI 3.0 specificatio
 We strictly follow **Conventional Commits** and maintain a forensic-grade git history.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and PR
 guidelines.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Subhanu Majumder.
 
 ---
 

@@ -2,19 +2,25 @@ name: CashCtrl CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: ["**"]
   pull_request:
-    branches: [ "master", "main" ]
+    branches: ["master", "main"]
 
 env:
-  # CI-only ephemeral credentials (destroyed after each run)
   CI_DB_USER: cashctrl_user
   CI_DB_PASS: ci_test_password_42
   CI_DB_NAME: cashctrl_db
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  # -----------------------------------------------------------------------
+  # Job 1: Lint, Security Audit, and Test (runs on every push / PR)
+  # -----------------------------------------------------------------------
   test-and-lint:
+    name: Test, Lint & Security Audit
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:16-alpine
@@ -34,6 +40,11 @@ jobs:
         image: redis:7-alpine
         ports:
           - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +59,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql-client
 
-      - name: Install UV and dependencies
+      - name: Install UV and project dependencies
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
@@ -62,10 +73,18 @@ jobs:
             sleep 2
           done
 
-      - name: Lint with Ruff
+      - name: Lint with Ruff (check)
         run: uv run ruff check .
 
-      - name: Run Pytest Test Suite
+      - name: Format check with Ruff
+        run: uv run ruff format --check .
+
+      - name: Security audit (pip-audit)
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+
+      - name: Run Pytest with Coverage
         env:
           DJANGO_SETTINGS_MODULE: app.settings
           DATABASE_URL: postgres://${{ env.CI_DB_USER }}:${{ env.CI_DB_PASS }}@localhost:5432/${{ env.CI_DB_NAME }}
@@ -74,18 +93,58 @@ jobs:
           SECURE_SSL_REDIRECT: "False"
           SESSION_COOKIE_SECURE: "False"
           CSRF_COOKIE_SECURE: "False"
-        run: uv run pytest --cov=. --cov-report=xml
+        run: uv run pytest --cov=. --cov-report=xml --cov-report=term --cov-fail-under=95
 
-  docker-build:
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 14
+
+  # -----------------------------------------------------------------------
+  # Job 2: Build and Push Docker image to GHCR (only on push to main)
+  # -----------------------------------------------------------------------
+  docker-build-and-push:
+    name: Build & Push Docker Image
     needs: test-and-lint
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata (tags + labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=sha-,format=short
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
-        run: docker build -t cashctrl-backend:latest -f Dockerfile .
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
