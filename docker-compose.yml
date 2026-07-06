@@ -81,7 +81,10 @@ services:
         condition: service_healthy
 
   nginx:
-    image: nginx:1.25-alpine
+    build:
+      context: ./nginx
+      args:
+        DEV: ${DEV:-false}
     container_name: cashctrl_nginx
     restart: no
     ports:
