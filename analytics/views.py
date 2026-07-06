@@ -141,7 +141,7 @@ class ReportExportView(APIView):
                     tx.account.name,
                     tx.get_type_display(),
                     tx.amount,
-                    tx.currency,
+                    tx.account.currency,
                     tx.category.name if tx.category else "N/A",
                     tx.description,
                     tx.get_status_display(),

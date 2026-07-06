@@ -43,3 +43,4 @@ class SplitGroupSerializer(serializers.ModelSerializer):
         model = SplitGroup
         fields = ("id", "name", "creator", "members", "member_emails", "created_at")
         read_only_fields = ("id", "creator", "created_at")
+        extra_kwargs = {"members": {"allow_empty": True, "required": False}}

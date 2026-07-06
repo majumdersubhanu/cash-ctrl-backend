@@ -43,6 +43,7 @@ class RecurringServiceTest(TestCase):
 
         count = RecurringService.process_recurring()
         self.assertEqual(count, 1)
+        self.assertEqual(str(rt), "Daily Expense (DAILY)")
 
         rt.refresh_from_db()
         self.assertEqual(rt.last_executed, date(2026, 7, 6))
@@ -115,3 +116,23 @@ class RecurringServiceTest(TestCase):
         rt.refresh_from_db()
         self.assertEqual(rt.last_executed, date(2024, 2, 29))
         self.assertEqual(rt.next_execution, date(2025, 2, 28))
+
+    @patch("django.utils.timezone.now")
+    @patch("transactions.services.TransactionService.create_transaction")
+    def test_process_recurring_exception(self, mock_create, mock_now):
+        mock_now.return_value = timezone.make_aware(datetime(2026, 7, 6, 12, 0, 0))
+        mock_create.side_effect = Exception("DB integrity failure")
+
+        RecurringTransaction.objects.create(
+            user=self.user,
+            account=self.account,
+            amount=Decimal("50.00"),
+            type="EXPENSE",
+            description="Failing Expense",
+            interval="DAILY",
+            start_date=date(2026, 7, 5),
+            next_execution=date(2026, 7, 6),
+        )
+
+        count = RecurringService.process_recurring()
+        self.assertEqual(count, 0)

@@ -11,7 +11,7 @@ from users.models import User
 def format_currency(value):
     try:
         return "{:,.2f}".format(float(value))
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         return value
 
 

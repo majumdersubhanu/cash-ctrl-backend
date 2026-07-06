@@ -1,4 +1,5 @@
 import logging
+from decimal import Decimal
 
 from notifications.models import Notification
 
@@ -27,7 +28,7 @@ class NotificationService:
                 message=f"You have spent {current_spend} which exceeds your budget of {budget.amount}.",
                 type="ALERT",
             )
-        elif current_spend >= (budget.amount * 0.9):
+        elif current_spend >= (budget.amount * Decimal("0.9")):
             NotificationService.send_notification(
                 user=user,
                 title=f"Budget Warning: {budget.category.name}",

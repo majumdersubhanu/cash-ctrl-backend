@@ -53,10 +53,6 @@ class OnboardingLendingIntegrationTest(APITestCase):
         url = reverse("loan-list")
         loan_data = {"amount": "1000.00", "interest_rate": "5.0", "duration_months": 12}
         response = self.client.post(url, loan_data)
-        if response.status_code != 201:
-            print(f"\nDEBUG: Loan Request URL: {url}")
-            print(f"DEBUG: Response Status: {response.status_code}")
-            print(f"DEBUG: Response Content: {response.content}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Verify Loan created and installments generated
@@ -69,3 +65,67 @@ class OnboardingLendingIntegrationTest(APITestCase):
         self.assertTrue(
             AuditLog.objects.filter(action="LOAN_CREATED", resource_id=loan.id).exists()
         )
+
+    def test_kyc_list(self):
+        url = reverse("kyc-list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "PENDING")
+
+    def test_kyc_submit_incomplete(self):
+        # Create user with incomplete profile (no first_name/last_name)
+        new_user = User.objects.create_user(
+            email="incomplete@example.com", password="password123"
+        )
+        self.client.force_authenticate(user=new_user)
+        url = reverse("kyc-submit")
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Incomplete profile", response.data["error"])
+
+    def test_upload_document_success(self):
+        url = reverse("kyc-upload-document")
+        doc_file = SimpleUploadedFile("id.jpg", b"content", content_type="image/jpeg")
+        data = {"document_type": "ID_CARD", "document_file": doc_file}
+        response = self.client.post(url, data, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["document_type"], "ID_CARD")
+
+    def test_upload_document_invalid(self):
+        url = reverse("kyc-upload-document")
+        data = {"document_type": "INVALID_TYPE"}
+        response = self.client.post(url, data, format="multipart")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reject_profile(self):
+        profile = KYCService.get_or_create_profile(self.user)
+        res = KYCService.reject_profile(profile, reason="poor document quality")
+        self.assertTrue(res)
+        self.assertEqual(profile.status, "REJECTED")
+
+    def test_kyc_model_str(self):
+        from onboarding.models import KYCDocument
+
+        profile = KYCService.get_or_create_profile(self.user)
+        assert str(profile) == "KYC for testuser@example.com - PENDING"
+
+        doc = KYCDocument.objects.create(
+            profile=profile,
+            document_type="PASSPORT",
+            document_file=SimpleUploadedFile(
+                "passport.jpg", b"fake", content_type="image/jpeg"
+            ),
+        )
+        assert str(doc) == "PASSPORT for testuser@example.com"
+
+    def test_kyc_viewset_queryset(self):
+        from onboarding.views import KYCViewSet
+        from django.test import RequestFactory
+
+        view = KYCViewSet()
+        request = RequestFactory().get("/kyc/")
+        request.user = self.user
+        view.request = request
+
+        qs = view.get_queryset()
+        self.assertIsNotNone(qs)

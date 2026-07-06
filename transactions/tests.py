@@ -73,3 +73,35 @@ class TransactionServiceTest(TestCase):
 
         self.assertEqual(self.account.balance, Decimal("700.00"))
         self.assertEqual(target_account.balance, Decimal("400.00"))
+
+    def test_model_string_representations(self):
+        from transactions.models import Category, Transaction
+
+        category = Category.objects.create(
+            user=self.user, name="Groceries", type="EXPENSE"
+        )
+        self.assertEqual(str(category), "Groceries (EXPENSE)")
+
+        tx = Transaction.objects.create(
+            user=self.user,
+            account=self.account,
+            type="EXPENSE",
+            amount=Decimal("45.50"),
+            status="POSTED",
+        )
+        self.assertEqual(str(tx), "EXPENSE - 45.50 (POSTED)")
+
+    def test_transaction_admin_queryset(self):
+        from transactions.admin import TransactionAdmin
+        from transactions.models import Transaction
+        from django.contrib.admin.sites import AdminSite
+        from django.test import RequestFactory
+
+        site = AdminSite()
+        admin_instance = TransactionAdmin(Transaction, site)
+
+        request = RequestFactory().get("/admin/")
+        request.user = self.user
+
+        qs = admin_instance.get_queryset(request)
+        self.assertIsNotNone(qs)

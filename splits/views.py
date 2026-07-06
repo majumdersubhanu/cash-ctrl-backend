@@ -54,7 +54,8 @@ class SplitGroupViewSet(viewsets.ModelViewSet):
         return self.request.user.split_groups.all()
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        instance = serializer.save(creator=self.request.user)
+        instance.members.add(self.request.user)
 
     @action(detail=True, methods=["post"])
     def add_expense(self, request, pk=None):
@@ -69,36 +70,39 @@ class SplitGroupViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if split_type == "equal":
-            members = list(group.members.all())
-            participants_data = SplitService.calculate_equal_split(amount, members)
-        elif split_type == "percentage":
-            # expects 'percentages': [{'user_id': id, 'percentage': 25}, ...]
-            percentages_raw = request.data.get("percentages", [])
-            user_percentages = []
-            for item in percentages_raw:
-                user = group.members.get(id=item["user_id"])
-                user_percentages.append(
-                    {"user": user, "percentage": item["percentage"]}
+        try:
+            if split_type == "equal":
+                members = list(group.members.all())
+                participants_data = SplitService.calculate_equal_split(amount, members)
+            elif split_type == "percentage":
+                # expects 'percentages': [{'user_id': id, 'percentage': 25}, ...]
+                percentages_raw = request.data.get("percentages", [])
+                user_percentages = []
+                for item in percentages_raw:
+                    user = group.members.get(id=item["user_id"])
+                    user_percentages.append(
+                        {"user": user, "percentage": item["percentage"]}
+                    )
+                participants_data = SplitService.calculate_percentage_split(
+                    amount, user_percentages
                 )
-            participants_data = SplitService.calculate_percentage_split(
-                amount, user_percentages
-            )
-        elif split_type == "fixed":
-            # expects 'shares': [{'user_id': id, 'amount': 50}, ...]
-            shares_raw = request.data.get("shares", [])
-            user_amounts = []
-            for item in shares_raw:
-                user = group.members.get(id=item["user_id"])
-                user_amounts.append({"user": user, "amount": item["amount"]})
-            participants_data = SplitService.calculate_fixed_amounts(
-                amount, user_amounts
-            )
-        else:
-            return Response(
-                {"error": f"Split type '{split_type}' not supported."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            elif split_type == "fixed":
+                # expects 'shares': [{'user_id': id, 'amount': 50}, ...]
+                shares_raw = request.data.get("shares", [])
+                user_amounts = []
+                for item in shares_raw:
+                    user = group.members.get(id=item["user_id"])
+                    user_amounts.append({"user": user, "amount": item["amount"]})
+                participants_data = SplitService.calculate_fixed_amounts(
+                    amount, user_amounts
+                )
+            else:
+                return Response(
+                    {"error": f"Split type '{split_type}' not supported."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         expense = SplitService.create_expense(
             group=group,

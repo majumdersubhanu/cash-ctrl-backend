@@ -84,4 +84,12 @@ uv run docker compose exec web pytest --cov=.
 3. Write a clear, descriptive title and summarize the implementation details.
 4. Ensure the UI/Doc swagger endpoints reflect your new APIs if you added any.
 
+### 🛡️ Branch Protection & CI Gates
+
+To merge a Pull Request into the main repository branch (`main` / `master`), the following strict merge gates must be satisfied:
+- **Lint & Format**: The Ruff linter and formatter checks must pass cleanly.
+- **Security Audit**: The `pip-audit` check must find **zero vulnerabilities** in project requirements.
+- **Test Coverage**: All unit/integration tests must pass, and overall test coverage must be **at least 95%** (enforced by pytest-cov).
+
 Welcome to the CashCtrl Core Contributor network!
+

@@ -71,24 +71,40 @@ class Command(BaseCommand):
         existing_accounts_count = Account.objects.count()
         if existing_accounts_count < len(all_users):
             self.stdout.write("Generating Accounts for users...")
-            existing_account_user_ids = set(Account.objects.values_list("user_id", flat=True))
+            existing_account_user_ids = set(
+                Account.objects.values_list("user_id", flat=True)
+            )
             new_accounts = [
-                Account(user=u, balance=Decimal(random.randint(500, 100000)), currency="USD")
-                for u in all_users if u.id not in existing_account_user_ids
+                Account(
+                    user=u, balance=Decimal(random.randint(500, 100000)), currency="USD"
+                )
+                for u in all_users
+                if u.id not in existing_account_user_ids
             ]
             if new_accounts:
                 Account.objects.bulk_create(new_accounts, batch_size=2000)
             self.stdout.write("Accounts verified.")
-        return list(Account.objects.all()[:len(all_users)])
+        return list(Account.objects.all()[: len(all_users)])
 
     def _seed_categories(self, all_users):
         self.stdout.write("Generating Categories...")
-        cat_names = ["Groceries", "Rent", "Utilities", "Salary", "Entertainment", "Dining", "Travel", "Health"]
+        cat_names = [
+            "Groceries",
+            "Rent",
+            "Utilities",
+            "Salary",
+            "Entertainment",
+            "Dining",
+            "Travel",
+            "Health",
+        ]
         if not Category.objects.exists():
             categories = [
-                Category(user=random.choice(all_users), 
-                         name=random.choice(cat_names) + str(random.randint(1, 5)), 
-                         type="INCOME" if "Salary" in cat_names else "EXPENSE")
+                Category(
+                    user=random.choice(all_users),
+                    name=random.choice(cat_names) + str(random.randint(1, 5)),
+                    type="INCOME" if "Salary" in cat_names else "EXPENSE",
+                )
                 for _ in range(100)
             ]
             Category.objects.bulk_create(categories, ignore_conflicts=True)
@@ -100,15 +116,33 @@ class Command(BaseCommand):
         if existing_tx < target_tx_count:
             needed = target_tx_count - existing_tx
             self.stdout.write(f"Generating {needed} Transactions...")
-            types, statuses, batch_size = ["INCOME", "EXPENSE", "TRANSFER"], ["POSTED", "CLEARED"], 10000
+            types, statuses, batch_size = (
+                ["INCOME", "EXPENSE", "TRANSFER"],
+                ["POSTED", "CLEARED"],
+                10000,
+            )
             transactions_buffer = []
             with transaction.atomic():
                 for i in range(needed):
                     acc = random.choice(all_accounts)
-                    cat = random.choice(all_categories) if all_categories and random.random() > 0.3 else None
-                    transactions_buffer.append(Transaction(user=acc.user, account=acc, category=cat, type=random.choice(types),
-                                                            amount=Decimal(random.uniform(5.0, 2000.0)).quantize(Decimal("0.01")),
-                                                            description=fake.sentence(nb_words=4), status=random.choice(statuses)))
+                    cat = (
+                        random.choice(all_categories)
+                        if all_categories and random.random() > 0.3
+                        else None
+                    )
+                    transactions_buffer.append(
+                        Transaction(
+                            user=acc.user,
+                            account=acc,
+                            category=cat,
+                            type=random.choice(types),
+                            amount=Decimal(random.uniform(5.0, 2000.0)).quantize(
+                                Decimal("0.01")
+                            ),
+                            description=fake.sentence(nb_words=4),
+                            status=random.choice(statuses),
+                        )
+                    )
                     if len(transactions_buffer) >= batch_size:
                         Transaction.objects.bulk_create(transactions_buffer)
                         self.stdout.write(f"  ... inserted {i + 1} transactions")
@@ -124,47 +158,100 @@ class Command(BaseCommand):
             for _ in range(2000):
                 lender, borrower = random.choice(all_users), random.choice(all_users)
                 if lender != borrower:
-                    new_loans.append(Loan(lender=lender, borrower=borrower, amount=Decimal(random.randint(100, 5000)),
-                                          interest_rate=Decimal(random.uniform(2.0, 10.0)).quantize(Decimal("0.01")),
-                                          duration_months=random.choice([6, 12, 24]), status=random.choice(["ACTIVE", "FULLY_PAID", "DEFAULTED"])))
+                    new_loans.append(
+                        Loan(
+                            lender=lender,
+                            borrower=borrower,
+                            amount=Decimal(random.randint(100, 5000)),
+                            interest_rate=Decimal(random.uniform(2.0, 10.0)).quantize(
+                                Decimal("0.01")
+                            ),
+                            duration_months=random.choice([6, 12, 24]),
+                            status=random.choice(["ACTIVE", "FULLY_PAID", "DEFAULTED"]),
+                        )
+                    )
             Loan.objects.bulk_create(new_loans, batch_size=1000, ignore_conflicts=True)
             self.stdout.write("Loans generated.")
 
     def _seed_splits(self, all_users):
         self.stdout.write("Generating Split Groups & Expenses...")
         if SplitGroup.objects.count() < 500:
-            groups = [SplitGroup(name=fake.company() + " Trip", creator=random.choice(all_users)) for _ in range(500)]
+            groups = [
+                SplitGroup(
+                    name=fake.company() + " Trip", creator=random.choice(all_users)
+                )
+                for _ in range(500)
+            ]
             SplitGroup.objects.bulk_create(groups, batch_size=500)
         for group in SplitGroup.objects.all()[:500]:
             members = random.sample(all_users, k=random.randint(2, 6))
             group.members.add(*members, group.creator)
             for _ in range(5):
-                SplitExpense.objects.create(group=group, description=fake.catch_phrase(), 
-                                            paid_by=random.choice(list(group.members.all())), 
-                                            amount=Decimal(random.randint(50, 500)), currency="USD")
+                SplitExpense.objects.create(
+                    group=group,
+                    description=fake.catch_phrase(),
+                    paid_by=random.choice(list(group.members.all())),
+                    amount=Decimal(random.randint(50, 500)),
+                    currency="USD",
+                )
 
     def _seed_budgets_and_goals(self, all_users, all_categories):
         self.stdout.write("Generating Budgets and Savings Goals...")
-        budgets = [Budget(user=random.choice(all_users), category=random.choice(all_categories) if all_categories else None,
-                          amount=Decimal(random.randint(500, 5000)), period=random.choice(["MONTHLY", "WEEKLY", "YEARLY"]),
-                          start_date=timezone.now().date()) for _ in range(1000)]
+        budgets = [
+            Budget(
+                user=random.choice(all_users),
+                category=random.choice(all_categories) if all_categories else None,
+                amount=Decimal(random.randint(500, 5000)),
+                period=random.choice(["MONTHLY", "WEEKLY", "YEARLY"]),
+                start_date=timezone.now().date(),
+            )
+            for _ in range(1000)
+        ]
         Budget.objects.bulk_create(budgets, batch_size=1000, ignore_conflicts=True)
-        goals = [SavingsGoal(user=random.choice(all_users), name=fake.bs(), target_amount=(t := Decimal(random.randint(1000, 50000))),
-                             current_amount=t * Decimal(random.uniform(0.1, 0.9)),
-                             target_date=timezone.now().date() + timedelta(days=random.randint(30, 365))) for _ in range(500)]
+        goals = [
+            SavingsGoal(
+                user=random.choice(all_users),
+                name=fake.bs(),
+                target_amount=(t := Decimal(random.randint(1000, 50000))),
+                current_amount=t * Decimal(random.uniform(0.1, 0.9)),
+                target_date=timezone.now().date()
+                + timedelta(days=random.randint(30, 365)),
+            )
+            for _ in range(500)
+        ]
         SavingsGoal.objects.bulk_create(goals, batch_size=500, ignore_conflicts=True)
 
     def _seed_kyc(self, all_users):
         self.stdout.write("Generating KYC Profiles and Notifications...")
         from onboarding.models import KYCProfile
+
         if KYCProfile.objects.count() < len(all_users):
-            profiles = [KYCProfile(user=u, first_name=u.first_name, last_name=u.last_name,
-                                   date_of_birth=fake.date_of_birth(minimum_age=18, maximum_age=80),
-                                   status=random.choice(["VERIFIED", "PENDING", "REJECTED"])) for u in all_users]
-            KYCProfile.objects.bulk_create(profiles, batch_size=2000, ignore_conflicts=True)
+            profiles = [
+                KYCProfile(
+                    user=u,
+                    first_name=u.first_name,
+                    last_name=u.last_name,
+                    date_of_birth=fake.date_of_birth(minimum_age=18, maximum_age=80),
+                    status=random.choice(["VERIFIED", "PENDING", "REJECTED"]),
+                )
+                for u in all_users
+            ]
+            KYCProfile.objects.bulk_create(
+                profiles, batch_size=2000, ignore_conflicts=True
+            )
 
     def _seed_notifications(self, all_users):
         from notifications.models import Notification
-        notifications = [Notification(user=random.choice(all_users), title=fake.sentence(nb_words=4), 
-                                      message=fake.text(), type=random.choice(["ALERT", "WARNING", "INFO"])) for _ in range(5000)]
-        Notification.objects.bulk_create(notifications, batch_size=1000, ignore_conflicts=True)
+
+        notifications = [
+            Notification(
+                user=random.choice(all_users),
+                title=fake.sentence(nb_words=4),
+                message=fake.text(),
+                type=random.choice(["ALERT", "WARNING", "INFO"]),
+            )
+            for _ in range(5000)
+        ]
+        Notification.objects.bulk_create(
+            notifications, batch_size=1000, ignore_conflicts=True
+        )

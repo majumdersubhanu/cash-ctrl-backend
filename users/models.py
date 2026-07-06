@@ -44,4 +44,8 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email or str(self.phone_number) or self.username
+        return (
+            self.email
+            or (str(self.phone_number) if self.phone_number else "")
+            or self.username
+        )

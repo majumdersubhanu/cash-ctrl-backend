@@ -141,3 +141,57 @@ class TestLoanService:
         # Verify sum of all installments equals the total repayable amount
         total_installment_sum = sum(inst.amount for inst in installments)
         assert total_installment_sum == Decimal("1029.17")
+
+    def test_lending_model_string_representations(self, users_and_accounts):
+        from lending.models import Loan, Installment
+
+        borrower = users_and_accounts["borrower"]
+        lender = users_and_accounts["lender"]
+
+        loan = Loan.objects.create(
+            borrower=borrower,
+            lender=lender,
+            amount=Decimal("5000.00"),
+            interest_rate=Decimal("10.0"),
+            duration_months=24,
+        )
+        assert str(loan) == f"Loan {loan.id} - borrower@test.com (5000.00)"
+
+        import datetime
+
+        installment = Installment.objects.create(
+            loan=loan, amount=Decimal("250.00"), due_date=datetime.date(2026, 8, 6)
+        )
+        assert str(installment) == f"Installment {loan.id} - 2026-08-06 (250.00)"
+
+    def test_pay_installment_already_paid(self, users_and_accounts):
+        borrower = users_and_accounts["borrower"]
+        borrower_acc = users_and_accounts["borrower_acc"]
+
+        loan = LoanService.create_loan(
+            borrower=borrower,
+            amount=Decimal("100.00"),
+            interest_rate=Decimal("5.0"),
+            duration_months=1,
+        )
+        installment = loan.installments.first()
+        LoanService.pay_installment(installment=installment, account=borrower_acc)
+
+        with pytest.raises(ValueError, match="Installment already paid."):
+            LoanService.pay_installment(installment=installment, account=borrower_acc)
+
+    def test_pay_installment_fully_paid(self, users_and_accounts):
+        borrower = users_and_accounts["borrower"]
+        borrower_acc = users_and_accounts["borrower_acc"]
+
+        loan = LoanService.create_loan(
+            borrower=borrower,
+            amount=Decimal("100.00"),
+            interest_rate=Decimal("5.0"),
+            duration_months=1,
+        )
+        installment = loan.installments.first()
+        LoanService.pay_installment(installment=installment, account=borrower_acc)
+
+        loan.refresh_from_db()
+        assert loan.status == "FULLY_PAID"
