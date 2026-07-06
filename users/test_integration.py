@@ -29,7 +29,7 @@ class TestUserRegistrationAPI:
         assert response.status_code == status.HTTP_201_CREATED
         assert "access" in response.data
         assert "refresh" in response.data
-        assert response.data["kyc_status"] == "UNVERIFIED"
+        assert response.data["kyc_status"] == "PENDING"
         assert response.data["redirect_to"] == "/onboarding/kyc"
 
         # Verify database insertion
