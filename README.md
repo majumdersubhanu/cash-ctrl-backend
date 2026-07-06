@@ -86,7 +86,9 @@ multi-actor financial states.
 
 ## 🏃 Setup & Installation
 
-### Local Development (Native)
+The CashCtrl ecosystem is designed to run in a fully containerized environment using **Docker** and **Docker Compose** for both development and production. This ensures consistent execution contexts for row-level security (RLS) and platform dependencies.
+
+### Local Development (Containerized)
 
 1. **Clone the repository**:
 
@@ -95,39 +97,53 @@ multi-actor financial states.
    cd cash-ctrl-backend
    ```
 
-2. **Initialize Environment (using `uv`)**:
+2. **Configure Environment Variables**:
+
+   Create a `.env` file at the root of the project containing the settings from `.env.dev` (already set up for the PostgreSQL container):
 
    ```bash
-   uv venv
-   # On Windows: .venv\Scripts\activate
-   uv sync
+   cp .env.dev .env
    ```
 
-3. **Configure Environment Variables**:
+3. **Build and Start All Services**:
 
-   Copy `.env.example` to `.env.dev` and tailor your database and social auth keys.
-
-4. **Run Migrations & Seed Data**:
+   Use `uv run` to execute Docker Compose:
 
    ```bash
-   python manage.py migrate
-   python manage.py seed_data
+   uv run docker compose up --build -d
    ```
 
-5. **Start the Unified Entry Point**:
+   This launches the complete service stack:
+   - **PostgreSQL** (`cashctrl_db`)
+   - **Redis** (`cashctrl_redis`)
+   - **Django Web Gunicorn** (`cashctrl_web`)
+   - **Celery Worker & Beat** (`cashctrl_celery_worker`, `cashctrl_celery_beat`)
+   - **Flower Dashboard** (`cashctrl_flower`) at [http://localhost:5555](http://localhost:5555)
+   - **Nginx Reverse Proxy** (`cashctrl_nginx`) at [http://localhost:80](http://localhost:80)
+   - **Prometheus & Grafana** for observability at [http://localhost:9090](http://localhost:9090) and [http://localhost:3000](http://localhost:3000)
+
+4. **Verify Container Health**:
 
    ```bash
-   python main.py --env dev --start-services
+   uv run docker compose ps
    ```
 
-### Docker (Production Setup)
+5. **Run Migrations & Seed Data**:
 
-The stack is fully containerized inside a multi-stage, Linux-secure Dockerfile running Gunicorn behind Nginx.
-`docker-compose` spins up Redis, Celery Workers, Prometheus, Grafana, and Flower automatically.
+   To apply Postgres schemas and populate the ledger with high-fidelity mock data (5K Users, 500K Transactions):
 
-```bash
-docker compose up --build -d
-```
+   ```bash
+   uv run docker compose exec web python manage.py migrate
+   uv run docker compose exec web python manage.py seed_data
+   ```
+
+6. **Execute Test Suite**:
+
+   Run unit and integration tests inside the web container using `pytest`:
+
+   ```bash
+   uv run docker compose exec web pytest
+   ```
 
 ### Google Cloud Deployment
 

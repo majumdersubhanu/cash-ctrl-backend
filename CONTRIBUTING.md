@@ -22,19 +22,22 @@ You need `uv` (the blazing fast Python package manager), `Docker`, and `Docker C
 ### 2. Setup
 
 1. Fork and clone the repository.
-2. Run the development environment initialization:
+2. Configure environmental variables at the root:
 
    ```bash
-   uv venv
-   uv pip install -r requirements.txt
-   uv pip install -r requirements-test.txt
+   cp .env.dev .env
    ```
 
-3. Set up your `.env.dev` file (You can copy `.env.example`).
-4. Apply migrations and run the server:
+3. Start the development environment containers:
 
    ```bash
-   uv run python main.py --env dev
+   uv run docker compose up --build -d
+   ```
+
+4. Apply database migrations inside the running container:
+
+   ```bash
+   uv run docker compose exec web python manage.py migrate
    ```
 
 ## Development Workflow
@@ -66,9 +69,12 @@ Before opening a Pull Request, ensure the codebase is clean and all tests pass. 
 run these checks, but running them locally saves time!
 
 ```bash
-uv run ruff check .
-uv run ruff format .
-uv run pytest --cov=.
+# Lint & Format checks
+uv run docker compose exec web ruff check .
+uv run docker compose exec web ruff format . --check
+
+# Run test suite with coverage
+uv run docker compose exec web pytest --cov=.
 ```
 
 ## Opening a Pull Request
