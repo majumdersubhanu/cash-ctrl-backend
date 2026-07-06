@@ -132,6 +132,8 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int(
 )  # Database connection pooling
 DATABASES["default"]["CONN_HEALTH_CHECKS"] = True  # Drop dead pooled connections
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
