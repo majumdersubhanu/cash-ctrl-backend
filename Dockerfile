@@ -1,7 +1,7 @@
 # -------------------------------
 # Builder stage
 # -------------------------------
-FROM python:3.12-slim AS builder
+FROM python:3.14-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -13,22 +13,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+# Install uv from the official ghcr.io image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir \
-    pytest==9.0.2 \
-    pytest-django==4.12.0 \
-    pytest-cov==7.0.0 \
-    model-bakery==1.23.3 \
-    coverage==7.13.4
+COPY requirements-test.txt .
+
+# Install all dependencies (including dev/test) using uv
+RUN uv pip install --system --no-cache -r requirements-test.txt
 
 
 # -------------------------------
 # Runtime stage
 # -------------------------------
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -43,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependencies from builder
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Create non-root user early
