@@ -41,9 +41,7 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", "we
 # Application definition
 
 INSTALLED_APPS = [
-    "jet.dashboard",
-    "jet",
-    "django.contrib.admin",
+    "app.admin.CashCtrlAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -362,12 +360,7 @@ LOGGING = {
 LOGS_DIR = BASE_DIR / "logs"
 LOGS_DIR.mkdir(exist_ok=True)
 
-# JET Configuration
-JET_DEFAULT_THEME = "light-violet"
-JET_SIDE_MENU_COMPACT = True
 
-JET_INDEX_DASHBOARD = "app.dashboard.CustomIndexDashboard"
-JET_APP_INDEX_DASHBOARD = "app.dashboard.CustomAppIndexDashboard"
 
 CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]

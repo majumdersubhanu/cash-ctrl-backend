@@ -28,8 +28,6 @@ from .views import HealthCheckView
 urlpatterns = [
     path("", include("django_prometheus.urls")),
     path("health/", HealthCheckView.as_view(), name="health"),
-    path("jet/", include("jet.urls", "jet")),
-    path("jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/p2p-analytics/", include("analytics.admin_urls")),
     path("admin/", admin.site.urls),
     # API Schema and Documentation

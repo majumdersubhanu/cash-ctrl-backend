@@ -182,57 +182,7 @@ class TestMiddleware:
         assert mock_logger.warning.called
 
 
-@pytest.mark.django_db
-class TestDashboard:
-    def test_custom_index_dashboard(self):
-        from app.dashboard import CustomIndexDashboard
 
-        class MockIndexDashboard(CustomIndexDashboard):
-            def __init__(self, context):
-                self.children = []
-                self.context = context
-
-        # mock context with Request
-        from django.test import RequestFactory
-
-        factory = RequestFactory()
-        request = factory.get("/admin/")
-
-        # create mock users/objects to check queries inside init_with_context
-        from django.contrib.auth import get_user_model
-
-        User = get_user_model()
-        baker.make(User)
-
-        context = {"request": request}
-        dashboard = MockIndexDashboard(context)
-        dashboard.init_with_context(context)
-        assert len(dashboard.children) > 0
-
-    def test_custom_app_index_dashboard(self):
-        from app.dashboard import CustomAppIndexDashboard
-
-        class MockDashboard(CustomAppIndexDashboard):
-            def __init__(self, context):
-                self.children = []
-                self.context = context
-
-            def models(self):
-                return []
-
-            def get_app_content_types(self):
-                return []
-
-        # mock context with Request
-        from django.test import RequestFactory
-
-        factory = RequestFactory()
-        request = factory.get("/admin/")
-        context = {"request": request}
-
-        dashboard = MockDashboard(context)
-        dashboard.init_with_context(context)
-        assert len(dashboard.children) > 0
 
 
 def test_celery_debug_task():

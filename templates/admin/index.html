@@ -1,0 +1,632 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Dashboard | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    /* Reset & Theme overrides */
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+    #header {
+        background: #1e293b !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding: 15px 30px !important;
+    }
+    #branding h1 {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 700 !important;
+        color: #f8fafc !important;
+        font-size: 1.25rem !important;
+    }
+    #branding h1 a {
+        color: #f8fafc !important;
+    }
+    #user-tools {
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+    }
+    #user-tools a {
+        color: #6366f1 !important;
+        text-decoration: none;
+    }
+    #user-tools a:hover {
+        text-decoration: underline;
+    }
+    .breadcrumbs {
+        background: #1e293b !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding: 10px 30px !important;
+        color: #64748b !important;
+    }
+    .breadcrumbs a {
+        color: #94a3b8 !important;
+        text-decoration: none;
+    }
+    
+    /* Layout */
+    #content {
+        padding: 30px !important;
+        background: #0f172a !important;
+    }
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 30px;
+        margin-top: 10px;
+    }
+    
+    /* Sidebar Navigation */
+    .admin-sidebar {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        height: fit-content;
+    }
+    .sidebar-title {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .sidebar-app {
+        margin-bottom: 20px;
+    }
+    .sidebar-app-name {
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #94a3b8;
+        margin-bottom: 8px;
+    }
+    .sidebar-models {
+        list-style: none;
+        padding-left: 10px;
+        margin: 0;
+    }
+    .sidebar-models li {
+        margin-bottom: 6px;
+    }
+    .sidebar-models a {
+        color: #cbd5e1;
+        font-size: 0.8125rem;
+        text-decoration: none;
+        display: block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+    .sidebar-models a:hover {
+        background: rgba(99, 102, 241, 0.1);
+        color: #818cf8;
+    }
+    
+    /* Main Content */
+    .dashboard-main {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    /* System Health Alert Row */
+    .system-health {
+        display: flex;
+        gap: 20px;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 15px 25px;
+        align-items: center;
+    }
+    .health-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    .health-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+    .health-healthy {
+        background-color: #10b981;
+        box-shadow: 0 0 8px #10b981;
+    }
+    .health-unhealthy {
+        background-color: #ef4444;
+        box-shadow: 0 0 8px #ef4444;
+    }
+    
+    /* Cards Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    .stat-card {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px 25px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .stat-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #94a3b8;
+        margin-bottom: 10px;
+    }
+    .stat-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #f8fafc;
+    }
+    .stat-value-sub {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin-top: 5px;
+    }
+    
+    /* Charts Layout Grid */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+    .chart-card {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .chart-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        margin-bottom: 20px;
+        align-self: flex-start;
+    }
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 220px;
+    }
+
+    /* KYC Verification Alerts Board */
+    .action-board {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+    }
+    .board-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .board-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #f8fafc;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .badge-count {
+        background: #ef4444;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    .kyc-queue {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .kyc-item {
+        background: #0f172a;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .kyc-user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .kyc-email {
+        font-weight: 600;
+        color: #f1f5f9;
+        font-size: 0.9rem;
+    }
+    .kyc-details {
+        font-size: 0.8rem;
+        color: #64748b;
+    }
+    .kyc-actions {
+        display: flex;
+        gap: 10px;
+    }
+    .btn {
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: none;
+    }
+    .btn-approve {
+        background: #10b981;
+        color: white;
+    }
+    .btn-approve:hover {
+        background: #059669;
+    }
+    .btn-reject {
+        background: #ef4444;
+        color: white;
+    }
+    .btn-reject:hover {
+        background: #dc2626;
+    }
+    
+    /* Recent Transactions table */
+    .table-card {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+        overflow-x: auto;
+    }
+    .table-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #f8fafc;
+        margin-bottom: 20px;
+    }
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .custom-table th {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.785rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .custom-table td {
+        padding: 14px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        font-size: 0.875rem;
+        color: #cbd5e1;
+    }
+    .custom-table tr:hover td {
+        background: rgba(255, 255, 255, 0.01);
+    }
+    .badge-tx {
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .badge-income {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+    }
+    .badge-expense {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+    }
+    .badge-transfer {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+    }
+    .tx-amount {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+    }
+    .empty-state {
+        color: #64748b;
+        font-size: 0.875rem;
+        text-align: center;
+        padding: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar App Navigation -->
+    <div class="admin-sidebar">
+        <div class="sidebar-title">Manage Database</div>
+        <ul class="sidebar-menu">
+            {% for app in app_list %}
+                <li class="sidebar-app">
+                    <div class="sidebar-app-name">{{ app.name }}</div>
+                    <ul class="sidebar-models">
+                        {% for model in app.models %}
+                            <li>
+                                <a href="{{ model.admin_url }}">{{ model.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% empty %}
+                <li class="empty-state">No database tables registered</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Main Analytics Content -->
+    <div class="dashboard-main">
+        
+        <!-- System Health Alerts -->
+        <div class="system-health">
+            <div style="font-size: 0.95rem; font-weight: 600; color: #f8fafc; margin-right: auto;">
+                🖥️ System Status Panel
+            </div>
+            <div class="health-indicator">
+                <span>Database (Postgres):</span>
+                <span class="health-dot {% if db_status == 'Healthy' %}health-healthy{% else %}health-unhealthy{% endif %}"></span>
+                <span style="color: {% if db_status == 'Healthy' %}#34d399{% else %}#f87171{% endif %};">{{ db_status }}</span>
+            </div>
+            <div class="health-indicator" style="margin-left: 20px;">
+                <span>Cache (Redis):</span>
+                <span class="health-dot {% if redis_status == 'Healthy' %}health-healthy{% else %}health-unhealthy{% endif %}"></span>
+                <span style="color: {% if redis_status == 'Healthy' %}#34d399{% else %}#f87171{% endif %};">{{ redis_status }}</span>
+            </div>
+        </div>
+
+        <!-- KPI Cards Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">👥 Registered Users</div>
+                <div class="stat-value">{{ total_users }}</div>
+                <div class="stat-value-sub">Total user identities in ledger</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">💳 Total Transacted Volume</div>
+                <div class="stat-value">${{ total_volume|floatformat:2 }}</div>
+                <div class="stat-value-sub">Sum of posted double-entry legs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">🤝 Active Lending Portfolio</div>
+                <div class="stat-value">${{ total_lent|floatformat:2 }}</div>
+                <div class="stat-value-sub">Outstanding debt capital active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">📊 Split Groups</div>
+                <div class="stat-value">{{ total_groups }}</div>
+                <div class="stat-value-sub">Collective expense rings active</div>
+            </div>
+        </div>
+
+        <!-- KYC Verification Board -->
+        <div class="action-board">
+            <div class="board-header">
+                <div class="board-title">
+                    🔍 KYC Document Verification Queue
+                    {% if pending_kyc_count > 0 %}
+                        <span class="badge-count">{{ pending_kyc_count }} pending</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="kyc-queue">
+                {% for profile in pending_kyc_profiles %}
+                    <div class="kyc-item">
+                        <div class="kyc-user-info">
+                            <span class="kyc-email">{{ profile.user.email }}</span>
+                            <span class="kyc-details">
+                                Name: {{ profile.first_name }} {{ profile.last_name }} | 
+                                DOB: {{ profile.date_of_birth|date:"Y-m-d"|default:"N/A" }} | 
+                                Address: {{ profile.address|default:"N/A" }}
+                            </span>
+                            {% if profile.documents.all %}
+                                <div style="margin-top: 5px; font-size: 0.75rem; color: #818cf8;">
+                                    Uploaded: 
+                                    {% for doc in profile.documents.all %}
+                                        <a href="{{ doc.document_file.url }}" target="_blank" style="color: #6366f1; text-decoration: underline; margin-right: 10px;">
+                                            {{ doc.get_document_type_display }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="kyc-actions">
+                            <a href="{% url 'admin:approve_kyc' profile.id %}" class="btn btn-approve">Approve</a>
+                            <a href="{% url 'admin:reject_kyc' profile.id %}" class="btn btn-reject">Reject</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">🎉 All user KYC verification queues are empty. Zero items pending.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Interactive Charts Row -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">Transaction Types distribution</div>
+                <div class="chart-container">
+                    <canvas id="txTypeChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">KYC Profile Status Distribution</div>
+                <div class="chart-container">
+                    <canvas id="kycStatusChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">P2P Loan States</div>
+                <div class="chart-container">
+                    <canvas id="loanStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions Table -->
+        <div class="table-card">
+            <div class="table-title">📝 Recent Transaction Ledger Entries</div>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Account ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in recent_transactions %}
+                        <tr>
+                            <td style="font-family: monospace; font-size: 0.75rem; color: #64748b;">
+                                {{ tx.id|stringformat:".8s" }}...
+                            </td>
+                            <td>{{ tx.user.email }}</td>
+                            <td style="font-family: monospace; font-size: 0.8rem;">
+                                {{ tx.account.id|stringformat:".8s" }}...
+                            </td>
+                            <td>
+                                <span class="badge-tx {% if tx.type == 'INCOME' %}badge-income{% elif tx.type == 'EXPENSE' %}badge-expense{% else %}badge-transfer{% endif %}">
+                                    {{ tx.type }}
+                                </span>
+                            </td>
+                            <td class="tx-amount" style="color: {% if tx.type == 'INCOME' %}#10b981{% else %}#cbd5e1{% endif %};">
+                                {% if tx.type == 'INCOME' %}+{% else %}-{% endif %}${{ tx.amount|floatformat:2 }}
+                            </td>
+                            <td style="font-size: 0.8rem; color: #94a3b8;">{{ tx.status }}</td>
+                            <td style="font-size: 0.8rem; color: #64748b;">{{ tx.date|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="empty-state">No transaction ledger entries posted yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // 1. Transaction Types Distribution Chart
+    const txCtx = document.getElementById('txTypeChart').getContext('2d');
+    new Chart(txCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ tx_type_labels|safe }},
+            datasets: [{
+                data: {{ tx_type_data|safe }},
+                backgroundColor: ['#f87171', '#34d399', '#818cf8'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', font: { family: 'Inter' } }
+                }
+            }
+        }
+    });
+
+    // 2. KYC Profile Status Distribution Chart
+    const kycCtx = document.getElementById('kycStatusChart').getContext('2d');
+    new Chart(kycCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ kyc_status_labels|safe }},
+            datasets: [{
+                data: {{ kyc_status_data|safe }},
+                backgroundColor: ['#64748b', '#f59e0b', '#10b981', '#ef4444'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', font: { family: 'Inter' } }
+                }
+            }
+        }
+    });
+
+    // 3. P2P Loan States Chart
+    const loanCtx = document.getElementById('loanStatusChart').getContext('2d');
+    new Chart(loanCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ loan_status_labels|safe }},
+            datasets: [{
+                label: 'Loans Count',
+                data: {{ loan_status_data|safe }},
+                backgroundColor: '#6366f1',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#64748b' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#64748b' }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+{% endblock %}
