@@ -188,16 +188,16 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-repo' }}/cash-ctrl-web:${{ github.sha }}
-            ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-repo' }}/cash-ctrl-web:latest
+            ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-backend' }}/cash-ctrl-backend:${{ github.sha }}
+            ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-backend' }}/cash-ctrl-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: cash-ctrl-api
-          image: ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-repo' }}/cash-ctrl-web:${{ github.sha }}
+          service: cash-ctrl-backend
+          image: ${{ secrets.GCP_GAR_REGISTRY || 'us-central1-docker.pkg.dev' }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_GAR_REPOSITORY || 'cash-ctrl-backend' }}/cash-ctrl-backend:${{ github.sha }}
           region: ${{ secrets.GCP_REGION || 'us-central1' }}
           flags: |
             --allow-unauthenticated
